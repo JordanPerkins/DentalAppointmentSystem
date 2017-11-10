@@ -11,18 +11,16 @@ package dentalpractisesystem;
  */
 public class SecretaryMenu extends javax.swing.JPanel {
     
-    javax.swing.JFrame frame;
+    private javax.swing.JFrame frame;
 
     /**
      * Creates new form NewSecretaryMenu
      */
-    public SecretaryMenu() {
+    public SecretaryMenu(javax.swing.JFrame frame) {
+        this.frame = frame;
         initComponents();
     }
     
-    public void setFrame(javax.swing.JFrame frame) {
-        this.frame = frame; 
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -207,8 +205,7 @@ public class SecretaryMenu extends javax.swing.JPanel {
 
     private void selectViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectViewActionPerformed
         setVisible(false);
-        Menu menu = new Menu();
-        menu.setFrame(frame);
+        Menu menu = new Menu(frame);
         frame.setContentPane(menu);
     }//GEN-LAST:event_selectViewActionPerformed
 

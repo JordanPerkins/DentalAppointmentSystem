@@ -11,19 +11,16 @@ package dentalpractisesystem;
  */
 public class Menu extends javax.swing.JPanel {
     
-    javax.swing.JFrame frame;
+    private javax.swing.JFrame frame;
 
     /**
      * Creates new form MainMenu
      */
-    public Menu() {
+    public Menu(javax.swing.JFrame frame) {
+        this.frame = frame;
         initComponents();
     }
     
-    public void setFrame(javax.swing.JFrame frame) {
-        this.frame = frame; 
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -121,14 +118,13 @@ public class Menu extends javax.swing.JPanel {
 
     private void secretaryViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secretaryViewActionPerformed
         setVisible(false);
-        SecretaryMenu menu = new SecretaryMenu();
-        menu.setFrame(frame);
+        SecretaryMenu menu = new SecretaryMenu(frame);
         frame.setContentPane(menu);
     }//GEN-LAST:event_secretaryViewActionPerformed
 
     private void partnerViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partnerViewActionPerformed
         setVisible(false);
-        PartnerSelect select = new PartnerSelect();
+        PartnerSelect select = new PartnerSelect(frame);
         frame.setContentPane(select);
     }//GEN-LAST:event_partnerViewActionPerformed
 

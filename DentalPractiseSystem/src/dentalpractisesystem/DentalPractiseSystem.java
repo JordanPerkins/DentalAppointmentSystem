@@ -5,6 +5,9 @@
  */
 package dentalpractisesystem;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author jordan
@@ -41,7 +44,10 @@ public class DentalPractiseSystem {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIFrame().setVisible(true);
+                GUIFrame frame = new GUIFrame();
+                Menu menu = new Menu(frame);
+                frame.setContentPane(menu);
+                frame.setVisible(true);
             }
         });
     }
