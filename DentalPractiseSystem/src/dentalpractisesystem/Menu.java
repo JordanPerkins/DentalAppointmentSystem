@@ -65,14 +65,14 @@ public class Menu extends javax.swing.JPanel {
         jButton1.setActionCommand("secretaryView");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1secretaryViewActionPerformed(evt);
+                secretaryViewActionPerformed(evt);
             }
         });
 
         jButton2.setText("Partner View");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                partnerViewActionPerformed(evt);
             }
         });
 
@@ -119,15 +119,18 @@ public class Menu extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1secretaryViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1secretaryViewActionPerformed
+    private void secretaryViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secretaryViewActionPerformed
         setVisible(false);
         SecretaryMenu menu = new SecretaryMenu();
+        menu.setFrame(frame);
         frame.setContentPane(menu);
-    }//GEN-LAST:event_jButton1secretaryViewActionPerformed
+    }//GEN-LAST:event_secretaryViewActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void partnerViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partnerViewActionPerformed
+        setVisible(false);
+        PartnerSelect select = new PartnerSelect();
+        frame.setContentPane(select);
+    }//GEN-LAST:event_partnerViewActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
