@@ -5,6 +5,8 @@
  */
 package dentalpractisesystem;
 
+import java.awt.Point;
+
 /**
  *
  * @author jordan
@@ -108,7 +110,7 @@ public class DeletePatient extends javax.swing.JPanel {
         jButton1.setText("Delete");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                deleteActionPerformed(evt);
             }
         });
 
@@ -206,9 +208,15 @@ public class DeletePatient extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        ConfirmDelete delete = new ConfirmDelete(frame, true);
+        Point point = frame.getLocationOnScreen();
+        double width = (point.getY()+(frame.getWidth()/2))-(delete.getWidth()/2);
+        double height = (point.getX()+(frame.getHeight()/2))-(delete.getHeight()/2);
+        point.setLocation(width, height);
+        delete.setLocation(point);
+        delete.setVisible(true);
+    }//GEN-LAST:event_deleteActionPerformed
 
     private void menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuActionPerformed
         setVisible(false);
