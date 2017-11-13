@@ -274,9 +274,7 @@ public class ViewPatient extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-      String selected = (String) jComboBox1.getSelectedItem();
-      int patientID = Integer.parseInt(selected.split(" ")[0]);
-      setInfo(lis[patientID-1]);   
+    setInfo(lis[jComboBox1.getSelectedIndex()]);   
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
