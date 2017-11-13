@@ -179,7 +179,7 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel8" pref="359" max="32767" attributes="0"/>
+                      <Component id="jLabel8" pref="332" max="32767" attributes="0"/>
                       <Component id="jLabel9" max="32767" attributes="0"/>
                       <Component id="jLabel10" max="32767" attributes="0"/>
                       <Component id="jLabel11" max="32767" attributes="0"/>

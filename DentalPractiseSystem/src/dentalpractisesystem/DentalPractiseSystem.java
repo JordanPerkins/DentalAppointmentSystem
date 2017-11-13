@@ -43,9 +43,6 @@ public class DentalPractiseSystem {
         
         /* Create SQL Tables */
         new SQLConnector().createTables();
-        Patient pat = Patient.fetchAll()[1];
-        System.out.println(pat.getFirstName());
-        System.out.println(pat.getAddress().getCity());
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
