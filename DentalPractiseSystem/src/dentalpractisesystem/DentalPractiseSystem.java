@@ -40,6 +40,9 @@ public class DentalPractiseSystem {
             java.util.logging.Logger.getLogger(GUIFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        /* Create SQL Tables */
+        new SQLConnector().createTables();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

@@ -22,12 +22,13 @@ public class SQLConnector {
     private String password = "03508513";
     
     // Connect to SQL
-    private Connection connect() {
+    public Connection connect() {
     try {
             return DriverManager.getConnection("jdbc:mysql://"+server+"/"+db, user, password);
         }
         catch (SQLException ex) {
-            ex.printStackTrace();
+            System.out.println("Connection error");
+            System.exit(0);
             return null;
         }
     }
@@ -49,5 +50,29 @@ public class SQLConnector {
                 Logger.getLogger(SQLConnector.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public void createTables() {
+        // Address table
+        update("CREATE TABLE IF NOT EXISTS Address(" +
+            "    houseNumber INTEGER," +
+            "    postCode VARCHAR(7)," +
+            "    streetName VARCHAR(30)," +
+            "    district VARCHAR(30)," +
+            "    city VARCHAR(30)," +
+            "    PRIMARY KEY (houseNumber, postCode))");
+        // Patient table
+        update("CREATE TABLE IF NOT EXISTS Patient(" +
+            "    patientID INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+            "    title VARCHAR(6)," +
+            "    forname VARCHAR(15)," +
+            "    surname VARCHAR(25)," +
+            "    dob DATE," +
+            "    phoneNumber VARCHAR(17)," +
+            "    houseNumber INTEGER," +
+            "    postCode VARCHAR(7)," +
+            "    FOREIGN KEY (houseNumber, postCode)" +
+            "        REFERENCES Address(houseNumber, postCode));");
+        
     }
 }
