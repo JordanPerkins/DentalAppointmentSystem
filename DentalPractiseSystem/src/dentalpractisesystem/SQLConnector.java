@@ -8,6 +8,7 @@ package dentalpractisesystem;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,10 +25,11 @@ public class SQLConnector {
     // Connect to SQL
     public static Connection connect() {
     try {
+            DriverManager.setLoginTimeout(5);
             return DriverManager.getConnection("jdbc:mysql://"+server+"/"+db, user, password);
         }
         catch (SQLException ex) {
-            System.out.println("Connection error");
+            JOptionPane.showMessageDialog(null, "Failed to connect to database - aborting", "Connection Error", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
             return null;
         }
