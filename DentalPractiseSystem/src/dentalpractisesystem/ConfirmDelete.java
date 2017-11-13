@@ -12,6 +12,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -27,12 +28,15 @@ public class ConfirmDelete extends javax.swing.JDialog {
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
+    
+    private ViewPatient view;
 
     /**
      * Creates new form OkCancelDialog
      */
-    public ConfirmDelete(java.awt.Frame parent, boolean modal) {
+    public ConfirmDelete(java.awt.Frame parent, boolean modal, ViewPatient view) {
         super(parent, modal);
+        this.view = view;
         initComponents();
 
         // Close the dialog when Esc is pressed
@@ -126,6 +130,9 @@ public class ConfirmDelete extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        int index = view.getjComboBox1().getSelectedIndex();
+        view.getLis()[index].delete();
+        view.updateDropdown();
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -177,7 +184,7 @@ public class ConfirmDelete extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ConfirmDelete dialog = new ConfirmDelete(new javax.swing.JFrame(), true);
+                ConfirmDelete dialog = new ConfirmDelete(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

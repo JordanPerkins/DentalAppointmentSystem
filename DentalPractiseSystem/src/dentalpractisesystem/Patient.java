@@ -214,6 +214,34 @@ public class Patient extends SQLConnector {
            
     }
     
+    public boolean delete() {
+        if (!exists()) return false;
+        PreparedStatement stmt = null;
+        PreparedStatement stmt1 = null;
+        try {
+            String sql = "DELETE FROM Address WHERE houseNumber = ? AND postCode = ?";
+            String sql1 = "DELETE FROM Patient WHERE patientID = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt1 = connect().prepareStatement(sql1);
+            stmt.setInt(1, address.getHouseNumber());
+            stmt.setString(2, address.getPostCode());
+            stmt1.setInt(1, patientID);
+            int res1 = stmt1.executeUpdate();
+            int res = stmt.executeUpdate();
+            if (res != 1 && res1 != 1) return false;
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     public String toString() {
         return patientID + " - " + firstName + " " + surname;
     }

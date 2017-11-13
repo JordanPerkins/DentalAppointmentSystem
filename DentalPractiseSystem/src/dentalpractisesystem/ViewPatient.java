@@ -6,6 +6,7 @@
 package dentalpractisesystem;
 
 import java.awt.Point;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -21,17 +22,22 @@ public class ViewPatient extends javax.swing.JPanel {
     public ViewPatient(javax.swing.JFrame frame) {
         this.frame = frame;
         initComponents();
-        for (int i = 0; i<lis.length; i++) {
-            jComboBox1.addItem(lis[i].toString());
-        }
-        setInfo(lis[0]);
+        updateDropdown();
+
     }
     
     private void setInfo(Patient patient) {
-        jLabel8.setText(patient.getFirstName());
-        jLabel9.setText(patient.getSurname());
-        jLabel10.setText(patient.getDob().toString());
-        jLabel11.setText(patient.getAddress().toString());
+        if (patient == null) {
+            jLabel8.setText("");
+            jLabel9.setText("");
+            jLabel10.setText("");
+            jLabel11.setText("");
+        } else {
+            jLabel8.setText(patient.getFirstName());
+            jLabel9.setText(patient.getSurname());
+            jLabel10.setText(patient.getDob().toString());
+            jLabel11.setText(patient.getAddress().toString());
+        }
     }
 
     /**
@@ -273,12 +279,29 @@ public class ViewPatient extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public Patient[] getLis() {
+        return lis;
+    }
+
+    public void setLis(Patient[] lis) {
+        this.lis = lis;
+    }
+
+    public JComboBox<String> getjComboBox1() {
+        return jComboBox1;
+    }
+
+    public void setjComboBox1(JComboBox<String> jComboBox1) {
+        this.jComboBox1 = jComboBox1;
+    }
+
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        setInfo(lis[jComboBox1.getSelectedIndex()]);   
+        int index = jComboBox1.getSelectedIndex();
+        if (index != -1) setInfo(lis[index]);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        ConfirmDelete delete = new ConfirmDelete(frame, true);
+        ConfirmDelete delete = new ConfirmDelete(frame, true, this);
         Point point = frame.getLocationOnScreen();
         double width = (point.getY()+(frame.getWidth()/2))-(delete.getWidth()/2);
         double height = (point.getX()+(frame.getHeight()/2))-(delete.getHeight()/2);
@@ -302,10 +325,23 @@ public class ViewPatient extends javax.swing.JPanel {
         plan.setLocation(point);
         plan.setVisible(true);
     }//GEN-LAST:event_changePlanActionPerformed
-
-
+    
+    public void updateDropdown() {
+        jComboBox1.removeAllItems();
+        lis = Patient.fetchAll();
+        if (lis.length != 0) {
+            for (int i = 0; i<lis.length; i++) {
+                jComboBox1.addItem(lis[i].toString());
+            }
+            setInfo(lis[0]);
+        } else {
+            setInfo(null);
+        }
+    }
+    
+    
     // List
-    private final Patient[] lis = Patient.fetchAll();
+    private Patient[] lis;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
