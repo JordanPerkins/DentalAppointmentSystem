@@ -19,6 +19,15 @@ public class Patient extends SQLConnector {
     private String firstName;
     private String surname;
     private LocalDate dob;
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public int getPatientID() {
         return patientID;

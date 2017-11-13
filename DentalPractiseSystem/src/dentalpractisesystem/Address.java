@@ -84,9 +84,8 @@ public class Address extends SQLConnector {
             stmt.setInt(1, getHouseNumber());
             stmt.setString(2, getPostCode());
             ResultSet res = stmt.executeQuery();
-            while (res.next()) {
-                count = res.getInt(1);
-            }
+            res.next();
+            count = res.getInt(1);
             if (count == 1) return true;
             return false;
         } catch (SQLException ex) {
@@ -110,11 +109,10 @@ public class Address extends SQLConnector {
             stmt.setInt(1, getHouseNumber());
             stmt.setString(2, getPostCode());
             ResultSet res = stmt.executeQuery();
-            while (res.next()) {
-                setStreetName(res.getString(3));
-                setDistrict(res.getString(4));
-                setCity(res.getString(5));
-            }
+            res.next();
+            setStreetName(res.getString(3));
+            setDistrict(res.getString(4));
+            setCity(res.getString(5));
             return true;
         } catch (SQLException ex) {
             ex.printStackTrace();

@@ -31,10 +31,10 @@ public class SecretaryMenu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
@@ -42,6 +42,14 @@ public class SecretaryMenu extends javax.swing.JPanel {
         jButton5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButton6 = new javax.swing.JButton();
+
+        jButton1.setText("Change Plan");
+        jButton1.setToolTipText("");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changePlanActionPerformed(evt);
+            }
+        });
 
         setPreferredSize(new java.awt.Dimension(1024, 578));
 
@@ -67,18 +75,10 @@ public class SecretaryMenu extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Patient Management"));
 
-        jButton1.setText("Change Plan");
-        jButton1.setToolTipText("");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changePlanActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("Delete Patient");
+        jButton3.setText("View Patient");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deletePatientActionPerformed(evt);
+                viewPatientActionPerformed(evt);
             }
         });
 
@@ -93,9 +93,7 @@ public class SecretaryMenu extends javax.swing.JPanel {
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(518, Short.MAX_VALUE))
+                .addContainerGap(679, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,7 +101,6 @@ public class SecretaryMenu extends javax.swing.JPanel {
                 .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -177,9 +174,9 @@ public class SecretaryMenu extends javax.swing.JPanel {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 311, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(311, Short.MAX_VALUE))
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -197,9 +194,7 @@ public class SecretaryMenu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void changePlanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePlanActionPerformed
-        setVisible(false);
-        ChangePlan plan = new ChangePlan(frame);
-        frame.setContentPane(plan);
+
     }//GEN-LAST:event_changePlanActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -216,11 +211,11 @@ public class SecretaryMenu extends javax.swing.JPanel {
         frame.setContentPane(menu);
     }//GEN-LAST:event_selectViewActionPerformed
 
-    private void deletePatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePatientActionPerformed
+    private void viewPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewPatientActionPerformed
         setVisible(false);
-        DeletePatient delete = new DeletePatient(frame);
+        ViewPatient delete = new ViewPatient(frame);
         frame.setContentPane(delete);
-    }//GEN-LAST:event_deletePatientActionPerformed
+    }//GEN-LAST:event_viewPatientActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
