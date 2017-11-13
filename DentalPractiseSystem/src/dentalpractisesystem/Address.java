@@ -152,6 +152,13 @@ public class Address extends SQLConnector {
          }
     }
     
+    public String toString() {
+        return "<html>" + houseNumber+" " + streetName + ",<br>" +
+                district + ",<br>" +
+                city + ",<br>" +
+                postCode + "</html>";      
+    }
+    
     
     
 }

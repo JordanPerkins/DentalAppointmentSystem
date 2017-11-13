@@ -16,13 +16,13 @@ import java.util.logging.Logger;
 public class SQLConnector {
     
     // SQL Settings
-    private String server = "stusql.dcs.shef.ac.uk";
-    private String db = "team032";
-    private String user = "team032";
-    private String password = "03508513";
+    private static String server = "stusql.dcs.shef.ac.uk";
+    private static String db = "team032";
+    private static String user = "team032";
+    private static String password = "03508513";
     
     // Connect to SQL
-    public Connection connect() {
+    public static Connection connect() {
     try {
             return DriverManager.getConnection("jdbc:mysql://"+server+"/"+db, user, password);
         }
@@ -33,7 +33,7 @@ public class SQLConnector {
         }
     }
     
-    public int update(String update) {
+    public static int update(String update) {
         Statement stmt = null; // SQL statement object
         try {
             stmt = connect().createStatement(); // create from open connection
@@ -65,7 +65,7 @@ public class SQLConnector {
         update("CREATE TABLE IF NOT EXISTS Patient(" +
             "    patientID INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT," +
             "    title VARCHAR(6)," +
-            "    forname VARCHAR(15)," +
+            "    firstName VARCHAR(15)," +
             "    surname VARCHAR(25)," +
             "    dob DATE," +
             "    phoneNumber VARCHAR(17)," +

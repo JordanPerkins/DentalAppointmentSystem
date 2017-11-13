@@ -5,7 +5,12 @@
  */
 package dentalpractisesystem;
 
-import java.time.LocalDate;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,7 +23,7 @@ public class Patient extends SQLConnector {
     private String title;
     private String firstName;
     private String surname;
-    private LocalDate dob;
+    private Date dob;
     private Address address;
 
     public Address getAddress() {
@@ -62,11 +67,11 @@ public class Patient extends SQLConnector {
         this.surname = surname;
     }
 
-    public LocalDate getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
@@ -78,7 +83,17 @@ public class Patient extends SQLConnector {
         this.phoneNumber = phoneNumber;
     }
     
-    public Patient(String title, String firstName, String surname, LocalDate dob, String phoneNumber) {
+    public Patient(int patientID, String title, String firstName, String surname, Date dob, String phoneNumber, Address address) {
+        this.patientID = patientID;
+        this.title = title;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.dob = dob;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+    
+    public Patient(String title, String firstName, String surname, Date dob, String phoneNumber) {
         this.title = title;
         this.firstName = firstName;
         this.surname = surname;
@@ -89,6 +104,120 @@ public class Patient extends SQLConnector {
     public Patient(int patientID) {
         this.patientID = patientID;
     }
+    
+    public boolean exists() {
+       PreparedStatement stmt = null;
+        try {
+            int count = 0;
+            String sql = "SELECT COUNT(*) FROM Patient WHERE patientID = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, getPatientID());
+            ResultSet res = stmt.executeQuery();
+            res.next();
+            count = res.getInt(1);
+            if (count == 1) return true;
+            return false;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+   
+    
+    public boolean fetch() {
+        if (!exists()) return false;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "SELECT * FROM Patient NATURAL JOIN Address WHERE patientID = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, getPatientID());
+            ResultSet res = stmt.executeQuery();
+            res.next();
+            setTitle(res.getString(4));
+            setFirstName(res.getString(5));
+            setSurname(res.getString(6));
+            setDob(res.getDate(7));
+            setPhoneNumber(res.getString(8));
+            setAddress(new Address(res.getInt(1), res.getString(2),
+                    res.getString(9), res.getString(10), res.getString(11)));
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public static int getCount() {
+        PreparedStatement stmt = null;
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM Patient";
+            stmt = connect().prepareStatement(sql);
+            ResultSet res = stmt.executeQuery();
+            res.next();
+            count = res.getInt(1);
+            return count;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }    
+    }
+    
+    public static Patient[] fetchAll() {
+        int size = getCount();
+        System.out.println(size);
+        if (size == 0) return new Patient[0];
+        Patient[] list = new Patient[size];
+        PreparedStatement stmt = null;
+        int count = 0;
+        try {
+            String sql = "SELECT * FROM Patient NATURAL JOIN Address";
+            stmt = connect().prepareStatement(sql);
+            ResultSet res = stmt.executeQuery();
+            while (res.next()) {
+                Address address = new Address(res.getInt(1), res.getString(2),
+                res.getString(9), res.getString(10), res.getString(11));
+                Patient patient = new Patient(res.getInt(3), res.getString(4),
+                        res.getString(5), res.getString(6), res.getDate(7), res.getString(8), address);
+                list[count] = patient;
+                count++;
+            }
+            return list;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new Patient[0];
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+           
+    }
+    
+    public String toString() {
+        return patientID + " - " + firstName + " " + surname;
+    }
+   
     
     
 }
