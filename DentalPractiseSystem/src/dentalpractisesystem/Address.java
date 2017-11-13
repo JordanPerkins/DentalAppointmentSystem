@@ -51,8 +51,9 @@ public class Address extends SQLConnector {
         this.postCode = postCode;
     }
 
-    public Address(int houseNumber, String streetName, String district, String city) {
+    public Address(int houseNumber, String postCode, String streetName, String district, String city) {
         this.houseNumber = houseNumber;
+        this.postCode = postCode;
         this.streetName = streetName;
         this.district = district;
         this.city = city;
@@ -115,6 +116,32 @@ public class Address extends SQLConnector {
                 setCity(res.getString(5));
             }
             return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
+            }
+         }
+    }
+    
+    public boolean add() {
+        if (exists()) return false;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "INSERT INTO Address VALUES (?, ?, ?, ?, ?)";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, getHouseNumber());
+            stmt.setString(2, getPostCode());
+            stmt.setString(3, getStreetName());
+            stmt.setString(4, getDistrict());
+            stmt.setString(5, getCity());
+            int res = stmt.executeUpdate();
+            if (res == 1) return true;
+            return false;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
