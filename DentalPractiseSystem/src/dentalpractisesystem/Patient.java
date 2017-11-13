@@ -217,6 +217,20 @@ public class Patient extends SQLConnector {
     public String toString() {
         return patientID + " - " + firstName + " " + surname;
     }
+    
+    public static void createTable() {
+        update("CREATE TABLE IF NOT EXISTS Patient(" +
+            "    patientID INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+            "    title VARCHAR(6)," +
+            "    firstName VARCHAR(15)," +
+            "    surname VARCHAR(25)," +
+            "    dob DATE," +
+            "    phoneNumber VARCHAR(17)," +
+            "    houseNumber INTEGER," +
+            "    postCode VARCHAR(7)," +
+            "    FOREIGN KEY (houseNumber, postCode)" +
+            "        REFERENCES Address(houseNumber, postCode));");
+    }
    
     
     

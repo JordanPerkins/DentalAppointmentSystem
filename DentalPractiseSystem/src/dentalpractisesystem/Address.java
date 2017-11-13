@@ -159,6 +159,16 @@ public class Address extends SQLConnector {
                 postCode + "</html>";      
     }
     
+    public static void createTable() {
+        update("CREATE TABLE IF NOT EXISTS Address(" +
+            "    houseNumber INTEGER," +
+            "    postCode VARCHAR(7)," +
+            "    streetName VARCHAR(30)," +
+            "    district VARCHAR(30)," +
+            "    city VARCHAR(30)," +
+            "    PRIMARY KEY (houseNumber, postCode))");
+    }
+    
     
     
 }

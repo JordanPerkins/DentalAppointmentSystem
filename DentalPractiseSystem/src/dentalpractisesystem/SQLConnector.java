@@ -53,26 +53,7 @@ public class SQLConnector {
     }
     
     public void createTables() {
-        // Address table
-        update("CREATE TABLE IF NOT EXISTS Address(" +
-            "    houseNumber INTEGER," +
-            "    postCode VARCHAR(7)," +
-            "    streetName VARCHAR(30)," +
-            "    district VARCHAR(30)," +
-            "    city VARCHAR(30)," +
-            "    PRIMARY KEY (houseNumber, postCode))");
-        // Patient table
-        update("CREATE TABLE IF NOT EXISTS Patient(" +
-            "    patientID INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT," +
-            "    title VARCHAR(6)," +
-            "    firstName VARCHAR(15)," +
-            "    surname VARCHAR(25)," +
-            "    dob DATE," +
-            "    phoneNumber VARCHAR(17)," +
-            "    houseNumber INTEGER," +
-            "    postCode VARCHAR(7)," +
-            "    FOREIGN KEY (houseNumber, postCode)" +
-            "        REFERENCES Address(houseNumber, postCode));");
-        
+        Address.createTable();
+        Patient.createTable();
     }
 }
