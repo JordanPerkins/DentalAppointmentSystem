@@ -6,8 +6,6 @@
 package dentalpractisesystem;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -95,7 +93,6 @@ public class Address extends SQLConnector {
             if (stmt != null) try {
                 stmt.close();
             } catch (SQLException ex) {
-                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
             }
          }
     }
@@ -121,7 +118,6 @@ public class Address extends SQLConnector {
             if (stmt != null) try {
                 stmt.close();
             } catch (SQLException ex) {
-                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
             }
          }
     }
@@ -147,7 +143,6 @@ public class Address extends SQLConnector {
             if (stmt != null) try {
                 stmt.close();
             } catch (SQLException ex) {
-                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
             }
          }
     }
@@ -187,7 +182,6 @@ public class Address extends SQLConnector {
             if (stmt != null) try {
                 stmt.close();
             } catch (SQLException ex) {
-                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

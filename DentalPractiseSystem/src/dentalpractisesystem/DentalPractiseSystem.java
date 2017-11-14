@@ -4,10 +4,6 @@
  * and open the template in the editor.
  */
 package dentalpractisesystem;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author jordan

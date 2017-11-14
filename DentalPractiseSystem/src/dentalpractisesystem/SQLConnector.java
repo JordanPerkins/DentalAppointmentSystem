@@ -6,8 +6,6 @@
 package dentalpractisesystem;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -49,7 +47,6 @@ public class SQLConnector {
             if (stmt != null) try {
                 stmt.close();
             } catch (SQLException ex) {
-                Logger.getLogger(SQLConnector.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
