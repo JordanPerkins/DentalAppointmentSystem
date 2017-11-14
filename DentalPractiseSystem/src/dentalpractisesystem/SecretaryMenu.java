@@ -202,7 +202,9 @@ public class SecretaryMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        setVisible(false);
+        CalendarWeekPanel calendar = new CalendarWeekPanel(frame, 0);
+        frame.setContentPane(calendar);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void selectViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectViewActionPerformed

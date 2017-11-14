@@ -8,12 +8,11 @@
  * Created: 10-Nov-2017
  */
 
-CREATE TABLE IF NOT EXISTS appointment(
+CREATE TABLE IF NOT EXISTS Appointment(
     patientID INTEGER,
-    partnerId INTEGER,
+    partner VARCHAR(20),
     startTime TIME,
     endTime TIME,
     appointmentDate DATE,
-    PRIMARY KEY (startTime, appointmentDate, partnerId),
-    FOREIGN KEY (patientID) REFERENCES patient,
-    FOREIGN KEY (partnerId) REFERENCES partner);
+    PRIMARY KEY (startTime, appointmentDate, partner),
+    FOREIGN KEY (patientID) REFERENCES patient(patientID);

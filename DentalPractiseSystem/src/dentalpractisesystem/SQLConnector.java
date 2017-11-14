@@ -56,5 +56,6 @@ public class SQLConnector {
         Patient.createTable();
         Plan.createTable();
         PatientPlan.createTable();
+        Appointment.createTable();
     }
 }

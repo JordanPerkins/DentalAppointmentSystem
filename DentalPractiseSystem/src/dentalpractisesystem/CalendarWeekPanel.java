@@ -33,6 +33,8 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     private Calendar cWed = Calendar.getInstance();
     private Calendar cThrs = Calendar.getInstance();
     private Calendar cFri = Calendar.getInstance();
+    
+    private Partner partner;
 
     /**
      * Creates new form CalanderFrame
@@ -51,102 +53,44 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         }
         
         switch (cToday.get(Calendar.DAY_OF_WEEK)) {
-      case 1: cMon.add(Calendar.DATE, 1);
-        cTues.add(Calendar.DATE, 2);
-        cWed.add(Calendar.DATE, 3);
-        cThrs.add(Calendar.DATE, 4);
-        cFri.add(Calendar.DATE, 5); break;
-      case 2: cTues.add(Calendar.DATE, 1);
-        cWed.add(Calendar.DATE, 2);
-        cThrs.add(Calendar.DATE, 3);
-        cFri.add(Calendar.DATE, 4); break;
-      case 3: cMon.add(Calendar.DATE, -1);
-        cWed.add(Calendar.DATE, 1);
-        cThrs.add(Calendar.DATE, 2);
-        cFri.add(Calendar.DATE, 3); break;
-      case 4: cMon.add(Calendar.DATE, -2);
-        cTues.add(Calendar.DATE, -1);
-        cThrs.add(Calendar.DATE, 1);
-        cFri.add(Calendar.DATE, 2); break;
-      case 5: cMon.add(Calendar.DATE, -3);
-        cTues.add(Calendar.DATE, -2);
-        cWed.add(Calendar.DATE, -2);
-        cFri.add(Calendar.DATE, 1); break;
-      case 6: cMon.add(Calendar.DATE, -4);
-        cTues.add(Calendar.DATE, -3);
-        cWed.add(Calendar.DATE, -2);
-        cThrs.add(Calendar.DATE, -1); break;
-      case 7: cMon.add(Calendar.DATE, 2);
-        cTues.add(Calendar.DATE, 3);
-        cWed.add(Calendar.DATE, 4);
-        cThrs.add(Calendar.DATE, 5);
-        cFri.add(Calendar.DATE, 6); break;
-    }
+            case 1: cMon.add(Calendar.DATE, 1);
+                cTues.add(Calendar.DATE, 2);
+                cWed.add(Calendar.DATE, 3);
+                cThrs.add(Calendar.DATE, 4);
+                cFri.add(Calendar.DATE, 5); break;
+            case 2: cTues.add(Calendar.DATE, 1);
+                cWed.add(Calendar.DATE, 2);
+                cThrs.add(Calendar.DATE, 3);
+                cFri.add(Calendar.DATE, 4); break;
+            case 3: cMon.add(Calendar.DATE, -1);
+                cWed.add(Calendar.DATE, 1);
+                cThrs.add(Calendar.DATE, 2);
+                cFri.add(Calendar.DATE, 3); break;
+            case 4: cMon.add(Calendar.DATE, -2);
+                cTues.add(Calendar.DATE, -1);
+                cThrs.add(Calendar.DATE, 1);
+                cFri.add(Calendar.DATE, 2); break;
+            case 5: cMon.add(Calendar.DATE, -3);
+                cTues.add(Calendar.DATE, -2);
+                cWed.add(Calendar.DATE, -2);
+                cFri.add(Calendar.DATE, 1); break;
+            case 6: cMon.add(Calendar.DATE, -4);
+                cTues.add(Calendar.DATE, -3);
+                cWed.add(Calendar.DATE, -2);
+                cThrs.add(Calendar.DATE, -1); break;
+            case 7: cMon.add(Calendar.DATE, 2);
+                cTues.add(Calendar.DATE, 3);
+                cWed.add(Calendar.DATE, 4);
+                cThrs.add(Calendar.DATE, 5);
+                cFri.add(Calendar.DATE, 6); break;
+        }
         
         initComponents();
-        /*
-        jPanel1.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridy = 0;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*60;
-        JPanel test1 = new JPanel();
-        jPanel1.add(test1, c);
-        c.gridy = 1;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*60;
-        JPanel test2 = new JPanel();
-        jPanel1.add(test2, c);
-        c.gridy = 2;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*60;
-        JPanel test3 = new JPanel();
-        jPanel1.add(test3, c);
-        c.gridy = 3;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*60;
-        JPanel test4 = new JPanel();
-        jPanel1.add(test4, c);
-        c.gridy = 4;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*60;
-        JPanel test5 = new JPanel();
-        jPanel1.add(test5, c);
-        c.gridy = 5;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*60;
-        JPanel test6 = new JPanel();
-        jPanel1.add(test6, c);
-        c.gridy = 6;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*60;
-        JPanel test7 = new JPanel();
-        jPanel1.add(test7, c);
-        c.gridy = 7;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*60;
-        JPanel test8 = new JPanel();
-        jPanel1.add(test8, c);
         
-        test1.setLayout(new GridBagLayout());
-        GridBagConstraints c1 = new GridBagConstraints();
-        c1.fill = GridBagConstraints.BOTH;
-        c1.gridy = 0;
-        c1.gridx = 0;
-        c1.weighty = 100.0/2;
-        JButton t1 = new JButton("Test1");
-        t1.setPreferredSize(new Dimension(100,1));
-        test1.add(t1, c1);
-        c1.gridy = 1;
-        c1.gridx = 0;
-        c1.weighty = 100.0/2;
-        JButton t2 = new JButton("Test2");
-        t2.setPreferredSize(new Dimension(100,1));
-        test1.add(t2, c1);
- */
+        //java.sql.Date monDate = new java.sql.Date(cMon.get(Calendar.YEAR), cMon.get(Calendar.MONTH), cMon.get(Calendar.DAY_OF_MONTH));
+        //Appointment[] monAppointments = Appointment.fetchDatePartner(monDate, partner);
         
-        
+        // Buttons testing for future reference
         monPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -235,17 +179,6 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         JButton test5 = new JButton("Test 5");
         test5.setPreferredSize(new Dimension(100,1));
         monPanel.add(test5, c);
-        /*
-        c.gridy = 10;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*100;
-        jPanel1.add(new JPanel(), c);
-        c.gridy = 11;
-        c.gridx = 0;
-        c.weighty = (100.0/480.0)*20;
-        JButton test6 = new JButton("Test 6");
-        jPanel1.add(test6, c);
-        */
         
         friPanel.setLayout(new GridBagLayout());
         c.gridy = 0;
@@ -487,6 +420,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println(evt);
         CalendarWeekPanel next = new CalendarWeekPanel(this.frame, this.timeOffset-7);
         this.frame.setContentPane(next);
     }//GEN-LAST:event_jButton1ActionPerformed
