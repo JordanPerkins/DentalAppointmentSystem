@@ -217,18 +217,13 @@ public class Patient extends SQLConnector {
     public boolean delete() {
         if (!exists()) return false;
         PreparedStatement stmt = null;
-        PreparedStatement stmt1 = null;
         try {
-            String sql = "DELETE FROM Address WHERE houseNumber = ? AND postCode = ?";
-            String sql1 = "DELETE FROM Patient WHERE patientID = ?";
+            String sql = "DELETE FROM Patient WHERE patientID = ?";
             stmt = connect().prepareStatement(sql);
-            stmt1 = connect().prepareStatement(sql1);
-            stmt.setInt(1, address.getHouseNumber());
-            stmt.setString(2, address.getPostCode());
-            stmt1.setInt(1, patientID);
-            int res1 = stmt1.executeUpdate();
+            stmt.setInt(1, patientID);
             int res = stmt.executeUpdate();
-            if (res != 1 && res1 != 1) return false;
+            if (res != 1) return false;
+            address.delete();
             return true;
         } catch (SQLException ex) {
             ex.printStackTrace();

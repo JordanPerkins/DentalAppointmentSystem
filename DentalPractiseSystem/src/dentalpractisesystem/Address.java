@@ -169,6 +169,29 @@ public class Address extends SQLConnector {
             "    PRIMARY KEY (houseNumber, postCode))");
     }
     
+    public boolean delete() {
+      PreparedStatement stmt = null;
+        try {
+            String sql = "DELETE FROM Address WHERE NOT EXISTS "
+                    + "(SELECT 1 FROM Patient WHERE Patient.houseNumber  = Address.houseNumber AND Patient.postCode = Address.postCode) "
+                    + "AND houseNumber = ? AND postCode = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, getHouseNumber());
+            stmt.setString(2, getPostCode());
+            int count = stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     
     
 }
