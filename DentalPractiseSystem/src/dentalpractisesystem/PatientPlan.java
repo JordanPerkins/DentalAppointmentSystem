@@ -20,7 +20,7 @@ public class PatientPlan extends SQLConnector {
     
     // Instance Variables
     private int patientID;
-    private String name;
+    private Plan plan;
     private Date startDate;
     private int usedRepairs;
     private int usedCheckups;
@@ -34,14 +34,14 @@ public class PatientPlan extends SQLConnector {
         this.patientID = patientID;
     }
 
-    public String getName() {
-        return name;
+    public Plan getPlan() {
+        return plan;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPlan(Plan plan) {
+        this.plan = plan;
     }
-
+    
     public Date getStartDate() {
         return startDate;
     }
@@ -74,6 +74,15 @@ public class PatientPlan extends SQLConnector {
         this.usedVisits = usedVisits;
     }
 
+    public PatientPlan(int patientID, Plan plan, Date startDate, int usedRepairs, int usedCheckups, int usedVisits) {
+        this.patientID = patientID;
+        this.plan = plan;
+        this.startDate = startDate;
+        this.usedRepairs = usedRepairs;
+        this.usedCheckups = usedCheckups;
+        this.usedVisits = usedVisits;
+    }
+
     public static void createTable() {
         update("CREATE TABLE IF NOT EXISTS PatientPlan(" +
             "    patientID INTEGER," +
@@ -85,6 +94,27 @@ public class PatientPlan extends SQLConnector {
             "    PRIMARY KEY (patientID)," +
             "    FOREIGN KEY (patientID) REFERENCES Patient(patientID)," +
             "    FOREIGN KEY (name) REFERENCES Plan(name));");
+    }
+    
+    public boolean delete() {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "DELETE FROM PatientPlan WHERE patientID = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, getPatientID());
+            int count = stmt.executeUpdate();
+            if (count != 1) return false;
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     

@@ -58,6 +58,14 @@ public class Plan extends SQLConnector {
         this.checkups = checkups;
     }
 
+    public Plan(String name, double cost, int repairs, int checkups, int visits) {
+        this.name = name;
+        this.cost = cost;
+        this.repairs = repairs;
+        this.checkups = checkups;
+        this.visits = visits;
+    }
+
     public int getVisits() {
         return visits;
     }

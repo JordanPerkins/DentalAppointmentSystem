@@ -170,7 +170,7 @@ public class Address extends SQLConnector {
     }
     
     public boolean delete() {
-      PreparedStatement stmt = null;
+        PreparedStatement stmt = null;
         try {
             String sql = "DELETE FROM Address WHERE NOT EXISTS "
                     + "(SELECT 1 FROM Patient WHERE Patient.houseNumber  = Address.houseNumber AND Patient.postCode = Address.postCode) "
