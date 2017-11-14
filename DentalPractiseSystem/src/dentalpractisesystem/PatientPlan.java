@@ -22,9 +22,9 @@ public class PatientPlan extends SQLConnector {
     private int patientID;
     private String name;
     private Date startDate;
-    private int remainingRepairs;
-    private int remainingCheckups;
-    private int remainingVisits;
+    private int usedRepairs;
+    private int usedCheckups;
+    private int usedVisits;
 
     public int getPatientID() {
         return patientID;
@@ -50,38 +50,38 @@ public class PatientPlan extends SQLConnector {
         this.startDate = startDate;
     }
 
-    public int getRemainingRepairs() {
-        return remainingRepairs;
+    public int getUsedRepairs() {
+        return usedRepairs;
     }
 
-    public void setRemainingRepairs(int remainingRepairs) {
-        this.remainingRepairs = remainingRepairs;
+    public void setUsedRepairs(int usedRepairs) {
+        this.usedRepairs = usedRepairs;
     }
 
-    public int getRemainingCheckups() {
-        return remainingCheckups;
+    public int getUsedCheckups() {
+        return usedCheckups;
     }
 
-    public void setRemainingCheckups(int remainingCheckups) {
-        this.remainingCheckups = remainingCheckups;
+    public void setUsedCheckups(int usedCheckups) {
+        this.usedCheckups = usedCheckups;
     }
 
-    public int getRemainingVisits() {
-        return remainingVisits;
+    public int getUsedVisits() {
+        return usedVisits;
     }
 
-    public void setRemainingVisits(int remainingVisits) {
-        this.remainingVisits = remainingVisits;
+    public void setUsedVisits(int usedVisits) {
+        this.usedVisits = usedVisits;
     }
-    
+
     public static void createTable() {
         update("CREATE TABLE IF NOT EXISTS PatientPlan(" +
             "    patientID INTEGER," +
             "    name VARCHAR(50)," +
             "    startDate DATE," +
-            "    remainingRepairs INTEGER," +
-            "    remainingCheckups INTEGER," +
-            "    remainingVisits INTEGER," +
+            "    usedRepairs INTEGER," +
+            "    usedCheckups INTEGER," +
+            "    usedVisits INTEGER," +
             "    PRIMARY KEY (patientID)," +
             "    FOREIGN KEY (patientID) REFERENCES Patient(patientID)," +
             "    FOREIGN KEY (name) REFERENCES Plan(name));");
