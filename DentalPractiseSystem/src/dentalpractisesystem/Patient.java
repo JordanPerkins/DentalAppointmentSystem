@@ -25,6 +25,15 @@ public class Patient extends SQLConnector {
     private String surname;
     private Date dob;
     private Address address;
+    private PatientPlan plan;
+
+    public PatientPlan getPatientPlan() {
+        return plan;
+    }
+
+    public void setPatientPlan(PatientPlan plan) {
+        this.plan = plan;
+    }
 
     public Address getAddress() {
         return address;
@@ -83,7 +92,7 @@ public class Patient extends SQLConnector {
         this.phoneNumber = phoneNumber;
     }
     
-    public Patient(int patientID, String title, String firstName, String surname, Date dob, String phoneNumber, Address address) {
+    public Patient(int patientID, String title, String firstName, String surname, Date dob, String phoneNumber, Address address, PatientPlan plan) {
         this.patientID = patientID;
         this.title = title;
         this.firstName = firstName;
@@ -91,6 +100,7 @@ public class Patient extends SQLConnector {
         this.dob = dob;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.plan = plan;
     }
     
     public Patient(String title, String firstName, String surname, Date dob, String phoneNumber) {
@@ -189,14 +199,23 @@ public class Patient extends SQLConnector {
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT * FROM Patient NATURAL JOIN Address";
+            String sql = "SELECT * FROM Patient NATURAL JOIN Address LEFT JOIN PatientPlan ON Patient.patientID"
+                    + " = PatientPlan.patientID LEFT JOIN Plan ON PatientPlan.name = Plan.name";
             stmt = connect().prepareStatement(sql);
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
+                int planPatientID = res.getInt(12);
+                PatientPlan patientPlan = null;
+                if (!res.wasNull()) {
+                    Plan plan = new Plan(res.getString(18), res.getDouble(19),
+                            res.getInt(20), res.getInt(21), res.getInt(22));
+                    patientPlan = new PatientPlan(planPatientID, plan, res.getDate(14),
+                            res.getInt(15), res.getInt(16), res.getInt(17));
+                }
                 Address address = new Address(res.getInt(1), res.getString(2),
                 res.getString(9), res.getString(10), res.getString(11));
                 Patient patient = new Patient(res.getInt(3), res.getString(4),
-                        res.getString(5), res.getString(6), res.getDate(7), res.getString(8), address);
+                        res.getString(5), res.getString(6), res.getDate(7), res.getString(8), address, patientPlan);
                 list[count] = patient;
                 count++;
             }
@@ -218,6 +237,7 @@ public class Patient extends SQLConnector {
         if (!exists()) return false;
         PreparedStatement stmt = null;
         try {
+            if (getPatientPlan() != null) plan.delete();
             String sql = "DELETE FROM Patient WHERE patientID = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setInt(1, patientID);

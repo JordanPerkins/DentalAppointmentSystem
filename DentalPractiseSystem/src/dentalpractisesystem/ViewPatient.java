@@ -33,12 +33,18 @@ public class ViewPatient extends javax.swing.JPanel {
             jLabel10.setText("");
             jLabel11.setText("");
             jLabel14.setText("");
+            jLabel12.setText("");
         } else {
             jLabel8.setText(patient.getFirstName());
             jLabel9.setText(patient.getSurname());
             jLabel10.setText(patient.getDob().toString());
             jLabel11.setText(patient.getAddress().toString());
             jLabel14.setText(patient.getPhoneNumber());
+            if (patient.getPatientPlan() == null) {
+                jLabel12.setText("None");
+            } else {
+                jLabel12.setText(patient.getPatientPlan().getPlan().getName());
+            }
         }
     }
 
