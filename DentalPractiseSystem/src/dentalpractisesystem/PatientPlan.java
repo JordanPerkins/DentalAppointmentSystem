@@ -113,6 +113,33 @@ public class PatientPlan extends SQLConnector {
         }
     }
     
+    public boolean add() {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "INSERT INTO PatientPlan VALUES(?, ?, ?, ?, ?, ?)";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, getPatientID());
+            stmt.setString(2, getPlan().getName());
+            stmt.setDate(3, getStartDate());
+            stmt.setInt(4, getUsedRepairs());
+            stmt.setInt(5, getUsedCheckups());
+            stmt.setInt(6, getUsedVisits());
+            int count = stmt.executeUpdate();
+            if (count != 1) return false;
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+            }
+        }
+    }
+    
+    
+    
     
     
 }

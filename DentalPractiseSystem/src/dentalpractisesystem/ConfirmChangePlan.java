@@ -12,6 +12,8 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+import java.util.Calendar;
+import java.sql.Date;
 
 /**
  *
@@ -27,13 +29,22 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
+    
+    // Patient
+    private ViewPatient view;
+    
+    // List
+    
+    private static final Plan[] list = Plan.fetchAll();
 
     /**
      * Creates new form ConfirmChangePlan
      */
-    public ConfirmChangePlan(java.awt.Frame parent, boolean modal) {
+    public ConfirmChangePlan(java.awt.Frame parent, boolean modal, ViewPatient view) {
         super(parent, modal);
         initComponents();
+        this.view = view;
+        updateDropdown();
 
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -90,8 +101,6 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
 
         jLabel1.setText("Select New Plan");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -136,6 +145,21 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        int index = view.getjComboBox1().getSelectedIndex();
+        PatientPlan oldPlan = view.getLis()[index].getPatientPlan();
+        if (oldPlan != null) oldPlan.delete();
+        System.out.println(jComboBox1.getSelectedIndex());
+        if (jComboBox1.getSelectedIndex() != 0) {
+            Plan plan = list[jComboBox1.getSelectedIndex()-1];
+            Date date = new Date(Calendar.getInstance().getTimeInMillis());
+            int patientID = view.getLis()[index].getPatientID();
+            PatientPlan patientPlan = new PatientPlan(patientID, plan, date, 0, 0, 0);
+            patientPlan.add();
+            view.getLis()[index].setPatientPlan(patientPlan);
+        } else {
+            view.getLis()[index].setPatientPlan(null);
+        }
+        view.setInfo(view.getLis()[index]);
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -154,6 +178,13 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
+    }
+    
+    public void updateDropdown() {
+        jComboBox1.addItem("No Plan");
+        for (int i = 0; i<list.length; i++) {
+            jComboBox1.addItem(list[i].toString());
+        }
     }
 
     /**
@@ -186,7 +217,7 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ConfirmChangePlan dialog = new ConfirmChangePlan(new javax.swing.JFrame(), true);
+                ConfirmChangePlan dialog = new ConfirmChangePlan(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

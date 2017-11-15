@@ -179,7 +179,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         jButton3.setText("Menu");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                menuActionPerformed(evt);
             }
         });
 
@@ -415,14 +415,16 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         this.frame.setContentPane(next);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         CalendarWeekPanel next = new CalendarWeekPanel(this.frame, this.timeOffset+7, this.partner);
         this.frame.setContentPane(next);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuActionPerformed
+        setVisible(false);
+        SecretaryMenu menu = new SecretaryMenu(frame);
+        frame.setContentPane(menu);
+    }//GEN-LAST:event_menuActionPerformed
 
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         Appointment a = (Appointment)((JButton)evt.getSource()).getClientProperty("appointment");

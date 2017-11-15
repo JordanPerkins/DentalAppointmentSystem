@@ -26,7 +26,7 @@ public class ViewPatient extends javax.swing.JPanel {
 
     }
     
-    private void setInfo(Patient patient) {
+    public void setInfo(Patient patient) {
         if (patient == null) {
             jLabel8.setText("");
             jLabel9.setText("");
@@ -335,7 +335,7 @@ public class ViewPatient extends javax.swing.JPanel {
     }//GEN-LAST:event_menuActionPerformed
 
     private void changePlanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePlanActionPerformed
-        ConfirmChangePlan plan = new ConfirmChangePlan(frame, true);
+        ConfirmChangePlan plan = new ConfirmChangePlan(frame, true, this);
         Point point = frame.getLocationOnScreen();
         double width = (point.getY()+(frame.getWidth()/2))-(plan.getWidth()/2);
         double height = (point.getX()+(frame.getHeight()/2))-(plan.getHeight()/2);

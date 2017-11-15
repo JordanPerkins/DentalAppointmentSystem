@@ -8,7 +8,6 @@ package dentalpractisesystem;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
 
 
 /**
@@ -80,6 +79,61 @@ public class Plan extends SQLConnector {
             "    checkups INTEGER," +
             "    visits INTEGER);");
     }
+    
+    public static int getCount() {
+        PreparedStatement stmt = null;
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM Plan";
+            stmt = connect().prepareStatement(sql);
+            ResultSet res = stmt.executeQuery();
+            res.next();
+            count = res.getInt(1);
+            return count;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+            }
+        }    
+    }
+ 
+   public static Plan[] fetchAll() {
+        int size = getCount();
+        System.out.println(size);
+        if (size == 0) return new Plan[0];
+        Plan[] list = new Plan[size];
+        PreparedStatement stmt = null;
+        int count = 0;
+        try {
+            String sql = "SELECT * FROM Plan";
+            stmt = connect().prepareStatement(sql);
+            ResultSet res = stmt.executeQuery();
+            while (res.next()) {
+                Plan plan = new Plan(res.getString(1), res.getDouble(2), res.getInt(3),
+                        res.getInt(4), res.getInt(5));
+                list[count] = plan;
+                count++;
+            }
+            return list;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new Plan[0];
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+            }
+        }
+           
+    }
+   
+   public String toString() {
+       return name + " - £" + cost;
+   }
     
     
     

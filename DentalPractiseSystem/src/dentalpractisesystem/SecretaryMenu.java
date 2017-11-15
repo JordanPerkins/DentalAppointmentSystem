@@ -83,6 +83,11 @@ public class SecretaryMenu extends javax.swing.JPanel {
         });
 
         jButton4.setText("Register Patient");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerPatientActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -218,6 +223,12 @@ public class SecretaryMenu extends javax.swing.JPanel {
         ViewPatient delete = new ViewPatient(frame);
         frame.setContentPane(delete);
     }//GEN-LAST:event_viewPatientActionPerformed
+
+    private void registerPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerPatientActionPerformed
+        setVisible(false);
+        RegisterPatient register = new RegisterPatient(frame);
+        frame.setContentPane(register);
+    }//GEN-LAST:event_registerPatientActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
