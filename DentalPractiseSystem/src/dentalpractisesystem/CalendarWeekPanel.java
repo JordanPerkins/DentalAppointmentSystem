@@ -425,8 +425,9 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("event triggered");
-        System.out.println(((JButton)evt.getSource()).getClientProperty("test").toString());
+        Appointment a = (Appointment)((JButton)evt.getSource()).getClientProperty("appointment");
+        ViewAppointment next = new ViewAppointment(a);
+        this.frame.setContentPane(next);
     }
     
     private void createAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
@@ -461,12 +462,10 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         cal.set(Calendar.MILLISECOND, 0);
     }
     
-    private JButton createViewButton(Patient patient, java.sql.Date date, Partner partner, java.sql.Time startTime) {
+    private JButton createViewButton(Patient patient, Appointment a) {
         JButton view = new JButton(patient.getFirstName() + " " + patient.getSurname());
         view.setPreferredSize(new Dimension(1,1));
-        view.putClientProperty("date", date);
-        view.putClientProperty("partner", partner);
-        view.putClientProperty("startTime", startTime);
+        view.putClientProperty("appointment", a);
         view.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewAppointmentActionPerformed(evt);
@@ -488,7 +487,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         }
         for (int i=0; i<appointments.length; i++) {
             int minutesA = (int)((appointments[i].getEndTime().getTime())/1000/60 - (appointments[i].getStartTime().getTime())/1000/60);
-            JButton view = createViewButton(appointments[i].getPatient(), date, partner, appointments[i].getStartTime());
+            JButton view = createViewButton(appointments[i].getPatient(), appointments[i]);
             layout.weighty = (100.0/480.0)*minutesA;
             layout.gridy = gridValue;
             gridValue++;
