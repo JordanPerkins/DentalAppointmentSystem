@@ -129,11 +129,11 @@ public class Appointment {
         }
     }
     
-    public static int getCountDayPartner(Date date, Partner partner) {
+    public static int getCountDatePartner(Date date, Partner partner) {
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT COUNT(*) FROM Appointment WHERE date = ? AND partner = ?";
+            String sql = "SELECT COUNT(*) FROM Appointment WHERE appointmentDate = ? AND partner = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
@@ -153,19 +153,21 @@ public class Appointment {
     }
     
     public static Appointment[] fetchDatePartner(Date date, Partner partner) {
-        int size = getCountDayPartner(date, partner);
+        int size = getCountDatePartner(date, partner);
+        System.out.println(size);
         if (size == 0) return new Appointment[0];
         Appointment[] appointments = new Appointment[size];
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT * FROM Appointment NATURAL JOIN Patient WHERE date = ? AND partner = ?";
+            String sql = "SELECT * FROM Appointment NATURAL JOIN Patient WHERE appointmentDate = ? AND partner = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
                 Patient patient = new Patient(res.getInt("patientID"));
+                patient.fetch();
                 Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date);
                 appointments[count] = appointment;
                 count++;
