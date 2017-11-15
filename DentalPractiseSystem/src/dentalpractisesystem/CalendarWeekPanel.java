@@ -427,9 +427,10 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_menuActionPerformed
 
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
+        setVisible(false);
         Appointment a = (Appointment)((JButton)evt.getSource()).getClientProperty("appointment");
-        ViewAppointment next = new ViewAppointment(a);
-        this.frame.setContentPane(next);
+        ViewAppointment view = new ViewAppointment(frame, a, timeOffset);
+        frame.setContentPane(view);
     }
     
     private void createAppointmentActionPerformed(java.awt.event.ActionEvent evt) {

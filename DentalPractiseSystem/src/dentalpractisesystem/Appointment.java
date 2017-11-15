@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -180,6 +182,28 @@ public class Appointment {
             if (stmt != null) try {
                 stmt.close();
             } catch (SQLException ex) {
+            }
+        }
+    }
+    
+    public boolean cancel() {
+        if (!exists()) return false;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "DELETE FROM Appointment WHERE appointmentDate = ? AND partner = ? AND startTime = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setDate(1, date);
+            stmt.setString(2, partner.toString());
+            stmt.setTime(3, startTime);
+            int res = stmt.executeUpdate();
+            return res == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex){
             }
         }
     }
