@@ -434,8 +434,13 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     }
     
     private void createAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("event triggered");
-        System.out.println(((JButton)evt.getSource()).getClientProperty("test").toString());
+        setVisible(false);
+        java.sql.Date date = (java.sql.Date)(((JButton)evt.getSource()).getClientProperty("date"));
+        Partner partner = (Partner)(((JButton)evt.getSource()).getClientProperty("partner"));
+        java.sql.Time timeFrom = (java.sql.Time)(((JButton)evt.getSource()).getClientProperty("timeFrom"));
+        java.sql.Time timeTill = (java.sql.Time)(((JButton)evt.getSource()).getClientProperty("timeTill"));
+        BookAppointment book = new BookAppointment(frame, date, partner, timeFrom, timeTill, timeOffset);
+        frame.setContentPane(book);
     }
     
     private JButton createBookButton(java.sql.Date date, Partner partner, java.sql.Time timeFrom, java.sql.Time timeTill) {
