@@ -267,6 +267,33 @@ public class Patient extends SQLConnector {
             "    FOREIGN KEY (houseNumber, postCode)" +
             "        REFERENCES Address(houseNumber, postCode));");
     }
+    
+    public boolean add() {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "INSERT INTO Patient (title, firstName, surname, dob, phoneNumber, houseNumber, postCode) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            stmt = connect().prepareStatement(sql);
+            stmt.setString(1, getTitle());
+            stmt.setString(2, getFirstName());
+            stmt.setString(3, getSurname());
+            stmt.setDate(4, getDob());
+            stmt.setString(5, getPhoneNumber());
+            stmt.setInt(6, address.getHouseNumber());
+            stmt.setString(7, address.getPostCode());
+            int res = stmt.executeUpdate();
+            if (res == 1) return true;
+            return false;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+            }
+         }
+    }
    
     
     

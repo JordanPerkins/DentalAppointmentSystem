@@ -77,10 +77,10 @@ public class Address extends SQLConnector {
         PreparedStatement stmt = null;
         Address address = null;
         try {
-            String sql = "SELECT * FROM Address WHERE houseNumber = ? AND postCode = ?";
+            String sql = "SELECT * FROM Address WHERE houseNumber = ? AND UPPER(postCode) = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setInt(1, houseNumber);
-            stmt.setString(2, postCode);
+            stmt.setString(2, postCode.toUpperCase());
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
                 address = new Address(houseNumber, postCode, res.getString(3), res.getString(4), res.getString(5));
