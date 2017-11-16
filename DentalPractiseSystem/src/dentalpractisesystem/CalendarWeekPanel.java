@@ -539,7 +539,9 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                     java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
                     if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + dayEnd.getTime() + (long)3.6e+6) > now.getTimeInMillis())) {
                         int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                        int length = (int)((appointments[i].getEndTime().getTime())/1000/60 - dayEnd.getTime()/1000/60);
+                        System.out.println(after);
+                        int length = (int)(dayEnd.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
+                        System.out.println(length);
                         JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime);
                         layout.weighty = (100.0/480.0)*after;
                         layout.gridy = gridValue;
