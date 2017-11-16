@@ -5,6 +5,9 @@
  */
 package dentalpractisesystem;
 
+import java.awt.Point;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 /**
@@ -56,10 +59,10 @@ public class RegisterPatient extends javax.swing.JPanel {
         cityTextField = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jTextField9 = new javax.swing.JTextField();
+        dobDayField = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField10 = new javax.swing.JTextField();
+        dobMonthField = new javax.swing.JTextField();
+        dobYearField = new javax.swing.JTextField();
         foreNameTextField = new javax.swing.JTextField();
         surNameTextField = new javax.swing.JTextField();
         phoneTextField = new javax.swing.JTextField();
@@ -92,7 +95,7 @@ public class RegisterPatient extends javax.swing.JPanel {
         jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                registerActionPerformed(evt);
             }
         });
 
@@ -226,24 +229,54 @@ public class RegisterPatient extends javax.swing.JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Personal Info"));
         jPanel2.setPreferredSize(new java.awt.Dimension(500, 250));
 
-        jTextField9.setText("DD");
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+        dobDayField.setText("DD");
+        dobDayField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dobClickActionPerformed(evt);
+            }
+        });
+        dobDayField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
+                dobDayFieldActionPerformed(evt);
+            }
+        });
+        dobDayField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldKeyTyped(evt);
             }
         });
 
         jLabel14.setBackground(java.awt.Color.white);
         jLabel14.setText("/");
 
-        jTextField1.setText("MM");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        dobMonthField.setText("MM");
+        dobMonthField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dobClickActionPerformed(evt);
+            }
+        });
+        dobMonthField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                dobMonthFieldActionPerformed(evt);
+            }
+        });
+        dobMonthField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldKeyTyped(evt);
             }
         });
 
-        jTextField10.setText("YYYY");
+        dobYearField.setText("YYYY");
+        dobYearField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dobClickActionPerformed(evt);
+            }
+        });
+        dobYearField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldKeyTyped(evt);
+            }
+        });
 
         foreNameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -268,7 +301,7 @@ public class RegisterPatient extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mr.", "Mrs.", "Miss" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mr", "Mrs", "Miss", "Ms" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -323,15 +356,15 @@ public class RegisterPatient extends javax.swing.JPanel {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(phoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(dobDayField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(dobMonthField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(dobYearField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -352,11 +385,11 @@ public class RegisterPatient extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dobDayField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dobMonthField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dobYearField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -414,22 +447,6 @@ public class RegisterPatient extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        String foreName = foreNameTextField.getText();
-        String surName = surNameTextField.getText();
-        String phone = phoneTextField.getText();
-        
-        String houseNo = houseNoTextField.getText();
-        String streetName = streetNameTextField.getText();
-        String districtName = districtTextField.getText();
-        String postcode = postcodeTextField.getText();
-        
-        
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -438,13 +455,13 @@ public class RegisterPatient extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_districtTextFieldActionPerformed
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void dobDayFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dobDayFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_dobDayFieldActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void dobMonthFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dobMonthFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_dobMonthFieldActionPerformed
 
     private void foreNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_foreNameTextFieldActionPerformed
         // TODO add your handling code here:
@@ -461,9 +478,9 @@ public class RegisterPatient extends javax.swing.JPanel {
         String houseNumber = houseNoTextField.getText();
         String postCode = postcodeTextField.getText();
         if (!isInteger(houseNumber)) {
-            System.out.println("Not an house number");
-        } else if (!Pattern.matches("^[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}$", postCode)) {
-            System.out.println("Not a post code");
+            createErrorDialog("House number not valid");
+        } else if (!Pattern.matches("^[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}$", postCode.toUpperCase())) {
+            createErrorDialog("Post code not valid");
         } else {
             address = Address.fetch(Integer.parseInt(houseNumber), postCode); 
             if (address == null) {
@@ -497,12 +514,58 @@ public class RegisterPatient extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_textFieldKeyTyped
 
+    private void dobClickActionPerformed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dobClickActionPerformed
+        javax.swing.JTextField field = (javax.swing.JTextField) evt.getSource(); 
+        field.setText("");
+    }//GEN-LAST:event_dobClickActionPerformed
+
+    private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
+        if (!isInteger(dobDayField.getText())) {
+            createErrorDialog("Invalid day");
+        } else if (!isInteger(dobMonthField.getText())) {
+            createErrorDialog("Invalid month");
+        } else if (!isInteger(dobYearField.getText())) {
+            createErrorDialog("Invalid year");
+        } else {
+            int day = Integer.parseInt(dobDayField.getText());
+            int month = Integer.parseInt(dobMonthField.getText());
+            int year = Integer.parseInt(dobYearField.getText());
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+            if (!(day > 0 && day < 32)) {
+                createErrorDialog("Invalid day");              
+            } else if (!(month > 0 && month < 13)) {
+                createErrorDialog("Invalid month"); 
+            } else if (!(currentYear-year < 100 && year<=currentYear)) {
+                  createErrorDialog("Invalid year");               
+            } else {
+                if (address == null) {
+                    address = new Address(Integer.parseInt(houseNoTextField.getText()), postcodeTextField.getText(),
+                            streetNameTextField.getText(),districtTextField.getText(), cityTextField.getText());
+                    address.add();
+                }
+                Date date = new Date(year-1900, month, day);
+                Patient patient = new Patient(0, (String)jComboBox1.getSelectedItem(), foreNameTextField.getText(),
+                surNameTextField.getText(), date, phoneTextField.getText(), address, null);
+                boolean result = patient.add();
+                if (result) {
+                    setVisible(false);
+                    RegisterPatient register = new RegisterPatient(frame);
+                    frame.setContentPane(register);
+                    createErrorDialog("Registration was successful");
+                } else {
+                    createErrorDialog("An unknown error occured");
+                }
+            }
+        }
+    }//GEN-LAST:event_registerActionPerformed
+
     private void validateTextFields() {
         javax.swing.JTextField[] fields = { cityTextField, districtTextField, foreNameTextField, phoneTextField,
-        streetNameTextField, surNameTextField };
+        streetNameTextField, surNameTextField, dobDayField, dobMonthField, dobYearField };
         boolean valid = true;
         for (int i = 0; i<fields.length; i++) {
-            if (fields[i].getText().equals("")) {
+            if (fields[i].getText().equals("") || fields[i].getText().equals("DD")
+                    || fields[i].getText().equals("MM") || fields[i].getText().equals("YYYY")) {
                 valid = false;
             }
         }
@@ -523,10 +586,23 @@ public class RegisterPatient extends javax.swing.JPanel {
         }
         return true;
     }
+    
+    private void createErrorDialog(String error) {
+        ErrorDialog dialog = new ErrorDialog(frame, true, error);
+        Point point = frame.getLocationOnScreen();
+        double width = (point.getY()+(frame.getWidth()/2))-(dialog.getWidth()/2);
+        double height = (point.getX()+(frame.getHeight()/2))-(dialog.getHeight()/2);
+        point.setLocation(width, height);
+        dialog.setLocation(point);
+        dialog.setVisible(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cityTextField;
     private javax.swing.JTextField districtTextField;
+    private javax.swing.JTextField dobDayField;
+    private javax.swing.JTextField dobMonthField;
+    private javax.swing.JTextField dobYearField;
     private javax.swing.JTextField foreNameTextField;
     private javax.swing.JTextField houseNoTextField;
     private javax.swing.JButton jButton1;
@@ -553,9 +629,6 @@ public class RegisterPatient extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JTextField phoneTextField;
     private javax.swing.JTextField postcodeTextField;
     private javax.swing.JTextField streetNameTextField;
