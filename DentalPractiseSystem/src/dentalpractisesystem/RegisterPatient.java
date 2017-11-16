@@ -5,6 +5,8 @@
  */
 package dentalpractisesystem;
 
+import java.util.regex.Pattern;
+
 /**
  *
  * @author User
@@ -13,6 +15,10 @@ public class RegisterPatient extends javax.swing.JPanel {
     
     // Frame variable
     private javax.swing.JFrame frame;
+    
+    // Address management variables
+    private Address address;
+    private boolean addressChecked = false;
 
     /**
      * Creates new form JPanel
@@ -47,7 +53,8 @@ public class RegisterPatient extends javax.swing.JPanel {
         districtTextField = new javax.swing.JTextField();
         postcodeTextField = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
-        jTextField2 = new javax.swing.JTextField();
+        cityTextField = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jTextField9 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
@@ -82,6 +89,7 @@ public class RegisterPatient extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1024, 576));
 
         jButton1.setText("Register");
+        jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -92,7 +100,7 @@ public class RegisterPatient extends javax.swing.JPanel {
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 250));
 
         jLabel10.setBackground(java.awt.Color.white);
-        jLabel10.setText("Street name");
+        jLabel10.setText("Street Name");
 
         jLabel11.setBackground(java.awt.Color.white);
         jLabel11.setText("District");
@@ -100,15 +108,55 @@ public class RegisterPatient extends javax.swing.JPanel {
         jLabel13.setBackground(java.awt.Color.white);
         jLabel13.setText("Postcode");
 
+        houseNoTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                addressKeyTyped(evt);
+            }
+        });
+
         jLabel9.setBackground(java.awt.Color.white);
         jLabel9.setText("House No.");
+
+        streetNameTextField.setEditable(false);
+        streetNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldKeyTyped(evt);
+            }
+        });
 
         jLabel12.setBackground(java.awt.Color.white);
         jLabel12.setText("City");
 
+        districtTextField.setEditable(false);
         districtTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 districtTextFieldActionPerformed(evt);
+            }
+        });
+        districtTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldKeyTyped(evt);
+            }
+        });
+
+        postcodeTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                addressKeyTyped(evt);
+            }
+        });
+
+        cityTextField.setEditable(false);
+        cityTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldKeyTyped(evt);
+            }
+        });
+
+        jButton3.setText("Check");
+        jButton3.setToolTipText("");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkActionPerformed(evt);
             }
         });
 
@@ -127,7 +175,9 @@ public class RegisterPatient extends javax.swing.JPanel {
                         .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(houseNoTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addComponent(postcodeTextField)))
+                            .addComponent(postcodeTextField))
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
@@ -139,21 +189,24 @@ public class RegisterPatient extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(streetNameTextField)
                             .addComponent(districtTextField)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))))
+                            .addComponent(cityTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(houseNoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(postcodeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(houseNoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(postcodeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -166,8 +219,8 @@ public class RegisterPatient extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 34, Short.MAX_VALUE))
+                    .addComponent(cityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 31, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Personal Info"));
@@ -199,7 +252,19 @@ public class RegisterPatient extends javax.swing.JPanel {
         });
         foreNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                foreNameTextFieldKeyTyped(evt);
+                textFieldKeyTyped(evt);
+            }
+        });
+
+        surNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldKeyTyped(evt);
+            }
+        });
+
+        phoneTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldKeyTyped(evt);
             }
         });
 
@@ -385,23 +450,88 @@ public class RegisterPatient extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_foreNameTextFieldActionPerformed
 
-    private void foreNameTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_foreNameTextFieldKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_foreNameTextFieldKeyTyped
-
     private void mainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuActionPerformed
         setVisible(false);
         SecretaryMenu menu = new SecretaryMenu(frame);
         frame.setContentPane(menu);
     }//GEN-LAST:event_mainMenuActionPerformed
 
+    private void checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkActionPerformed
+        jButton1.setEnabled(false);
+        String houseNumber = houseNoTextField.getText();
+        String postCode = postcodeTextField.getText();
+        if (!isInteger(houseNumber)) {
+            System.out.println("Not an house number");
+        } else if (!Pattern.matches("^[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}$", postCode)) {
+            System.out.println("Not a post code");
+        } else {
+            address = Address.fetch(Integer.parseInt(houseNumber), postCode); 
+            if (address == null) {
+                streetNameTextField.setText("");
+                districtTextField.setText("");
+                cityTextField.setText("");
+                streetNameTextField.setEditable(true);
+                districtTextField.setEditable(true);
+                cityTextField.setEditable(true);
+                addressChecked = true;
+            } else {
+                streetNameTextField.setText(address.getStreetName());
+                districtTextField.setText(address.getDistrict());
+                cityTextField.setText(address.getCity());
+                addressChecked = true;
+                jButton1.setEnabled(true);
+                validateTextFields();
+            }
+        }        
+    }//GEN-LAST:event_checkActionPerformed
+
+    private void addressKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addressKeyTyped
+        jButton1.setEnabled(false);
+        addressChecked = false;
+    }//GEN-LAST:event_addressKeyTyped
+
+    private void textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyTyped
+        validateTextFields();
+        if (addressChecked == false) {
+            jButton1.setEnabled(false);
+        }
+    }//GEN-LAST:event_textFieldKeyTyped
+
+    private void validateTextFields() {
+        javax.swing.JTextField[] fields = { cityTextField, districtTextField, foreNameTextField, phoneTextField,
+        streetNameTextField, surNameTextField };
+        boolean valid = true;
+        for (int i = 0; i<fields.length; i++) {
+            if (fields[i].getText().equals("")) {
+                valid = false;
+            }
+        }
+        if (valid == true) {
+            jButton1.setEnabled(true);
+        } else {
+            jButton1.setEnabled(false);
+        }
+    }
+    
+    public static boolean isInteger(String s) {
+        try { 
+            Integer.parseInt(s); 
+        } catch(NumberFormatException e) { 
+            return false; 
+        } catch(NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField cityTextField;
     private javax.swing.JTextField districtTextField;
     private javax.swing.JTextField foreNameTextField;
     private javax.swing.JTextField houseNoTextField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
@@ -425,7 +555,6 @@ public class RegisterPatient extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField9;
     private javax.swing.JTextField phoneTextField;
     private javax.swing.JTextField postcodeTextField;

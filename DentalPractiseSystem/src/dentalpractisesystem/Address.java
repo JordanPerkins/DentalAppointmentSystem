@@ -73,47 +73,22 @@ public class Address extends SQLConnector {
         this.city = city;
     }
     
-    public boolean exists() {
+    public static Address fetch(int houseNumber, String postCode) {
         PreparedStatement stmt = null;
-        try {
-            int count = 0;
-            String sql = "SELECT COUNT(*) FROM Address WHERE houseNumber = ? AND postCode = ?";
-            stmt = connect().prepareStatement(sql);
-            stmt.setInt(1, getHouseNumber());
-            stmt.setString(2, getPostCode());
-            ResultSet res = stmt.executeQuery();
-            res.next();
-            count = res.getInt(1);
-            if (count == 1) return true;
-            return false;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
-        } finally {
-            if (stmt != null) try {
-                stmt.close();
-            } catch (SQLException ex) {
-            }
-         }
-    }
-    
-    public boolean fetch() {
-        if (!exists()) return false;
-        PreparedStatement stmt = null;
+        Address address = null;
         try {
             String sql = "SELECT * FROM Address WHERE houseNumber = ? AND postCode = ?";
             stmt = connect().prepareStatement(sql);
-            stmt.setInt(1, getHouseNumber());
-            stmt.setString(2, getPostCode());
+            stmt.setInt(1, houseNumber);
+            stmt.setString(2, postCode);
             ResultSet res = stmt.executeQuery();
-            res.next();
-            setStreetName(res.getString(3));
-            setDistrict(res.getString(4));
-            setCity(res.getString(5));
-            return true;
+            while (res.next()) {
+                address = new Address(houseNumber, postCode, res.getString(3), res.getString(4), res.getString(5));
+            }
+            return address;
         } catch (SQLException ex) {
             ex.printStackTrace();
-            return false;
+            return address;
         } finally {
             if (stmt != null) try {
                 stmt.close();
@@ -123,7 +98,6 @@ public class Address extends SQLConnector {
     }
     
     public boolean add() {
-        if (exists()) return false;
         PreparedStatement stmt = null;
         try {
             String sql = "INSERT INTO Address VALUES (?, ?, ?, ?, ?)";
