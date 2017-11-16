@@ -188,7 +188,6 @@ public class Patient extends SQLConnector {
     
     public static Patient[] fetchAll() {
         int size = getCount();
-        System.out.println(size);
         if (size == 0) return new Patient[0];
         Patient[] list = new Patient[size];
         PreparedStatement stmt = null;

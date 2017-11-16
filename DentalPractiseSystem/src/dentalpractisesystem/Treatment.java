@@ -5,23 +5,20 @@
  */
 package dentalpractisesystem;
 
+import static dentalpractisesystem.SQLConnector.connect;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 
 /**
  *
  * @author jordan
  */
-public class Plan extends SQLConnector {
+public class Treatment extends SQLConnector {
     
     // Instance variables
     private String name;
     private double cost;
-    private int repairs;
-    private int checkups;
-    private int visits;
 
     public String getName() {
         return name;
@@ -38,53 +35,12 @@ public class Plan extends SQLConnector {
     public void setCost(double cost) {
         this.cost = cost;
     }
-
-    public int getRepairs() {
-        return repairs;
-    }
-
-    public void setRepairs(int repairs) {
-        this.repairs = repairs;
-    }
-
-    public int getCheckups() {
-        return checkups;
-    }
-
-    public void setCheckups(int checkups) {
-        this.checkups = checkups;
-    }
-
-    public Plan(String name, double cost, int repairs, int checkups, int visits) {
-        this.name = name;
-        this.cost = cost;
-        this.repairs = repairs;
-        this.checkups = checkups;
-        this.visits = visits;
-    }
-
-    public int getVisits() {
-        return visits;
-    }
-
-    public void setVisits(int visits) {
-        this.visits = visits;
-    }
-    
-    public static void createTable() {
-        update("CREATE TABLE IF NOT EXISTS Plan(" +
-            "    name VARCHAR(50) NOT NULL PRIMARY KEY," +
-            "    price REAL(4,2)," +
-            "    repairs INTEGER," +
-            "    checkups INTEGER," +
-            "    visits INTEGER);");
-    }
     
     public static int getCount() {
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT COUNT(*) FROM Plan";
+            String sql = "SELECT COUNT(*) FROM Treatment";
             stmt = connect().prepareStatement(sql);
             ResultSet res = stmt.executeQuery();
             res.next();
@@ -101,26 +57,25 @@ public class Plan extends SQLConnector {
         }    
     }
  
-   public static Plan[] fetchAll() {
+   public static Treatment[] fetchAll() {
         int size = getCount();
-        if (size == 0) return new Plan[0];
-        Plan[] list = new Plan[size];
+        if (size == 0) return new Treatment[0];
+        Treatment[] list = new Treatment[size];
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT * FROM Plan";
+            String sql = "SELECT * FROM Treatment";
             stmt = connect().prepareStatement(sql);
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
-                Plan plan = new Plan(res.getString(1), res.getDouble(2), res.getInt(3),
-                        res.getInt(4), res.getInt(5));
-                list[count] = plan;
+                Treatment treatment = new Treatment(res.getString(1), res.getDouble(2));
+                list[count] = treatment;
                 count++;
             }
             return list;
         } catch (SQLException ex) {
             ex.printStackTrace();
-            return new Plan[0];
+            return new Treatment[0];
         } finally {
             if (stmt != null) try {
                 stmt.close();
@@ -129,11 +84,20 @@ public class Plan extends SQLConnector {
         }
            
     }
-   
-   public String toString() {
-       return name + " - £" + cost;
-   }
+
+    public Treatment(String name, double cost) {
+        this.name = name;
+        this.cost = cost;
+    }
     
+    public static void createTable() {
+        update("CREATE TABLE IF NOT EXISTS Treatment(" +
+            "    name VARCHAR(30) NOT NULL PRIMARY KEY," +
+            "    cost DOUBLE(4,2));");
+    }
     
+    public String toString() {
+        return name + " - £" + cost;
+    }
     
 }

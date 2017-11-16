@@ -112,6 +112,11 @@ public class PartnerSelect extends javax.swing.JPanel {
         );
 
         jButton1.setText("Select");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPartnerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -198,6 +203,12 @@ public class PartnerSelect extends javax.swing.JPanel {
         Menu menu = new Menu(frame);
         frame.setContentPane(menu);
     }//GEN-LAST:event_selectViewActionPerformed
+
+    private void selectPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPartnerActionPerformed
+        setVisible(false);
+        AddTreatment treatment = new AddTreatment(frame, null);
+        frame.setContentPane(treatment);
+    }//GEN-LAST:event_selectPartnerActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
