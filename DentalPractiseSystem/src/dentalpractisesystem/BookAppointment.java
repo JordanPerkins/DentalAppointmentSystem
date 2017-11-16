@@ -5,6 +5,7 @@
  */
 package dentalpractisesystem;
 
+import java.awt.Point;
 import javax.swing.JFrame;
 
 /**
@@ -22,6 +23,7 @@ public class BookAppointment extends javax.swing.JPanel {
     
     private int timeOffset;
     
+    private Patient[] patientList;
     private java.sql.Time[] startTimes;
     private java.sql.Time[] endTimes;
     
@@ -56,6 +58,7 @@ public class BookAppointment extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         patientComboBox = new javax.swing.JComboBox<>();
+        blankAppointment = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -81,21 +84,40 @@ public class BookAppointment extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Patient Selection"));
 
+        patientComboBox.setActionCommand("");
+        patientComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                patientComboBoxActionPerformed(evt);
+            }
+        });
+
+        blankAppointment.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        blankAppointment.setText("Blank Appointment");
+        blankAppointment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blankAppointmentActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(230, 230, 230)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(patientComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(249, Short.MAX_VALUE))
+                .addGap(81, 81, 81)
+                .addComponent(blankAppointment)
+                .addGap(111, 111, 111))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(patientComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(patientComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(blankAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Information"));
@@ -114,6 +136,12 @@ public class BookAppointment extends javax.swing.JPanel {
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jLabel6.setText("Start Time:");
+
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jLabel7.setText("End Time:");
@@ -144,7 +172,7 @@ public class BookAppointment extends javax.swing.JPanel {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(353, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,12 +259,51 @@ public class BookAppointment extends javax.swing.JPanel {
     }//GEN-LAST:event_calendarActionPerformed
 
     private void bookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookActionPerformed
-        // TODO add your handling code here:
+        Patient p;
+        if (patientComboBox.isEnabled()) {
+            p = this.patientList[patientComboBox.getSelectedIndex()];
+        } else
+            p = null;
+        java.sql.Time sT = this.startTimes[jComboBox1.getSelectedIndex()];
+        java.sql.Time eT = this.endTimes[jComboBox2.getSelectedIndex()];
+        boolean sucsess = (new Appointment(p, this.partner, sT, eT, this.date)).add();
+        if (sucsess) {
+            setVisible(false);
+            CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, partner);
+            frame.setContentPane(calendar);
+        } else {
+            BookingFailed failure = new BookingFailed(frame, true);
+            Point point = frame.getLocationOnScreen();
+            double width = (point.getY()+(frame.getWidth()/2))-(failure.getWidth()/2);
+            double height = (point.getX()+(frame.getHeight()/2))-(failure.getHeight()/2);
+            point.setLocation(width, height);
+            failure.setLocation(point);
+            failure.setVisible(true);
+        }
     }//GEN-LAST:event_bookActionPerformed
+
+    private void patientComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientComboBoxActionPerformed
+
+    }//GEN-LAST:event_patientComboBoxActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        int index = jComboBox1.getSelectedIndex();
+        if (index != -1) {
+            updateEndTimes(startTimes[index]);
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void blankAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blankAppointmentActionPerformed
+        if(patientComboBox.isEnabled())
+            patientComboBox.setEnabled(false);
+        else
+            patientComboBox.setEnabled(true);
+    }//GEN-LAST:event_blankAppointmentActionPerformed
 
     public void updatePatientDropdown() {
         patientComboBox.removeAllItems();
         Patient[] lis = Patient.fetchAll();
+        this.patientList = lis;
         for (int i = 0; i<lis.length; i++) {
             patientComboBox.addItem(lis[i].toString());
         }
@@ -246,9 +313,10 @@ public class BookAppointment extends javax.swing.JPanel {
         java.sql.Time baseTime = timeFrom;
         if ((timeFrom.getTime()/1000/60)%10 != 0) {
             int mins = (int)((timeFrom.getTime()/1000/60)%10);
-            long millis = mins*60*1000;
+            long millis = (10-mins)*60*1000;
             baseTime = new java.sql.Time(timeFrom.getTime() + millis);
         }
+        baseTime.setSeconds(0);
         int count = 0;
         java.sql.Time baseTimeCount = new java.sql.Time(baseTime.getTime());
         while (baseTimeCount.getTime() < timeTill.getTime()) {
@@ -269,12 +337,13 @@ public class BookAppointment extends javax.swing.JPanel {
     }
     
     public void updateEndTimes(java.sql.Time selectedTime) {
+        jComboBox2.removeAllItems();
         int count = 0;
         for (int i=0; i<startTimes.length; i++) {
             if (startTimes[i].getTime() > selectedTime.getTime())
                 count++;
         }
-        System.out.println(count);
+        count++;
         int timesCount = 0;   
         java.sql.Time[] localEndTime = new java.sql.Time[count];
         for (int i=0; i<startTimes.length; i++) {
@@ -283,6 +352,8 @@ public class BookAppointment extends javax.swing.JPanel {
                 timesCount++;
             }
         }
+        localEndTime[timesCount] = new java.sql.Time(startTimes[startTimes.length-1].getTime() + (10*1000*60));
+        timesCount++;
         endTimes = localEndTime;
         for (int i=0; i<endTimes.length; i++) {
             jComboBox2.addItem(endTimes[i].toString());
@@ -292,6 +363,7 @@ public class BookAppointment extends javax.swing.JPanel {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox blankAppointment;
     private javax.swing.JButton book;
     private javax.swing.JButton calendar;
     private javax.swing.JComboBox<String> jComboBox1;

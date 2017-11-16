@@ -11,31 +11,23 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.KeyStroke;
+
 
 /**
  *
  * @author James-PowerPC
  */
-public class ConfirmAppointCancel extends javax.swing.JDialog {
-    
-    public static final int RET_CANCEL = 0;
-    public static final int RET_OK = 1;
-    
-    private static Appointment appointment;
-    private JFrame frame;
-    private static int timeOffset;
-    
-    private int returnStatus = RET_CANCEL;
+public class BookingFailed extends javax.swing.JDialog {
 
+    public static final int RETURN_STATUS = 0;
+   
+    
     /**
-     * Creates new form ConfirmAppointCancel
+     * Creates new form bookingFailed
      */
-    public ConfirmAppointCancel(java.awt.Frame parent, boolean modal, Appointment a, int tO) {
+    public BookingFailed(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.timeOffset = tO;
-        this.appointment = a;
         initComponents();
         
         String cancelName = "cancel";
@@ -44,13 +36,9 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
         ActionMap actionMap = getRootPane().getActionMap();
         actionMap.put(cancelName, new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                doClose(RET_CANCEL);
+                doClose(RETURN_STATUS);
             }
         });
-    }
-    
-    public int getReturnStatus() {
-        return returnStatus;
     }
 
     /**
@@ -63,24 +51,17 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        confirm = new javax.swing.JButton();
-        cancel = new javax.swing.JButton();
+        okay = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Are you sure you want to cancel this appointment?");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel1.setText("Your attempted booking has failed, please try again.");
 
-        confirm.setText("Confirm");
-        confirm.addActionListener(new java.awt.event.ActionListener() {
+        okay.setText("Ok");
+        okay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmActionPerformed(evt);
-            }
-        });
-
-        cancel.setText("Cancel");
-        cancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelActionPerformed(evt);
+                okayActionPerformed(evt);
             }
         });
 
@@ -89,51 +70,41 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(46, 46, 46))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(188, 188, 188)
+                .addComponent(okay, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addGap(40, 40, 40)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(confirm)
-                    .addComponent(cancel))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(okay)
+                .addGap(24, 24, 24))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
-        appointment.cancel();
-        doClose(RET_OK);
-    }//GEN-LAST:event_confirmActionPerformed
-
-    private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
-        doClose(RET_CANCEL);
-    }//GEN-LAST:event_cancelActionPerformed
-
     private void closeDialog(java.awt.event.WindowEvent evt) {                             
-        doClose(RET_CANCEL);
+        doClose(RETURN_STATUS);
     }   
     
     private void doClose(int retStatus) {
-        retStatus = retStatus;
+
         setVisible(false);
         dispose();
     }
     
+    private void okayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okayActionPerformed
+        doClose(RETURN_STATUS);
+    }//GEN-LAST:event_okayActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -151,20 +122,21 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConfirmAppointCancel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BookingFailed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConfirmAppointCancel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BookingFailed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConfirmAppointCancel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BookingFailed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConfirmAppointCancel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BookingFailed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ConfirmAppointCancel dialog = new ConfirmAppointCancel(new javax.swing.JFrame(), true, appointment, timeOffset);
+                BookingFailed dialog = new BookingFailed(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -177,8 +149,7 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancel;
-    private javax.swing.JButton confirm;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton okay;
     // End of variables declaration//GEN-END:variables
 }
