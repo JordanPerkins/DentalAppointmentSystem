@@ -46,7 +46,6 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
      */
     public CalendarWeekPanel(javax.swing.JFrame frame, int timeO, Partner partner) {
         this.frame = frame;
-        System.out.println("Start " + dayStart.toString());
         this.timeOffset = timeO;
         this.partner = partner;
         
@@ -466,8 +465,6 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                     int length = (int)(dayEnd.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
                     if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + dayEnd.getTime() + (long)3.6e+6) > now.getTimeInMillis()) && length>10) {
                         int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                        System.out.println(after);
-                        System.out.println(length);
                         JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime);
                         layout.weighty = (100.0/480.0)*after;
                         layout.gridy = gridValue;

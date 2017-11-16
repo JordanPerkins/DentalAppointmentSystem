@@ -192,7 +192,6 @@ public class Appointment {
     
     public static Appointment[] fetchDatePartner(Date date, Partner partner) {
         int size = getCountDatePartner(date, partner);
-        System.out.println(size);
         if (size == 0) return new Appointment[0];
         Appointment[] appointments = new Appointment[size];
         PreparedStatement stmt = null;
@@ -210,6 +209,64 @@ public class Appointment {
                     patient.fetch();
                 } else
                     patient = null;
+                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date);
+                appointments[count] = appointment;
+                count++;
+            }
+            return appointments;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new Appointment[0];
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+            }
+        }
+    }
+    
+    public static int getCountDatePartnerBetweenTimes(Date date, Partner partner, Time t1, Time t2) {
+       PreparedStatement stmt = null;
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM Appointment WHERE appointmentDate = ? AND partner = ? AND startTime >= ? AND startTime < ? AND patientID != 0";
+            stmt = connect().prepareStatement(sql);
+            stmt.setDate(1, date);
+            stmt.setString(2, partner.toString());
+            stmt.setTime(3, t1);
+            stmt.setTime(4, t2);
+            ResultSet res = stmt.executeQuery();
+            res.next();
+            count = res.getInt(1);
+            return count;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+            }
+        }  
+    }
+    
+    public static Appointment[] fetchDatePartnerBetweenTimes(Date date, Partner partner, Time t1, Time t2) {
+        int size = getCountDatePartnerBetweenTimes(date, partner, t1, t2);
+        if (size == 0) return new Appointment[0];
+        Appointment[] appointments = new Appointment[size];
+        PreparedStatement stmt = null;
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM Appointment WHERE appointmentDate = ? AND partner = ? AND startTime >= ? AND startTime < ? AND patientID != 0";
+            stmt = connect().prepareStatement(sql);
+            stmt.setDate(1, date);
+            stmt.setString(2, partner.toString());
+            stmt.setTime(3, t1);
+            stmt.setTime(4, t2);
+            ResultSet res = stmt.executeQuery();
+            while (res.next()) {
+                Patient patient = new Patient(res.getInt("patientID"));
+                patient.fetch();
                 Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date);
                 appointments[count] = appointment;
                 count++;
