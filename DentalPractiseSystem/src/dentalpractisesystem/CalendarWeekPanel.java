@@ -499,9 +499,9 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             CalendarWeekPanel.midnight(midnight);
             now.add(Calendar.MINUTE, 1);
             java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-            if (((midnight.getTimeInMillis() + (dayStart.getTime()/1000/60)) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[0].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis())) {
+            int length = (int)((appointments[0].getStartTime().getTime())/1000/60 - dayStart.getTime()/1000/60);
+            if (((midnight.getTimeInMillis() + (dayStart.getTime()/1000/60)) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[0].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis()) && length > 10) {
                 int after = (int)(nowTime.getTime()/1000/60 - (dayStart.getTime())/1000/60);
-                int length = (int)((appointments[0].getStartTime().getTime())/1000/60 - dayStart.getTime()/1000/60);
                 JButton half1 = createBookButton(date, this.partner, dayStart, nowTime);
                 layout.weighty = (100.0/480.0)*after;
                 layout.gridy = gridValue;
@@ -537,10 +537,10 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                     CalendarWeekPanel.midnight(midnight);
                     now.add(Calendar.MINUTE, 1);
                     java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-                    if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + dayEnd.getTime() + (long)3.6e+6) > now.getTimeInMillis())) {
+                    int length = (int)(dayEnd.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
+                    if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + dayEnd.getTime() + (long)3.6e+6) > now.getTimeInMillis()) && length>10) {
                         int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
                         System.out.println(after);
-                        int length = (int)(dayEnd.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
                         System.out.println(length);
                         JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime);
                         layout.weighty = (100.0/480.0)*after;
@@ -570,9 +570,9 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                 CalendarWeekPanel.midnight(midnight);
                 now.add(Calendar.MINUTE, 1);
                 java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-                if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[i+1].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis())) {
+                int length = (int)((appointments[i].getEndTime().getTime())/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
+                if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[i+1].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis()) && length > 10) {
                     int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                    int length = (int)((appointments[i].getEndTime().getTime())/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
                     JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime);
                     layout.weighty = (100.0/480.0)*after;
                     layout.gridy = gridValue;
