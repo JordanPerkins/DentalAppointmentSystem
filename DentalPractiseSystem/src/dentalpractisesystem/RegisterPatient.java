@@ -526,6 +526,12 @@ public class RegisterPatient extends javax.swing.JPanel {
             createErrorDialog("Invalid month");
         } else if (!isInteger(dobYearField.getText())) {
             createErrorDialog("Invalid year");
+        } else if (foreNameTextField.getText().length() > 15) {
+            createErrorDialog("First Name too long");
+        } else if (surNameTextField.getText().length() > 25) {
+            createErrorDialog("Surname too long");
+        } else if (phoneTextField.getText().length() > 17) {
+            createErrorDialog("Phone number too long");     
         } else {
             int day = Integer.parseInt(dobDayField.getText());
             int month = Integer.parseInt(dobMonthField.getText());
