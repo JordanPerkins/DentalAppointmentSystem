@@ -10,5 +10,5 @@ package dentalpractisesystem;
  * @author James-PowerPC
  */
 public enum Partner {
-    HYGENIST, DENTIST
+    HYGIENIST, DENTIST
 }

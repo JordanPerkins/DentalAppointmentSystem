@@ -76,6 +76,42 @@ public class Appointment {
         this.date = d;
     }
     
+    public boolean add() {
+        PreparedStatement stmt = null;
+        try {
+            if (patient == null) {
+                String sql = "INSERT INTO Appointment (partner, startTime, endTime, appointmentDate) VALUES (?, ?, ?, ?)";
+                stmt = connect().prepareStatement(sql);
+                stmt.setString(1, getPartner().toString());
+                stmt.setTime(2, getStartTime());
+                stmt.setTime(3, getEndTime());
+                stmt.setDate(4, getDate());
+                int res = stmt.executeUpdate();
+                if (res == 1) return true;
+                return false;
+            } else {
+                String sql = "INSERT INTO Appointment VALUES (?, ?, ?, ?, ?)";
+                stmt = connect().prepareStatement(sql);
+                stmt.setInt(1, getPatient().getPatientID());
+                stmt.setString(2, getPartner().toString());
+                stmt.setTime(3, getStartTime());
+                stmt.setTime(4, getEndTime());
+                stmt.setDate(5, getDate());
+                int res = stmt.executeUpdate();
+                if (res == 1) return true;
+                return false;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+            }
+         }
+    }
+    
     public boolean exists() {
         PreparedStatement stmt = null;
         try {
@@ -162,14 +198,18 @@ public class Appointment {
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT * FROM Appointment NATURAL JOIN Patient WHERE appointmentDate = ? AND partner = ?";
+            String sql = "SELECT * FROM Appointment WHERE appointmentDate = ? AND partner = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
-                Patient patient = new Patient(res.getInt("patientID"));
-                patient.fetch();
+                Patient patient;
+                if (res.getInt("patientID") != 0) {
+                    patient = new Patient(res.getInt("patientID"));
+                    patient.fetch();
+                } else
+                    patient = null;
                 Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date);
                 appointments[count] = appointment;
                 count++;
