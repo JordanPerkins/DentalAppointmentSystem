@@ -330,6 +330,7 @@ public class ViewAppointment extends javax.swing.JPanel {
         point.setLocation(width, height);
         appoint.setLocation(point);
         appoint.setVisible(true);
+        System.out.println(appoint.getReturnStatus());
         if (appoint.getReturnStatus() == 1) {
             setVisible(false);
             CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, appointment.getPartner());

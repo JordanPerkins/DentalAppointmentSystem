@@ -129,7 +129,7 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
     }   
     
     private void doClose(int retStatus) {
-        retStatus = retStatus;
+        this.returnStatus = retStatus;
         setVisible(false);
         dispose();
     }
