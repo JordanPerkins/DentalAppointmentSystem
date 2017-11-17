@@ -44,6 +44,15 @@ public class ViewAppointment extends javax.swing.JPanel {
         int visits = plan.getPlan().getVisits()-plan.getUsedVisits();
         int repairs = plan.getPlan().getRepairs()-plan.getUsedRepairs();
         int checkups = plan.getPlan().getCheckups()-plan.getUsedCheckups();
+        if (visits == 0) {
+            visitButton.setEnabled(false);   
+        }
+        if(repairs == 0) {
+            repairButton.setEnabled(false);   
+        }
+        if (checkups == 0) {
+            checkupButton.setEnabled(false);    
+        }
         visitRemaining.setText(visits + " Remaining");
         repairRemaining.setText(repairs + " Remaining");
         checkupRemaining.setText(checkups + " Remaining");
@@ -281,11 +290,26 @@ public class ViewAppointment extends javax.swing.JPanel {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Treatments & Healthcare Plan"));
 
         checkupButton.setText("Use Checkup");
+        checkupButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                useCheckupActionPerformed(evt);
+            }
+        });
 
         visitButton.setText("Use Visit");
+        visitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                useVisitActionPerformed(evt);
+            }
+        });
 
         repairButton.setText("Use Repair");
         repairButton.setActionCommand("");
+        repairButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                useRepairActionPerformed(evt);
+            }
+        });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -482,6 +506,21 @@ public class ViewAppointment extends javax.swing.JPanel {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void useVisitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useVisitActionPerformed
+        plan.setUsedVisits(plan.getUsedVisits()+1);
+        updateRemaining();
+    }//GEN-LAST:event_useVisitActionPerformed
+
+    private void useRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useRepairActionPerformed
+        plan.setUsedRepairs(plan.getUsedRepairs()+1);
+        updateRemaining();
+    }//GEN-LAST:event_useRepairActionPerformed
+
+    private void useCheckupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useCheckupActionPerformed
+        plan.setUsedCheckups(plan.getUsedCheckups()+1);
+        updateRemaining();
+    }//GEN-LAST:event_useCheckupActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
