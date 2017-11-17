@@ -18,6 +18,7 @@ public class ViewAppointment extends javax.swing.JPanel {
     
     private JFrame frame;
     private int timeOffset;
+    private PatientPlan plan;
     
     /**
      * Creates new form ViewAppointment
@@ -27,6 +28,22 @@ public class ViewAppointment extends javax.swing.JPanel {
         this.frame = frame;
         timeOffset = tO;
         initComponents();
+        plan = appointment.getPatient().getPatientPlan();
+        if (plan != null) {
+            planLabel.setText(plan.getPlan().toString());
+            updateRemaining();
+        } else {
+            planLabel.setText("None");
+        }
+    }
+    
+    public void updateRemaining() {
+        int visits = plan.getPlan().getVisits()-plan.getUsedVisits();
+        int repairs = plan.getPlan().getRepairs()-plan.getUsedRepairs();
+        int checkups = plan.getPlan().getCheckups()-plan.getUsedCheckups();
+        visitRemaining.setText(visits + " Remaining");
+        repairRemaining.setText(repairs + " Remaining");
+        checkupRemaining.setText(checkups + " Remaining");
     }
 
     /**
@@ -73,10 +90,10 @@ public class ViewAppointment extends javax.swing.JPanel {
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton5 = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+        planLabel = new javax.swing.JLabel();
+        visitRemaining = new javax.swing.JLabel();
+        repairRemaining = new javax.swing.JLabel();
+        checkupRemaining = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -278,16 +295,11 @@ public class ViewAppointment extends javax.swing.JPanel {
 
         jLabel21.setText("Subscribed Plan:");
 
-        jLabel22.setText("jLabel22");
+        visitRemaining.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
 
-        jLabel23.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        jLabel23.setText("0 Remaining");
+        repairRemaining.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
 
-        jLabel24.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        jLabel24.setText("0 Remaining");
-
-        jLabel25.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        jLabel25.setText("0 Remaining");
+        checkupRemaining.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
 
         jLabel26.setText("Current Total Cost:");
 
@@ -305,7 +317,7 @@ public class ViewAppointment extends javax.swing.JPanel {
                         .addGap(23, 23, 23)
                         .addComponent(jLabel21)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(planLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -315,11 +327,11 @@ public class ViewAppointment extends javax.swing.JPanel {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addComponent(jLabel23)
+                        .addComponent(visitRemaining)
                         .addGap(53, 53, 53)
-                        .addComponent(jLabel24)
+                        .addComponent(repairRemaining)
                         .addGap(56, 56, 56)
-                        .addComponent(jLabel25)))
+                        .addComponent(checkupRemaining)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -352,7 +364,7 @@ public class ViewAppointment extends javax.swing.JPanel {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel21)
-                            .addComponent(jLabel22))
+                            .addComponent(planLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -360,9 +372,9 @@ public class ViewAppointment extends javax.swing.JPanel {
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel25))))
+                            .addComponent(visitRemaining)
+                            .addComponent(repairRemaining)
+                            .addComponent(checkupRemaining))))
                 .addGap(16, 16, 16))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addComponent(jSeparator1)
@@ -472,6 +484,7 @@ public class ViewAppointment extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calendar;
     private javax.swing.JButton cancel;
+    private javax.swing.JLabel checkupRemaining;
     private javax.swing.JButton complete;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -493,10 +506,6 @@ public class ViewAppointment extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
@@ -513,6 +522,9 @@ public class ViewAppointment extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel planLabel;
     private javax.swing.JButton print;
+    private javax.swing.JLabel repairRemaining;
+    private javax.swing.JLabel visitRemaining;
     // End of variables declaration//GEN-END:variables
 }

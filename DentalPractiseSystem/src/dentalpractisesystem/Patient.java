@@ -141,11 +141,20 @@ public class Patient extends SQLConnector {
         if (!exists()) return false;
         PreparedStatement stmt = null;
         try {
-            String sql = "SELECT * FROM Patient NATURAL JOIN Address WHERE patientID = ?";
+            String sql = "SELECT * FROM Patient NATURAL JOIN Address LEFT JOIN PatientPlan ON Patient.patientID"
+                    + " = PatientPlan.patientID LEFT JOIN Plan ON PatientPlan.name = Plan.name WHERE Patient.patientID = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setInt(1, getPatientID());
             ResultSet res = stmt.executeQuery();
             res.next();
+            int planPatientID = res.getInt(12);
+            PatientPlan patientPlan = null;
+            if (!res.wasNull()) {
+                Plan plan = new Plan(res.getString(18), res.getDouble(19),
+                    res.getInt(20), res.getInt(21), res.getInt(22));
+                patientPlan = new PatientPlan(planPatientID, plan, res.getDate(14),
+                            res.getInt(15), res.getInt(16), res.getInt(17));
+            }
             setTitle(res.getString(4));
             setFirstName(res.getString(5));
             setSurname(res.getString(6));
@@ -153,6 +162,7 @@ public class Patient extends SQLConnector {
             setPhoneNumber(res.getString(8));
             setAddress(new Address(res.getInt(1), res.getString(2),
                     res.getString(9), res.getString(10), res.getString(11)));
+            setPatientPlan(patientPlan);
             return true;
         } catch (SQLException ex) {
             ex.printStackTrace();
