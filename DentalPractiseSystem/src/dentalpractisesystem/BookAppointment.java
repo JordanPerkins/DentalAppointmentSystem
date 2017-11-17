@@ -68,6 +68,8 @@ public class BookAppointment extends javax.swing.JPanel {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
+        treatmentCourseCheckbox = new javax.swing.JCheckBox();
+        paymentRequiredCheckbox = new javax.swing.JCheckBox();
         book = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
@@ -104,7 +106,7 @@ public class BookAppointment extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(102, Short.MAX_VALUE)
                 .addComponent(patientComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(81, 81, 81)
                 .addComponent(blankAppointment)
@@ -146,6 +148,20 @@ public class BookAppointment extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jLabel7.setText("End Time:");
 
+        treatmentCourseCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        treatmentCourseCheckbox.setText("Course of Treatment");
+        treatmentCourseCheckbox.setToolTipText("");
+        treatmentCourseCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                treatmentCourseActionPerformed(evt);
+            }
+        });
+
+        paymentRequiredCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        paymentRequiredCheckbox.setSelected(true);
+        paymentRequiredCheckbox.setText("Payment Required");
+        paymentRequiredCheckbox.setEnabled(false);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -172,7 +188,11 @@ public class BookAppointment extends javax.swing.JPanel {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(353, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(treatmentCourseCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                    .addComponent(paymentRequiredCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(63, 63, 63))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,13 +202,20 @@ public class BookAppointment extends javax.swing.JPanel {
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox2)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBox1)
+                        .addComponent(treatmentCourseCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBox2)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(paymentRequiredCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -248,7 +275,7 @@ public class BookAppointment extends javax.swing.JPanel {
                     .addComponent(calendar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -264,9 +291,19 @@ public class BookAppointment extends javax.swing.JPanel {
             p = this.patientList[patientComboBox.getSelectedIndex()];
         } else
             p = null;
+        int paymentStatus;
+        if (treatmentCourseCheckbox.isSelected()) {
+            if (paymentRequiredCheckbox.isSelected()) {
+                paymentStatus = 3;
+            } else {
+                paymentStatus = 1;
+            }
+        } else {
+            paymentStatus = 0;
+        }
         java.sql.Time sT = this.startTimes[jComboBox1.getSelectedIndex()];
         java.sql.Time eT = this.endTimes[jComboBox2.getSelectedIndex()];
-        boolean success = (new Appointment(p, this.partner, sT, eT, this.date)).add();
+        boolean success = (new Appointment(p, this.partner, sT, eT, this.date, paymentStatus)).add();
         if (success) {
             setVisible(false);
             CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, partner);
@@ -299,6 +336,14 @@ public class BookAppointment extends javax.swing.JPanel {
         else
             patientComboBox.setEnabled(true);
     }//GEN-LAST:event_blankAppointmentActionPerformed
+
+    private void treatmentCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_treatmentCourseActionPerformed
+        if (treatmentCourseCheckbox.isSelected()) {
+            paymentRequiredCheckbox.setEnabled(true);
+        } else {
+            paymentRequiredCheckbox.setEnabled(false);
+        }
+    }//GEN-LAST:event_treatmentCourseActionPerformed
 
     public void updatePatientDropdown() {
         patientComboBox.removeAllItems();
@@ -379,5 +424,7 @@ public class BookAppointment extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JComboBox<String> patientComboBox;
+    private javax.swing.JCheckBox paymentRequiredCheckbox;
+    private javax.swing.JCheckBox treatmentCourseCheckbox;
     // End of variables declaration//GEN-END:variables
 }
