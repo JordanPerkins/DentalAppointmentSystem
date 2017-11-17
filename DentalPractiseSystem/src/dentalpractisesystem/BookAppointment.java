@@ -340,8 +340,10 @@ public class BookAppointment extends javax.swing.JPanel {
     private void treatmentCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_treatmentCourseActionPerformed
         if (treatmentCourseCheckbox.isSelected()) {
             paymentRequiredCheckbox.setEnabled(true);
+            paymentRequiredCheckbox.setSelected(false);
         } else {
             paymentRequiredCheckbox.setEnabled(false);
+            paymentRequiredCheckbox.setSelected(true);
         }
     }//GEN-LAST:event_treatmentCourseActionPerformed
 

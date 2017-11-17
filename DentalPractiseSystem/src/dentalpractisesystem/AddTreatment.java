@@ -236,12 +236,11 @@ public class AddTreatment extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-        if (selected.size() > 0) {
-            for (int i = 0; i<selected.size(); i++) {
-                Treatment treatment = (Treatment) selected.get(i);
-                new VisitTreatment(appointment, treatment).add();
-            }
+        for (int i = 0; i<selected.size(); i++) {
+            Treatment treatment = (Treatment) selected.get(i);
+            new VisitTreatment(appointment, treatment).add();
         }
+        appointment.setStatus(1);
     }//GEN-LAST:event_saveActionPerformed
 
     private boolean existsInList(Treatment treatment) {

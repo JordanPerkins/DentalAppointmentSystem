@@ -34,8 +34,27 @@ public class Appointment {
         return status;
     }
 
-    public void setStatus(int status) {
+    public boolean setStatus(int status) {
         this.status = status;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "UPDATE Appointment SET status = ? WHERE appointmentDate = ? AND partner = ? AND startTime = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, status);
+            stmt.setDate(2, date);
+            stmt.setString(3, partner.toString());
+            stmt.setTime(4, startTime);
+            int res = stmt.executeUpdate();
+            return res == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex){
+            }
+        }    
     }
 
     public int getPaymentStatus() {
@@ -159,7 +178,7 @@ public class Appointment {
         }
     }
     
-    public boolean fetch() {
+    /*public boolean fetch() {
         if (!exists()) return false;
         PreparedStatement stmt = null;
         try {
@@ -186,7 +205,7 @@ public class Appointment {
                 
             }
         }
-    }
+    }*/
     
     public static int getCountDatePartner(Date date, Partner partner) {
         PreparedStatement stmt = null;
