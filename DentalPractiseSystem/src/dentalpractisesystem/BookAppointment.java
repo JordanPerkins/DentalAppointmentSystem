@@ -272,7 +272,7 @@ public class BookAppointment extends javax.swing.JPanel {
             CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, partner);
             frame.setContentPane(calendar);
         } else {
-            BookingFailed failure = new BookingFailed(frame, true);
+            ErrorDialog failure = new ErrorDialog(frame, true, "Booking failed. Unknown error occured");
             Point point = frame.getLocationOnScreen();
             double width = (point.getY()+(frame.getWidth()/2))-(failure.getWidth()/2);
             double height = (point.getX()+(frame.getHeight()/2))-(failure.getHeight()/2);
