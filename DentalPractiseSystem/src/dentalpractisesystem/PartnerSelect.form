@@ -166,15 +166,12 @@
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
+                <StringItem index="0" value="Dentist"/>
+                <StringItem index="1" value="Hygienist"/>
               </StringArray>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[200, 400]"/>
-            </Property>
-            <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[400, 500]"/>
             </Property>
           </Properties>
           <Events>

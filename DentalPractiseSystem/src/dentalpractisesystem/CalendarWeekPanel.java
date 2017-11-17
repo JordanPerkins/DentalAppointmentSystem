@@ -485,7 +485,6 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                     }
                 }
             } else if (appointments[i].getEndTime().getTime() != appointments[i+1].getStartTime().getTime()) {
-                // MAKE METHOD???
                 Calendar midnight = Calendar.getInstance();
                 Calendar now = Calendar.getInstance();
                 now.add(Calendar.MINUTE, 1);
