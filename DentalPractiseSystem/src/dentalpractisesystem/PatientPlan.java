@@ -51,24 +51,75 @@ public class PatientPlan extends SQLConnector {
         return usedRepairs;
     }
 
-    public void setUsedRepairs(int usedRepairs) {
+    public boolean setUsedRepairs(int usedRepairs) {
         this.usedRepairs = usedRepairs;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "UPDATE PatientPlan SET usedRepairs = ? WHERE patientID = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, usedRepairs);
+            stmt.setInt(2, getPatientID());
+            int res = stmt.executeUpdate();
+            return res == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex){
+            }
+        } 
     }
 
     public int getUsedCheckups() {
         return usedCheckups;
     }
 
-    public void setUsedCheckups(int usedCheckups) {
+    public boolean setUsedCheckups(int usedCheckups) {
         this.usedCheckups = usedCheckups;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "UPDATE PatientPlan SET usedCheckups = ? WHERE patientID = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, usedCheckups);
+            stmt.setInt(2, getPatientID());
+            int res = stmt.executeUpdate();
+            return res == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex){
+            }
+        } 
     }
 
     public int getUsedVisits() {
         return usedVisits;
     }
 
-    public void setUsedVisits(int usedVisits) {
+    public boolean setUsedVisits(int usedVisits) {
         this.usedVisits = usedVisits;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "UPDATE PatientPlan SET usedVisits = ? WHERE patientID = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, usedVisits);
+            stmt.setInt(2, getPatientID());
+            int res = stmt.executeUpdate();
+            return res == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex){
+            }
+        } 
     }
 
     public PatientPlan(int patientID, Plan plan, Date startDate, int usedRepairs, int usedCheckups, int usedVisits) {

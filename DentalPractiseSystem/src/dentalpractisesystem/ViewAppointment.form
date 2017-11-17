@@ -528,17 +528,26 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Use Checkup"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useCheckupActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="visitButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Use Visit"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useVisitActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="repairButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Use Repair"/>
                 <Property name="actionCommand" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useRepairActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="jComboBox1">
               <Properties>
