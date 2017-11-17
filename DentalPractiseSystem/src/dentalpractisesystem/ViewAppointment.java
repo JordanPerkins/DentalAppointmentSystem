@@ -328,7 +328,7 @@ public class ViewAppointment extends javax.swing.JPanel {
 
         checkupRemaining.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
 
-        jLabel26.setText("Current Total Cost:");
+        jLabel26.setText("Total cost due today:");
 
         jLabel27.setText("jLabel27");
 

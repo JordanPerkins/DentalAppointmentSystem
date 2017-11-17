@@ -257,18 +257,26 @@ public class Appointment {
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT * FROM Appointment WHERE appointmentDate = ? AND partner = ?";
+            String sql = "SELECT * FROM Appointment NATURAL JOIN Patient "
+                    + "NATURAL JOIN Address LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
+                    + "LEFT JOIN Plan ON PatientPlan.name = Plan.name WHERE appointmentDate = ? AND partner = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
-                Patient patient;
-                if (res.getInt("patientID") != 0) {
-                    patient = new Patient(res.getInt("patientID"));
-                    patient.fetch();
-                } else
-                    patient = null;
+                int planPatientID = res.getInt(18);
+                PatientPlan patientPlan = null;
+                if (!res.wasNull()) {
+                    Plan plan = new Plan(res.getString(24), res.getDouble(25),
+                            res.getInt(26), res.getInt(27), res.getInt(28));
+                    patientPlan = new PatientPlan(planPatientID, plan, res.getDate(20),
+                            res.getInt(21), res.getInt(22), res.getInt(23));
+                }
+                Address address = new Address(res.getInt(1), res.getString(2),
+                res.getString(16), res.getString(17), res.getString(18));
+                Patient patient = new Patient(res.getInt(3), res.getString(10),
+                        res.getString(11), res.getString(12), res.getDate(13), res.getString(14), address, patientPlan);
                 Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"), res.getInt("status"));
                 appointments[count] = appointment;
                 count++;

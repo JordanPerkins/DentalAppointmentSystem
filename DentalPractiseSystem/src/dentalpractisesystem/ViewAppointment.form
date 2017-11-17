@@ -602,7 +602,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel26">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Current Total Cost:"/>
+                <Property name="text" type="java.lang.String" value="Total cost due today:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel27">
