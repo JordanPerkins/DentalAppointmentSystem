@@ -6,6 +6,7 @@
 package dentalpractisesystem;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.text.SimpleDateFormat;
@@ -41,7 +42,12 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         
         if (timeOffset != 0)
             cDisplay.add(Calendar.DATE, timeOffset);
-        
+        /*
+        switch(cDisplay.get(Calendar.DAY_OF_WEEK)) {
+            case 7: cDisplay.add(Calendar.DATE, 2);
+            case 1: cDisplay.add(Calendar.DATE, 1);
+        }
+        */
         initComponents();
         
     }
@@ -218,6 +224,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         overlap = showAppointments(threeAppoint, threePanel, t15, t16);
 
         fourPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, new java.awt.Color(0, 0, 0)));
+        fourPanel.setMaximumSize(new java.awt.Dimension(116, 514));
         fourPanel.setPreferredSize(new java.awt.Dimension(116, 0));
         fourPanel.setLayout(new java.awt.GridBagLayout());
         java.sql.Time t17 = new java.sql.Time(57600000);
@@ -305,8 +312,8 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9)
-                                .addGap(0, 83, Short.MAX_VALUE))
-                            .addComponent(fourPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))))
+                                .addGap(0, 89, Short.MAX_VALUE))
+                            .addComponent(fourPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -356,26 +363,35 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_forwardActionPerformed
 
     private void selectPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPartnerActionPerformed
-        // TODO add your handling code here:
+        setVisible(false);
+        PartnerSelect select = new PartnerSelect(frame);
+        frame.setContentPane(select);
     }//GEN-LAST:event_selectPartnerActionPerformed
 
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
         Appointment a = (Appointment)((JButton)evt.getSource()).getClientProperty("appointment");
-        // To add partner view appointment panel here
-        //frame.setContentPane(view);
+        AddTreatment add = new AddTreatment(frame, a);
+        frame.setContentPane(add);
     }
     
     private JButton createViewButton(Patient patient, Appointment a) {
         JButton view = new JButton();
-        view.setText(patient.getFirstName() + " " + patient.getSurname());
+        view.setText("<html>" + patient.getFirstName() + "<br>" + patient.getSurname() + "</html>");
         view.setPreferredSize(new Dimension(1,1));
+        if (a.getStatus() == 1) {
+            view.setOpaque(false);
+            view.setContentAreaFilled(false);
+            view.setBorderPainted(false);
+        } else {
+        view.setFont(new Font("Tahoma", Font.PLAIN, 10));
         view.putClientProperty("appointment", a);
         view.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewAppointmentActionPerformed(evt);
             }
         });
+        }
         return view;
     }
     
