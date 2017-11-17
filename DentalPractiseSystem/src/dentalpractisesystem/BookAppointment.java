@@ -294,7 +294,7 @@ public class BookAppointment extends javax.swing.JPanel {
         int paymentStatus;
         if (treatmentCourseCheckbox.isSelected()) {
             if (paymentRequiredCheckbox.isSelected()) {
-                paymentStatus = 3;
+                paymentStatus = 2;
             } else {
                 paymentStatus = 1;
             }

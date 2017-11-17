@@ -19,6 +19,7 @@ public class ViewAppointment extends javax.swing.JPanel {
     private JFrame frame;
     private int timeOffset;
     private PatientPlan plan;
+    private VisitTreatment[] treatments;
     
     /**
      * Creates new form ViewAppointment
@@ -29,14 +30,23 @@ public class ViewAppointment extends javax.swing.JPanel {
         timeOffset = tO;
         initComponents();
         plan = appointment.getPatient().getPatientPlan();
-        if (plan != null) {
-            planLabel.setText(plan.getPlan().toString());
-            updateRemaining();
+        if (appointment.getStatus() == 0) {
+            jPanel4.setVisible(false);
+            complete.setEnabled(false);
         } else {
-            planLabel.setText("None");
-            visitButton.setEnabled(false);
-            repairButton.setEnabled(false);
-            checkupButton.setEnabled(false);
+            if (plan != null) {
+                planLabel.setText(plan.getPlan().toString());
+                updateRemaining();
+            } else {
+                planLabel.setText("None");
+                visitButton.setEnabled(false);
+                repairButton.setEnabled(false);
+                checkupButton.setEnabled(false);
+            }
+            treatments = VisitTreatment.fetch(a);
+            for (int i = 0; i<treatments.length; i++) {
+                treatmentsComboBox.addItem(treatments[i].getTreatment().toString());
+            }
         }
     }
     
@@ -99,7 +109,7 @@ public class ViewAppointment extends javax.swing.JPanel {
         checkupButton = new javax.swing.JButton();
         visitButton = new javax.swing.JButton();
         repairButton = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        treatmentsComboBox = new javax.swing.JComboBox<>();
         jButton5 = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         planLabel = new javax.swing.JLabel();
@@ -311,8 +321,6 @@ public class ViewAppointment extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jButton5.setText("<html>Remove from<br> cost<html>");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -364,7 +372,7 @@ public class ViewAppointment extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(treatmentsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
@@ -381,7 +389,7 @@ public class ViewAppointment extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(treatmentsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -531,7 +539,6 @@ public class ViewAppointment extends javax.swing.JPanel {
     private javax.swing.JButton complete;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -566,6 +573,7 @@ public class ViewAppointment extends javax.swing.JPanel {
     private javax.swing.JButton print;
     private javax.swing.JButton repairButton;
     private javax.swing.JLabel repairRemaining;
+    private javax.swing.JComboBox<String> treatmentsComboBox;
     private javax.swing.JButton visitButton;
     private javax.swing.JLabel visitRemaining;
     // End of variables declaration//GEN-END:variables

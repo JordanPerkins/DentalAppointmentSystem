@@ -231,7 +231,11 @@ public class Appointment {
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT COUNT(*) FROM Appointment WHERE appointmentDate = ? AND partner = ?";
+            String sql = "SELECT COUNT(*) FROM Appointment LEFT JOIN Patient ON Patient.patientID = Appointment.patientID "
+                    + "LEFT JOIN Address ON Patient.houseNumber = Address.houseNumber AND Patient.postCode = Address.postCode "
+                    + "LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
+                    + "LEFT JOIN Plan ON PatientPlan.name = Plan.name "
+                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
@@ -257,26 +261,28 @@ public class Appointment {
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT * FROM Appointment NATURAL JOIN Patient "
-                    + "NATURAL JOIN Address LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
-                    + "LEFT JOIN Plan ON PatientPlan.name = Plan.name WHERE appointmentDate = ? AND partner = ?";
+            String sql = "SELECT * FROM Appointment LEFT JOIN Patient ON Patient.patientID = Appointment.patientID "
+                    + "LEFT JOIN Address ON Patient.houseNumber = Address.houseNumber AND Patient.postCode = Address.postCode "
+                    + "LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
+                    + "LEFT JOIN Plan ON PatientPlan.name = Plan.name "
+                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
-                int planPatientID = res.getInt(18);
-                PatientPlan patientPlan = null;
+                int planPatientID = res.getInt(8);
+                Patient patient = null;
                 if (!res.wasNull()) {
-                    Plan plan = new Plan(res.getString(24), res.getDouble(25),
-                            res.getInt(26), res.getInt(27), res.getInt(28));
-                    patientPlan = new PatientPlan(planPatientID, plan, res.getDate(20),
-                            res.getInt(21), res.getInt(22), res.getInt(23));
+                    Plan plan = new Plan(res.getString(27), res.getDouble(28),
+                            res.getInt(29), res.getInt(30), res.getInt(31));
+                    PatientPlan patientPlan = new PatientPlan(planPatientID, plan, res.getDate(23),
+                            res.getInt(24), res.getInt(25), res.getInt(26));
+                    Address address = new Address(res.getInt(16), res.getString(17),
+                        res.getString(18), res.getString(19), res.getString(20));
+                    patient = new Patient(planPatientID, res.getString(9),
+                        res.getString(10), res.getString(11), res.getDate(12), res.getString(13), address, patientPlan);
                 }
-                Address address = new Address(res.getInt(1), res.getString(2),
-                res.getString(16), res.getString(17), res.getString(18));
-                Patient patient = new Patient(res.getInt(3), res.getString(10),
-                        res.getString(11), res.getString(12), res.getDate(13), res.getString(14), address, patientPlan);
                 Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"), res.getInt("status"));
                 appointments[count] = appointment;
                 count++;
@@ -297,7 +303,11 @@ public class Appointment {
        PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT COUNT(*) FROM Appointment WHERE appointmentDate = ? AND partner = ? AND startTime >= ? AND startTime < ? AND patientID != 0";
+            String sql = "SELECT COUNT(*) FROM Appointment LEFT JOIN Patient ON Patient.patientID = Appointment.patientID "
+                    + "LEFT JOIN Address ON Patient.houseNumber = Address.houseNumber AND Patient.postCode = Address.postCode "
+                    + "LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
+                    + "LEFT JOIN Plan ON PatientPlan.name = Plan.name "
+                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ? AND Appointment.startTime >= ? AND Appointment.startTime < ? AND Appointment.patientID != 0";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
@@ -325,7 +335,11 @@ public class Appointment {
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT * FROM Appointment WHERE appointmentDate = ? AND partner = ? AND startTime >= ? AND startTime < ? AND patientID != 0";
+            String sql = "SELECT * FROM Appointment LEFT JOIN Patient ON Patient.patientID = Appointment.patientID "
+                    + "LEFT JOIN Address ON Patient.houseNumber = Address.houseNumber AND Patient.postCode = Address.postCode "
+                    + "LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
+                    + "LEFT JOIN Plan ON PatientPlan.name = Plan.name "
+                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ? AND Appointment.startTime >= ? AND Appointment.startTime < ? AND Appointment.patientID != 0";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
@@ -333,8 +347,18 @@ public class Appointment {
             stmt.setTime(4, t2);
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
-                Patient patient = new Patient(res.getInt("patientID"));
-                patient.fetch();
+                int planPatientID = res.getInt(8);
+                Patient patient = null;
+                if (!res.wasNull()) {
+                    Plan plan = new Plan(res.getString(27), res.getDouble(28),
+                            res.getInt(29), res.getInt(30), res.getInt(31));
+                    PatientPlan patientPlan = new PatientPlan(planPatientID, plan, res.getDate(23),
+                            res.getInt(24), res.getInt(25), res.getInt(26));
+                    Address address = new Address(res.getInt(16), res.getString(17),
+                        res.getString(18), res.getString(19), res.getString(20));
+                    patient = new Patient(planPatientID, res.getString(9),
+                        res.getString(10), res.getString(11), res.getDate(12), res.getString(13), address, patientPlan);
+                }
                 Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"), res.getInt("status"));
                 appointments[count] = appointment;
                 count++;

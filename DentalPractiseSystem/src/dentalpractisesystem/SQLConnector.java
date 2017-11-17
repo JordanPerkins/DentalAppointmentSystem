@@ -23,7 +23,7 @@ public class SQLConnector {
     // Connect to SQL
     public static Connection connect() {
     try {
-            DriverManager.setLoginTimeout(25);
+            //DriverManager.setLoginTimeout(25);
             return DriverManager.getConnection("jdbc:mysql://"+server+"/"+db, user, password);
         }
         catch (SQLException ex) {
