@@ -362,8 +362,8 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
         Appointment a = (Appointment)((JButton)evt.getSource()).getClientProperty("appointment");
-        // To add partner view appointment panel here
-        //frame.setContentPane(view);
+        AddTreatment add = new AddTreatment(frame,a,partner);
+        frame.setContentPane(add);
     }
     
     private JButton createViewButton(Patient patient, Appointment a) {

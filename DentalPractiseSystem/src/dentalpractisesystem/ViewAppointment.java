@@ -34,6 +34,9 @@ public class ViewAppointment extends javax.swing.JPanel {
             updateRemaining();
         } else {
             planLabel.setText("None");
+            visitButton.setEnabled(false);
+            repairButton.setEnabled(false);
+            checkupButton.setEnabled(false);
         }
     }
     
@@ -84,9 +87,9 @@ public class ViewAppointment extends javax.swing.JPanel {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        checkupButton = new javax.swing.JButton();
+        visitButton = new javax.swing.JButton();
+        repairButton = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton5 = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
@@ -277,12 +280,12 @@ public class ViewAppointment extends javax.swing.JPanel {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Treatments & Healthcare Plan"));
 
-        jButton1.setText("Use Checkup");
+        checkupButton.setText("Use Checkup");
 
-        jButton2.setText("Use Visit");
+        visitButton.setText("Use Visit");
 
-        jButton3.setText("Use Repair");
-        jButton3.setActionCommand("");
+        repairButton.setText("Use Repair");
+        repairButton.setActionCommand("");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -320,11 +323,11 @@ public class ViewAppointment extends javax.swing.JPanel {
                         .addComponent(planLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(visitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(repairButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(checkupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(visitRemaining)
@@ -367,9 +370,9 @@ public class ViewAppointment extends javax.swing.JPanel {
                             .addComponent(planLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(visitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(repairButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(checkupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(visitRemaining)
@@ -484,11 +487,9 @@ public class ViewAppointment extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calendar;
     private javax.swing.JButton cancel;
+    private javax.swing.JButton checkupButton;
     private javax.swing.JLabel checkupRemaining;
     private javax.swing.JButton complete;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -524,7 +525,9 @@ public class ViewAppointment extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel planLabel;
     private javax.swing.JButton print;
+    private javax.swing.JButton repairButton;
     private javax.swing.JLabel repairRemaining;
+    private javax.swing.JButton visitButton;
     private javax.swing.JLabel visitRemaining;
     // End of variables declaration//GEN-END:variables
 }

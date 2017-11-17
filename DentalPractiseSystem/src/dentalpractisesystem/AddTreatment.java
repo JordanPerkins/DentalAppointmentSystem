@@ -21,18 +21,20 @@ public class AddTreatment extends javax.swing.JPanel {
     private ArrayList selected = new ArrayList();
     private javax.swing.JFrame frame;
     private Appointment appointment;
+    private Partner partner;
     
 
     /**
      * Creates new form AddTreatment
      */
-    public AddTreatment(javax.swing.JFrame frame, Appointment appointment) {
+    public AddTreatment(javax.swing.JFrame frame, Appointment appointment, Partner partner) {
         initComponents();
         for (int i = 0; i<treatments.length; i++) {
             listModel.addElement(treatments[i].toString());
         }
         this.frame = frame;
         this.appointment = appointment;
+        this.partner = partner;
     }
 
     /**
@@ -241,6 +243,9 @@ public class AddTreatment extends javax.swing.JPanel {
             new VisitTreatment(appointment, treatment).add();
         }
         appointment.setStatus(1);
+        setVisible(false);
+        CalendarDayPanel panel = new CalendarDayPanel(frame, 0, partner);
+        frame.setContentPane(panel);
     }//GEN-LAST:event_saveActionPerformed
 
     private boolean existsInList(Treatment treatment) {

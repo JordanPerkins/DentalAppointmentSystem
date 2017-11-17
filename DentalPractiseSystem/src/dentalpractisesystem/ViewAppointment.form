@@ -443,11 +443,11 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" pref="110" max="-2" attributes="0"/>
+                              <Component id="visitButton" min="-2" pref="110" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton3" min="-2" pref="110" max="-2" attributes="0"/>
+                              <Component id="repairButton" min="-2" pref="110" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton1" min="-2" pref="110" max="-2" attributes="0"/>
+                              <Component id="checkupButton" min="-2" pref="110" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
@@ -502,9 +502,9 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jButton2" alignment="3" min="-2" pref="69" max="-2" attributes="0"/>
-                                  <Component id="jButton3" alignment="3" min="-2" pref="69" max="-2" attributes="0"/>
-                                  <Component id="jButton1" alignment="3" min="-2" pref="69" max="-2" attributes="0"/>
+                                  <Component id="visitButton" alignment="3" min="-2" pref="69" max="-2" attributes="0"/>
+                                  <Component id="repairButton" alignment="3" min="-2" pref="69" max="-2" attributes="0"/>
+                                  <Component id="checkupButton" alignment="3" min="-2" pref="69" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -524,17 +524,17 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="jButton1">
+            <Component class="javax.swing.JButton" name="checkupButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Use Checkup"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton2">
+            <Component class="javax.swing.JButton" name="visitButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Use Visit"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton3">
+            <Component class="javax.swing.JButton" name="repairButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Use Repair"/>
                 <Property name="actionCommand" type="java.lang.String" value=""/>
