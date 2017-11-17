@@ -297,7 +297,7 @@ public class Appointment {
         PreparedStatement stmt = null;
         int count = 0;
         try {
-            String sql = "SELECT COUNT(*) FROM Appointment WHERE appointmentDate = ? AND partner = ? AND startTime >= ? AND startTime < ? AND patientID != 0";
+            String sql = "SELECT * FROM Appointment WHERE appointmentDate = ? AND partner = ? AND startTime >= ? AND startTime < ? AND patientID != 0";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());

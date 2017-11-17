@@ -29,61 +29,51 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="timesPanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="timesPanel" min="-2" pref="70" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="ninePanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <Component id="tenPanel" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="tenPanel" min="-2" pref="115" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <Component id="elevernPanel" min="-2" pref="116" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="elevernPanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="twelvePanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="onePanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <Component id="onePanel" min="-2" pref="116" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="twoPanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                          <Component id="twoPanel" min="-2" pref="116" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="threePanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                          <Component id="threePanel" min="-2" pref="118" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="73" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="83" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="fourPanel" pref="0" max="32767" attributes="0"/>
+                          <Component id="fourPanel" pref="119" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -134,6 +124,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Select Partner"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectPartnerActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="back">
       <Properties>
@@ -174,22 +167,10 @@
     </Component>
     <Container class="javax.swing.JPanel" name="timesPanel">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="timesPanel.setLayout(new java.awt.GridBagLayout());"/>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="GridBagConstraints cTimes = new GridBagConstraints();&#xa;cTimes.fill = GridBagConstraints.BOTH;&#xa;cTimes.anchor = GridBagConstraints.WEST;&#xa;cTimes.gridx = 0;&#xa;cTimes.weightx = 1;&#xa;int startTime = 0;&#xa;for (int i=1; i&lt;13; i+=2) {&#xa;    cTimes.gridy = i;&#xa;    cTimes.weighty = (100.0/60)*1;&#xa;    timesPanel.add(new JLabel(&quot;:&quot; + startTime), cTimes);&#xa;    cTimes.gridy = i+1;&#xa;    cTimes.weighty = (100.0/60)*9;&#xa;    timesPanel.add(new JPanel(), cTimes);&#xa;    startTime += 10;&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="timesPanel.setLayout(new java.awt.GridBagLayout());&#xa;GridBagConstraints cTimes = new GridBagConstraints();&#xa;cTimes.fill = GridBagConstraints.BOTH;&#xa;cTimes.anchor = GridBagConstraints.WEST;&#xa;cTimes.gridx = 0;&#xa;cTimes.weightx = 1;&#xa;int startTime = 00;&#xa;for (int i=1; i&lt;13; i+=2) {&#xa;    cTimes.gridy = i;&#xa;    cTimes.weighty = (100.0/60)*1;&#xa;    timesPanel.add(new JLabel(&quot;:&quot; + startTime), cTimes);&#xa;    cTimes.gridy = i+1;&#xa;    cTimes.weighty = (100.0/60)*9;&#xa;    timesPanel.add(new JPanel(), cTimes);&#xa;    startTime += 10;&#xa;}"/>
       </AuxValues>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="75" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="ninePanel">
       <Properties>
@@ -202,26 +183,18 @@
           <Dimension value="[116, 514]"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Date date = new java.sql.Date(cDisplay.getTimeInMillis());&#xa;java.sql.Time t9 = new java.sql.Time(28800000);&#xa;java.sql.Time t10 = new java.sql.Time(32400000);&#xa;Appointment[] nineAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t9, t10);&#xa;Appointment overlap = null;&#xa;overlap = showAppointments(nineAppoint, ninePanel, t9, t10);"/>
+      </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="tenPanel">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="tenPanel.setLayout(new java.awt.GridBagLayout());"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t11 = new java.sql.Time(36000000);&#xa;Appointment[] tenAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t10, t11);&#xa;    tenAppoint = new Appointment[appoints.length+1];&#xa;    tenAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        tenAppoint[i+1] = appoints[i];&#xa;} else&#xa;    tenAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t10, t11);&#xa;overlap = showAppointments(tenAppoint, tenPanel, t10, t11);"/>
       </AuxValues>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="116" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="elevernPanel">
       <Properties>
@@ -232,21 +205,10 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="elevernPanel.setLayout(new java.awt.GridBagLayout());"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t12 = new java.sql.Time(39600000);&#xa;Appointment[] elevernAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t11, t12);&#xa;    elevernAppoint = new Appointment[appoints.length+1];&#xa;    elevernAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        elevernAppoint[i+1] = appoints[i];&#xa;} else&#xa;    elevernAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t11, t12);&#xa;overlap = showAppointments(elevernAppoint, elevernPanel, t11, t12);"/>
       </AuxValues>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="116" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="twelvePanel">
       <Properties>
@@ -254,6 +216,9 @@
           <Dimension value="[116, 0]"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="java.sql.Time t13 = new java.sql.Time(43200000);&#xa;Appointment[] twelveAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t12, t13);&#xa;    twelveAppoint = new Appointment[appoints.length+1];&#xa;    twelveAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        twelveAppoint[i+1] = appoints[i];&#xa;} else&#xa;    twelveAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t12, t13);&#xa;overlap = showAppointments(twelveAppoint, twelvePanel, t12, t13);"/>
+      </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
@@ -266,39 +231,17 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="onePanel.setLayout(new java.awt.GridBagLayout());"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t14 = new java.sql.Time(46800000);&#xa;Appointment[] oneAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t13, t14);&#xa;    oneAppoint = new Appointment[appoints.length+1];&#xa;    oneAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        oneAppoint[i+1] = appoints[i];&#xa;} else&#xa;    oneAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t13, t14);&#xa;overlap = showAppointments(oneAppoint, onePanel, t13, t14);"/>
       </AuxValues>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="116" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="twoPanel">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="twoPanel.setLayout(new java.awt.GridBagLayout());"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t15 = new java.sql.Time(50400000);&#xa;Appointment[] twoAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t14, t15);&#xa;    twoAppoint = new Appointment[appoints.length+1];&#xa;    twoAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        twoAppoint[i+1] = appoints[i];&#xa;} else&#xa;    twoAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t14, t15);&#xa;overlap = showAppointments(twoAppoint, twoPanel, t14, t15);"/>
       </AuxValues>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="116" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="threePanel">
       <Properties>
@@ -309,21 +252,10 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="threePanel.setLayout(new java.awt.GridBagLayout());"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t16 = new java.sql.Time(54000000);&#xa;Appointment[] threeAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t15, t16);&#xa;    threeAppoint = new Appointment[appoints.length+1];&#xa;    threeAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        threeAppoint[i+1] = appoints[i];&#xa;} else&#xa;    threeAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t15, t16);&#xa;overlap = showAppointments(threeAppoint, threePanel, t15, t16);"/>
       </AuxValues>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="116" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="fourPanel">
       <Properties>
@@ -336,6 +268,9 @@
           <Dimension value="[116, 0]"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t17 = new java.sql.Time(57600000);&#xa;Appointment[] fourAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t16, t17);&#xa;    fourAppoint = new Appointment[appoints.length+1];&#xa;    fourAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        fourAppoint[i+1] = appoints[i];&#xa;} else&#xa;    fourAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t16, t17);&#xa;overlap = showAppointments(fourAppoint, fourPanel, t16, t17);"/>
+      </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>

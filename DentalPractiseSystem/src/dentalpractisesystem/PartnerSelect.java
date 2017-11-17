@@ -85,9 +85,8 @@ public class PartnerSelect extends javax.swing.JPanel {
         );
 
         jComboBox1.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dentist", "Hygienist" }));
         jComboBox1.setMinimumSize(new java.awt.Dimension(200, 400));
-        jComboBox1.setSize(new java.awt.Dimension(400, 500));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -206,8 +205,12 @@ public class PartnerSelect extends javax.swing.JPanel {
 
     private void selectPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPartnerActionPerformed
         setVisible(false);
-        AddTreatment treatment = new AddTreatment(frame, null);
-        frame.setContentPane(treatment);
+        CalendarDayPanel cal;
+        if (jComboBox1.getSelectedItem().equals("Dentist"))
+            cal = new CalendarDayPanel(frame, 0, Partner.DENTIST);
+        else
+            cal = new CalendarDayPanel(frame, 0, Partner.HYGIENIST);
+        frame.setContentPane(cal);
     }//GEN-LAST:event_selectPartnerActionPerformed
 
 

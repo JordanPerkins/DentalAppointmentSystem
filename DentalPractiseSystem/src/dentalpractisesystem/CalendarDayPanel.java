@@ -7,6 +7,7 @@ package dentalpractisesystem;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.JButton;
@@ -24,7 +25,6 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMMM");
 
-    private Calendar cToday = Calendar.getInstance();
     private int timeOffset;
     
     private Calendar cDisplay = Calendar.getInstance();
@@ -43,6 +43,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
             cDisplay.add(Calendar.DATE, timeOffset);
         
         initComponents();
+        
     }
 
     /**
@@ -78,6 +79,11 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
 
         selectPartner.setText("Select Partner");
+        selectPartner.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPartnerActionPerformed(evt);
+            }
+        });
 
         back.setText("<<");
         back.addActionListener(new java.awt.event.ActionListener() {
@@ -101,13 +107,13 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         jLabel1.setText("Time");
 
         timesPanel.setLayout(new java.awt.GridBagLayout());
-
+        timesPanel.setLayout(new java.awt.GridBagLayout());
         GridBagConstraints cTimes = new GridBagConstraints();
         cTimes.fill = GridBagConstraints.BOTH;
         cTimes.anchor = GridBagConstraints.WEST;
         cTimes.gridx = 0;
         cTimes.weightx = 1;
-        int startTime = 0;
+        int startTime = 00;
         for (int i=1; i<13; i+=2) {
             cTimes.gridy = i;
             cTimes.weighty = (100.0/60)*1;
@@ -118,95 +124,113 @@ public class CalendarDayPanel extends javax.swing.JPanel {
             startTime += 10;
         }
 
-        javax.swing.GroupLayout timesPanelLayout = new javax.swing.GroupLayout(timesPanel);
-        timesPanel.setLayout(timesPanelLayout);
-        timesPanelLayout.setHorizontalGroup(
-            timesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 75, Short.MAX_VALUE)
-        );
-        timesPanelLayout.setVerticalGroup(
-            timesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
         ninePanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
         ninePanel.setPreferredSize(new java.awt.Dimension(116, 514));
         ninePanel.setLayout(new java.awt.GridBagLayout());
+        java.sql.Date date = new java.sql.Date(cDisplay.getTimeInMillis());
+        java.sql.Time t9 = new java.sql.Time(28800000);
+        java.sql.Time t10 = new java.sql.Time(32400000);
+        Appointment[] nineAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t9, t10);
+        Appointment overlap = null;
+        overlap = showAppointments(nineAppoint, ninePanel, t9, t10);
 
         tenPanel.setLayout(new java.awt.GridBagLayout());
+        java.sql.Time t11 = new java.sql.Time(36000000);
+        Appointment[] tenAppoint;
+        if (overlap != null) {
+            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t10, t11);
+            tenAppoint = new Appointment[appoints.length+1];
+            tenAppoint[0] = overlap;
+            for(int i=0; i<appoints.length; i++)
+            tenAppoint[i+1] = appoints[i];
+        } else
+        tenAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t10, t11);
+        overlap = showAppointments(tenAppoint, tenPanel, t10, t11);
 
-        javax.swing.GroupLayout tenPanelLayout = new javax.swing.GroupLayout(tenPanel);
-        tenPanel.setLayout(tenPanelLayout);
-        tenPanelLayout.setHorizontalGroup(
-            tenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 116, Short.MAX_VALUE)
-        );
-        tenPanelLayout.setVerticalGroup(
-            tenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        elevernPanel.setLayout(new java.awt.GridBagLayout());
         elevernPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout elevernPanelLayout = new javax.swing.GroupLayout(elevernPanel);
-        elevernPanel.setLayout(elevernPanelLayout);
-        elevernPanelLayout.setHorizontalGroup(
-            elevernPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 116, Short.MAX_VALUE)
-        );
-        elevernPanelLayout.setVerticalGroup(
-            elevernPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        elevernPanel.setLayout(new java.awt.GridBagLayout());
+        java.sql.Time t12 = new java.sql.Time(39600000);
+        Appointment[] elevernAppoint;
+        if (overlap != null) {
+            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t11, t12);
+            elevernAppoint = new Appointment[appoints.length+1];
+            elevernAppoint[0] = overlap;
+            for(int i=0; i<appoints.length; i++)
+            elevernAppoint[i+1] = appoints[i];
+        } else
+        elevernAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t11, t12);
+        overlap = showAppointments(elevernAppoint, elevernPanel, t11, t12);
 
         twelvePanel.setPreferredSize(new java.awt.Dimension(116, 0));
         twelvePanel.setLayout(new java.awt.GridBagLayout());
 
-        onePanel.setLayout(new java.awt.GridBagLayout());
-        onePanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
+        java.sql.Time t13 = new java.sql.Time(43200000);
+        Appointment[] twelveAppoint;
+        if (overlap != null) {
+            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t12, t13);
+            twelveAppoint = new Appointment[appoints.length+1];
+            twelveAppoint[0] = overlap;
+            for(int i=0; i<appoints.length; i++)
+            twelveAppoint[i+1] = appoints[i];
+        } else
+        twelveAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t12, t13);
+        overlap = showAppointments(twelveAppoint, twelvePanel, t12, t13);
 
-        javax.swing.GroupLayout onePanelLayout = new javax.swing.GroupLayout(onePanel);
-        onePanel.setLayout(onePanelLayout);
-        onePanelLayout.setHorizontalGroup(
-            onePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 116, Short.MAX_VALUE)
-        );
-        onePanelLayout.setVerticalGroup(
-            onePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        onePanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
+        onePanel.setLayout(new java.awt.GridBagLayout());
+        java.sql.Time t14 = new java.sql.Time(46800000);
+        Appointment[] oneAppoint;
+        if (overlap != null) {
+            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t13, t14);
+            oneAppoint = new Appointment[appoints.length+1];
+            oneAppoint[0] = overlap;
+            for(int i=0; i<appoints.length; i++)
+            oneAppoint[i+1] = appoints[i];
+        } else
+        oneAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t13, t14);
+        overlap = showAppointments(oneAppoint, onePanel, t13, t14);
 
         twoPanel.setLayout(new java.awt.GridBagLayout());
+        java.sql.Time t15 = new java.sql.Time(50400000);
+        Appointment[] twoAppoint;
+        if (overlap != null) {
+            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t14, t15);
+            twoAppoint = new Appointment[appoints.length+1];
+            twoAppoint[0] = overlap;
+            for(int i=0; i<appoints.length; i++)
+            twoAppoint[i+1] = appoints[i];
+        } else
+        twoAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t14, t15);
+        overlap = showAppointments(twoAppoint, twoPanel, t14, t15);
 
-        javax.swing.GroupLayout twoPanelLayout = new javax.swing.GroupLayout(twoPanel);
-        twoPanel.setLayout(twoPanelLayout);
-        twoPanelLayout.setHorizontalGroup(
-            twoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 116, Short.MAX_VALUE)
-        );
-        twoPanelLayout.setVerticalGroup(
-            twoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        threePanel.setLayout(new java.awt.GridBagLayout());
         threePanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout threePanelLayout = new javax.swing.GroupLayout(threePanel);
-        threePanel.setLayout(threePanelLayout);
-        threePanelLayout.setHorizontalGroup(
-            threePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 116, Short.MAX_VALUE)
-        );
-        threePanelLayout.setVerticalGroup(
-            threePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        threePanel.setLayout(new java.awt.GridBagLayout());
+        java.sql.Time t16 = new java.sql.Time(54000000);
+        Appointment[] threeAppoint;
+        if (overlap != null) {
+            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t15, t16);
+            threeAppoint = new Appointment[appoints.length+1];
+            threeAppoint[0] = overlap;
+            for(int i=0; i<appoints.length; i++)
+            threeAppoint[i+1] = appoints[i];
+        } else
+        threeAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t15, t16);
+        overlap = showAppointments(threeAppoint, threePanel, t15, t16);
 
         fourPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, new java.awt.Color(0, 0, 0)));
         fourPanel.setPreferredSize(new java.awt.Dimension(116, 0));
         fourPanel.setLayout(new java.awt.GridBagLayout());
+        java.sql.Time t17 = new java.sql.Time(57600000);
+        Appointment[] fourAppoint;
+        if (overlap != null) {
+            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t16, t17);
+            fourAppoint = new Appointment[appoints.length+1];
+            fourAppoint[0] = overlap;
+            for(int i=0; i<appoints.length; i++)
+            fourAppoint[i+1] = appoints[i];
+        } else
+        fourAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t16, t17);
+        overlap = showAppointments(fourAppoint, fourPanel, t16, t17);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("9:00");
@@ -248,47 +272,41 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                         .addComponent(forward))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(timesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel1)
+                            .addComponent(timesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ninePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(88, 88, 88)))
+                            .addComponent(jLabel2))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(tenPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(tenPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(elevernPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(elevernPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(82, 82, 82)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(twelvePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(80, 80, 80)))
+                            .addComponent(jLabel5))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(onePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(82, 82, 82)))
+                            .addComponent(jLabel6)
+                            .addComponent(onePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(twoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(80, 80, 80)))
+                            .addComponent(jLabel7)
+                            .addComponent(twoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(threePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addGap(2, 2, 2)
+                            .addComponent(jLabel8)
+                            .addComponent(threePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9)
-                                .addGap(0, 73, Short.MAX_VALUE))
-                            .addComponent(fourPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                                .addGap(0, 83, Short.MAX_VALUE))
+                            .addComponent(fourPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -326,14 +344,20 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
+        setVisible(false);
         CalendarDayPanel next = new CalendarDayPanel(this.frame, this.timeOffset-1, this.partner);
         this.frame.setContentPane(next);
     }//GEN-LAST:event_backActionPerformed
 
     private void forwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardActionPerformed
+        setVisible(false);
         CalendarDayPanel next = new CalendarDayPanel(this.frame, this.timeOffset+1, this.partner);
         this.frame.setContentPane(next);
     }//GEN-LAST:event_forwardActionPerformed
+
+    private void selectPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPartnerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectPartnerActionPerformed
 
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
@@ -369,49 +393,145 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     Change so that each panel only deals with itself and returns an appointment if the endTime of the appointment would overlap so it can
     be delt with by the panel who needs it (means removing panel next and adding panelSart to params).
     
-    private boolean showAppointments(Appointment[] appointments, JPanel panel, JPanel panelNext, java.sql.Time panelEnd) {
+    */
+    
+    private Appointment showAppointments(Appointment[] appointments, JPanel panel, java.sql.Time panelStart, java.sql.Time panelEnd) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.gridx = 0;
         if (appointments.length != 0) {
-            int gridI = 1;
+            int gridI = 0;
             for (int i=0; i<appointments.length; i++) {
-                int lengthI = (int)(appointments[i].getEndTime().getTime() - appointments[i].getStartTime().getTime());
-                if (((appointments[i].getStartTime().getTime())/1000/60)%60 == 0 && lengthI < 60) {
-                    JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
-                    gbc.weighty = (100.0/60.0)*lengthI;
-                    gbc.gridy = gridI;
-                    panel.add(viewAppoint, gbc);
-                    gridI++;
-                    if (i == appointments.length-1) {
-                        JButton blank = createBlankButton();
-                        gbc.weighty = (100.0/60.0)*(60-lengthI);
-                        gbc.gridy = gridI;
-                        panel.add(blank, gbc);
-                        gridI++;
-                    }
-                } else if (lengthI < 60){
-                    if ((appointments[i].getEndTime().getTime()/1000/60) - (panelEnd.getTime()/1000/60) > 60) return true;
-                } else if (lengthI >= 60) {
+                int lengthI = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
+                if (lengthI >= 60 && appointments[i].getStartTime().getTime() == panelStart.getTime()) {
                     JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
                     gbc.weighty = 1;
                     gbc.gridy = gridI;
                     panel.add(viewAppoint, gbc);
                     gridI++;
-                    if (appointments[i].getEndTime().getTime() > panelEnd.getTime()) {
-                        JButton viewAppointNext = createViewButton(appointments[i].getPatient(), appointments[i]);
-                        gbc.weighty = (100.0*60.0)*((appointments[i].getEndTime().getTime()/1000/60) - (panelEnd.getTime()/1000/60));
-                        gbc.gridy = 0;
+                    if (lengthI > 60) return appointments[i];
+                } else if (appointments[i].getStartTime().getTime() < panelStart.getTime()) {
+                    System.out.println("In time < time");
+                    int appointmentLengthP = (int)(appointments[i].getEndTime().getTime()/1000/60 - panelStart.getTime()/1000/60);
+                    if (appointmentLengthP >= 60) {
+                        JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
+                        gbc.weighty = 1;
+                        gbc.gridy = gridI;
                         panel.add(viewAppoint, gbc);
+                        gridI++;
+                        if (appointmentLengthP > 60) return appointments[i];
+                    } else {
+                        System.out.println("in out of that");
+                        JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
+                        gbc.weighty = (100.0/60.0)*appointmentLengthP;
+                        System.out.println("LengthP: " + appointmentLengthP);
+                        gbc.gridy = gridI;
+                        panel.add(viewAppoint, gbc);
+                        gridI++;
+                        if (i == appointments.length-1) {
+                            JButton blank = createBlankButton();
+                            gbc.weighty = (100.0/60.0)*(60-appointmentLengthP);
+                            gbc.gridy = gridI;
+                            panel.add(blank, gbc);
+                            gridI++;
+                        } else if (appointments[i].getEndTime().getTime() != appointments[i+1].getStartTime().getTime()) {
+                           int lengthGap = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                           JButton blank = createBlankButton();
+                           gbc.weighty = (100.0/60.0)*lengthGap;
+                           gbc.gridy = gridI;
+                           panel.add(blank, gbc);
+                           gridI++;
+                        }
                     }
-                    if (lengthI > 120) return true;
+                } else if (i == 0) {
+                    int gapFromStart = (int)(appointments[i].getStartTime().getTime()/1000/60 - panelStart.getTime()/1000/60);
+                    JButton blankTop = createBlankButton();
+                    System.out.println("Gap From Start: " + gapFromStart);
+                    gbc.weighty = (100.0/60.0)*gapFromStart;
+                    gbc.gridy = gridI;
+                    panel.add(blankTop, gbc);
+                    gridI++;
+                    if (appointments[i].getEndTime().getTime() > panelEnd.getTime()) {
+                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
+                        int overTime = (int)(appointments[i].getEndTime().getTime()/1000/60 - panelEnd.getTime()/1000/60);
+                        int appointmentLengthFactored = appointmentLength - overTime;
+                        JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
+                        System.out.println("Length: " + appointmentLengthFactored);
+                        gbc.weighty = (100.0/60.0)*appointmentLengthFactored;
+                        gbc.gridy = gridI;
+                        panel.add(viewAppoint, gbc);
+                        gridI++;
+                        return appointments[i];
+                    } else {
+                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
+                        JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
+                        System.out.println("Length: " + appointmentLength);
+                        gbc.weighty = (100.0/60.0)*appointmentLength;
+                        gbc.gridy = gridI;
+                        panel.add(viewAppoint, gbc);
+                        gridI++;
+                        if (i == appointments.length-1) { 
+                            JButton blank = createBlankButton();
+                            int bottomGap = (int)(panelEnd.getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                            gbc.weighty = (100.0/60.0)*bottomGap;
+                            System.out.println("Bottom Gap: " + bottomGap);
+                            gbc.gridy = gridI;
+                            panel.add(blank, gbc);
+                            gridI++;
+                        } else if (appointments[i].getEndTime().getTime() != appointments[i+1].getStartTime().getTime()) {
+                            int lengthGap = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                            JButton blank = createBlankButton();
+                            gbc.weighty = (100.0/60.0)*lengthGap;
+                            gbc.gridy = gridI;
+                            panel.add(blank, gbc);
+                            gridI++;
+                        }
+                    }
+                } else {
+                    if (appointments[i].getEndTime().getTime() > panelEnd.getTime()) {
+                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
+                        int overTime = (int)(appointments[i].getEndTime().getTime()/1000/60 - panelEnd.getTime()/1000/60);
+                        int appointmentLengthFactored = appointmentLength - overTime;
+                        JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
+                        System.out.println("Length: " + appointmentLengthFactored);
+                        gbc.weighty = (100.0/60.0)*appointmentLengthFactored;
+                        gbc.gridy = gridI;
+                        panel.add(viewAppoint, gbc);
+                        gridI++;
+                        return appointments[i];
+                    } else {
+                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
+                        JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
+                        System.out.println("Length: " + appointmentLength);
+                        gbc.weighty = (100.0/60.0)*appointmentLength;
+                        gbc.gridy = gridI;
+                        panel.add(viewAppoint, gbc);
+                        gridI++;
+                        System.out.println("Triggered with i: " + i);
+                        if (i == appointments.length-1) {
+                            JButton blank = createBlankButton();
+                            int bottomGap = (int)(panelEnd.getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                            System.out.println("Else Bottom Gap: " + bottomGap);
+                            gbc.weighty = (100.0/60.0)*bottomGap;
+                            gbc.gridy = gridI;
+                            panel.add(blank, gbc);
+                            gridI++;
+                        } else if (appointments[i].getEndTime().getTime() != appointments[i+1].getStartTime().getTime()) {
+                            int lengthGap = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                            JButton blank = createBlankButton();
+                            gbc.weighty = (100.0/60.0)*lengthGap;
+                            gbc.gridy = gridI;
+                            panel.add(blank, gbc);
+                            gridI++;
+                        }
+                    }   
                 }
             }
         }
-        return false;
+        return null;
     }
-*/
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back;
     private javax.swing.JLabel dayLabel;
