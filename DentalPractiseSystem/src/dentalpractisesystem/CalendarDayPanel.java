@@ -42,12 +42,14 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         
         if (timeOffset != 0)
             cDisplay.add(Calendar.DATE, timeOffset);
-        /*
+        
         switch(cDisplay.get(Calendar.DAY_OF_WEEK)) {
             case 7: cDisplay.add(Calendar.DATE, 2);
+                this.timeOffset += 2; break;
             case 1: cDisplay.add(Calendar.DATE, 1);
+                this.timeOffset++; break;
         }
-        */
+        
         initComponents();
         
     }
@@ -377,16 +379,16 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     
     private JButton createViewButton(Patient patient, Appointment a) {
         JButton view = new JButton();
-        view.setText("<html>" + patient.getFirstName() + "<br>" + patient.getSurname() + "</html>");
         view.setPreferredSize(new Dimension(1,1));
         if (a.getStatus() == 1) {
             view.setOpaque(false);
             view.setContentAreaFilled(false);
             view.setBorderPainted(false);
         } else {
-        view.setFont(new Font("Tahoma", Font.PLAIN, 10));
-        view.putClientProperty("appointment", a);
-        view.addActionListener(new java.awt.event.ActionListener() {
+            view.setText("<html>" + patient.getFirstName() + "<br>" + patient.getSurname() + "</html>");
+            view.setFont(new Font("Tahoma", Font.PLAIN, 10));
+            view.putClientProperty("appointment", a);
+            view.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewAppointmentActionPerformed(evt);
             }
@@ -428,7 +430,6 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                     gridI++;
                     if (lengthI > 60) return appointments[i];
                 } else if (appointments[i].getStartTime().getTime() < panelStart.getTime()) {
-                    System.out.println("In time < time");
                     int appointmentLengthP = (int)(appointments[i].getEndTime().getTime()/1000/60 - panelStart.getTime()/1000/60);
                     if (appointmentLengthP >= 60) {
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
@@ -438,10 +439,8 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                         gridI++;
                         if (appointmentLengthP > 60) return appointments[i];
                     } else {
-                        System.out.println("in out of that");
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
                         gbc.weighty = (100.0/60.0)*appointmentLengthP;
-                        System.out.println("LengthP: " + appointmentLengthP);
                         gbc.gridy = gridI;
                         panel.add(viewAppoint, gbc);
                         gridI++;
@@ -463,7 +462,6 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                 } else if (i == 0) {
                     int gapFromStart = (int)(appointments[i].getStartTime().getTime()/1000/60 - panelStart.getTime()/1000/60);
                     JButton blankTop = createBlankButton();
-                    System.out.println("Gap From Start: " + gapFromStart);
                     gbc.weighty = (100.0/60.0)*gapFromStart;
                     gbc.gridy = gridI;
                     panel.add(blankTop, gbc);
@@ -473,7 +471,6 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                         int overTime = (int)(appointments[i].getEndTime().getTime()/1000/60 - panelEnd.getTime()/1000/60);
                         int appointmentLengthFactored = appointmentLength - overTime;
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
-                        System.out.println("Length: " + appointmentLengthFactored);
                         gbc.weighty = (100.0/60.0)*appointmentLengthFactored;
                         gbc.gridy = gridI;
                         panel.add(viewAppoint, gbc);
@@ -482,7 +479,6 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                     } else {
                         int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
-                        System.out.println("Length: " + appointmentLength);
                         gbc.weighty = (100.0/60.0)*appointmentLength;
                         gbc.gridy = gridI;
                         panel.add(viewAppoint, gbc);
@@ -491,7 +487,6 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                             JButton blank = createBlankButton();
                             int bottomGap = (int)(panelEnd.getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
                             gbc.weighty = (100.0/60.0)*bottomGap;
-                            System.out.println("Bottom Gap: " + bottomGap);
                             gbc.gridy = gridI;
                             panel.add(blank, gbc);
                             gridI++;
@@ -510,7 +505,6 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                         int overTime = (int)(appointments[i].getEndTime().getTime()/1000/60 - panelEnd.getTime()/1000/60);
                         int appointmentLengthFactored = appointmentLength - overTime;
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
-                        System.out.println("Length: " + appointmentLengthFactored);
                         gbc.weighty = (100.0/60.0)*appointmentLengthFactored;
                         gbc.gridy = gridI;
                         panel.add(viewAppoint, gbc);
@@ -519,16 +513,13 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                     } else {
                         int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
-                        System.out.println("Length: " + appointmentLength);
                         gbc.weighty = (100.0/60.0)*appointmentLength;
                         gbc.gridy = gridI;
                         panel.add(viewAppoint, gbc);
                         gridI++;
-                        System.out.println("Triggered with i: " + i);
                         if (i == appointments.length-1) {
                             JButton blank = createBlankButton();
                             int bottomGap = (int)(panelEnd.getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
-                            System.out.println("Else Bottom Gap: " + bottomGap);
                             gbc.weighty = (100.0/60.0)*bottomGap;
                             gbc.gridy = gridI;
                             panel.add(blank, gbc);

@@ -301,9 +301,10 @@ public class BookAppointment extends javax.swing.JPanel {
         } else {
             paymentStatus = 0;
         }
+        int status = 0;
         java.sql.Time sT = this.startTimes[jComboBox1.getSelectedIndex()];
         java.sql.Time eT = this.endTimes[jComboBox2.getSelectedIndex()];
-        boolean success = (new Appointment(p, this.partner, sT, eT, this.date, paymentStatus)).add();
+        boolean success = (new Appointment(p, this.partner, sT, eT, this.date, paymentStatus, status)).add();
         if (success) {
             setVisible(false);
             CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, partner);

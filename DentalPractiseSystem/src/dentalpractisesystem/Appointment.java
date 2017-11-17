@@ -61,8 +61,27 @@ public class Appointment {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(int paymentStatus) {
+    public boolean setPaymentStatus(int paymentStatus) {
         this.paymentStatus = paymentStatus;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "UPDATE Appointment SET paymentStatus = ? WHERE appointmentDate = ? AND partner = ? AND startTime = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, paymentStatus);
+            stmt.setDate(2, date);
+            stmt.setString(3, partner.toString());
+            stmt.setTime(4, startTime);
+            int res = stmt.executeUpdate();
+            return res == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex){
+            }
+        } 
     }
     
     public Patient getPatient() {
@@ -105,12 +124,13 @@ public class Appointment {
         this.date = d;
     }
     
-    public Appointment(Patient patient, Partner partner, Time start, Time end, Date d, int paymentStatus) {
+    public Appointment(Patient patient, Partner partner, Time start, Time end, Date d, int paymentStatus, int status) {
         this.patient = patient;
         this.partner = partner;
         this.startTime = start;
         this.endTime = end;
         this.date = d;
+        this.status = status;
         this.paymentStatus = paymentStatus;
     }
     
@@ -249,7 +269,7 @@ public class Appointment {
                     patient.fetch();
                 } else
                     patient = null;
-                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"));
+                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"), res.getInt("status"));
                 appointments[count] = appointment;
                 count++;
             }
@@ -307,7 +327,7 @@ public class Appointment {
             while (res.next()) {
                 Patient patient = new Patient(res.getInt("patientID"));
                 patient.fetch();
-                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"));
+                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"), res.getInt("status"));
                 appointments[count] = appointment;
                 count++;
             }

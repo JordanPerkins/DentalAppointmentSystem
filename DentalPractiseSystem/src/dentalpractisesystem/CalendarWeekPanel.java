@@ -410,12 +410,17 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             view.setEnabled(false);
             view.setPreferredSize(new Dimension(1,1));
         }
+        if (a.getStatus() == 1)
+            view.setBackground(Color.ORANGE);
+        else if (a.getStatus() == 2)
+            view.setBackground(Color.GREEN);
+        else
+            view.setBackground(Color.RED);
         return view;
     }
     
     private void createDay(JPanel panel, Appointment[] appointments, GridBagConstraints layout, java.sql.Date date, Partner partner) {
         int gridValue = 0;
-        System.out.println("Date: " + date.getDay());
         if ((appointments[0].getStartTime().getTime())/1000.0/60/60 != 8){
             Calendar midnight = Calendar.getInstance();
             Calendar now = Calendar.getInstance();
@@ -493,11 +498,8 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                 now.add(Calendar.MINUTE, 1);
                 java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
                 int length = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                System.out.println(length);
                 if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[i+1].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis()) && length > 10) {
                     int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                    System.out.println(after);
-                    System.out.println(length);
                     JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime);
                     layout.weighty = (100.0/480.0)*after;
                     layout.gridy = gridValue;
