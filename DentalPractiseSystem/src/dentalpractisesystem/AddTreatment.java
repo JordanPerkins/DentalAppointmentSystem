@@ -46,7 +46,7 @@ public class AddTreatment extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton2 = new javax.swing.JButton();
+        calendarButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -61,10 +61,10 @@ public class AddTreatment extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(1024, 576));
 
-        jButton2.setText("Calendar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        calendarButton.setText("Calendar");
+        calendarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2mainMenuActionPerformed(evt);
+                calendarButtonActionPerformed(evt);
             }
         });
 
@@ -181,7 +181,7 @@ public class AddTreatment extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(calendarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 223, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(362, Short.MAX_VALUE))
@@ -201,7 +201,7 @@ public class AddTreatment extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(calendarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -213,11 +213,11 @@ public class AddTreatment extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2mainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2mainMenuActionPerformed
-        /*setVisible(false);
-        SecretaryMenu menu = new SecretaryMenu(frame);
-        frame.setContentPane(menu);*/
-    }//GEN-LAST:event_jButton2mainMenuActionPerformed
+    private void calendarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calendarButtonActionPerformed
+        setVisible(false);
+        CalendarDayPanel panel = new CalendarDayPanel(frame, 0, partner);
+        frame.setContentPane(panel);
+    }//GEN-LAST:event_calendarButtonActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         if (jList2.getSelectedIndex() != -1) {
@@ -260,8 +260,8 @@ public class AddTreatment extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton calendarButton;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel15;
