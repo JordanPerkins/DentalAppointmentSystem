@@ -27,6 +27,24 @@ public class Appointment {
     private Time startTime;
     private Time endTime;
     private Date date;
+    private int status;
+    private int paymentStatus;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(int paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
     
     public Patient getPatient() {
         return patient;
@@ -68,35 +86,38 @@ public class Appointment {
         this.date = d;
     }
     
-    public Appointment(Patient patient, Partner partner, Time start, Time end, Date d) {
+    public Appointment(Patient patient, Partner partner, Time start, Time end, Date d, int paymentStatus) {
         this.patient = patient;
         this.partner = partner;
         this.startTime = start;
         this.endTime = end;
         this.date = d;
+        this.paymentStatus = paymentStatus;
     }
     
     public boolean add() {
         PreparedStatement stmt = null;
         try {
             if (patient == null) {
-                String sql = "INSERT INTO Appointment (partner, startTime, endTime, appointmentDate) VALUES (?, ?, ?, ?)";
+                String sql = "INSERT INTO Appointment (partner, startTime, endTime, appointmentDate, paymentStatus) VALUES (?, ?, ?, ?, ?)";
                 stmt = connect().prepareStatement(sql);
                 stmt.setString(1, getPartner().toString());
                 stmt.setTime(2, getStartTime());
                 stmt.setTime(3, getEndTime());
                 stmt.setDate(4, getDate());
+                stmt.setInt(5, getPaymentStatus());
                 int res = stmt.executeUpdate();
                 if (res == 1) return true;
                 return false;
             } else {
-                String sql = "INSERT INTO Appointment VALUES (?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO Appointment (patientID, partner, startTime, endTime, appointmentDate, paymentStatus) VALUES (?, ?, ?, ?, ?, ?)";
                 stmt = connect().prepareStatement(sql);
                 stmt.setInt(1, getPatient().getPatientID());
                 stmt.setString(2, getPartner().toString());
                 stmt.setTime(3, getStartTime());
                 stmt.setTime(4, getEndTime());
                 stmt.setDate(5, getDate());
+                stmt.setInt(6, getPaymentStatus());
                 int res = stmt.executeUpdate();
                 if (res == 1) return true;
                 return false;
@@ -209,7 +230,7 @@ public class Appointment {
                     patient.fetch();
                 } else
                     patient = null;
-                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date);
+                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"));
                 appointments[count] = appointment;
                 count++;
             }
@@ -267,7 +288,7 @@ public class Appointment {
             while (res.next()) {
                 Patient patient = new Patient(res.getInt("patientID"));
                 patient.fetch();
-                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date);
+                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"));
                 appointments[count] = appointment;
                 count++;
             }
@@ -312,6 +333,8 @@ public class Appointment {
             "     startTime TIME," +
             "     endTime TIME," +
             "     appointmentDate DATE," +
+            "     status TINYINT DEFAULT 0," +
+            "     paymentStatus TINYINT DEFAULT 0," +
             "     PRIMARY KEY (startTime, appointmentDate, partner)," +
             "     FOREIGN KEY (patientID) REFERENCES Patient(patientID));");
     }
