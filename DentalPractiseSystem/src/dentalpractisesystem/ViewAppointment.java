@@ -45,8 +45,7 @@ public class ViewAppointment extends javax.swing.JPanel {
                 checkupButton.setEnabled(false);
             }
             treatments = VisitTreatment.fetch(a);
-            updateCost();
-            updateDropdown();
+            updateCostAndDropdown();
         }
     }
     
@@ -68,22 +67,17 @@ public class ViewAppointment extends javax.swing.JPanel {
         checkupRemaining.setText(checkups + " Remaining");
     }
     
-    public void updateCost() {
-        if (appointment.getStatus() == 2 || appointment.getPaymentStatus() == 2) {
+    public void updateCostAndDropdown() {
+        treatmentsComboBox.removeAllItems();
+        double cost = 0;
+        for (int i = 0; i<treatments.length; i++) {
+            cost = cost + treatments[i].getTreatment().getCost();
+            treatmentsComboBox.addItem(treatments[i].getTreatment().toString());
+        }
+        if (appointment.getStatus() == 2) {
             totalCost.setText("£0.00");
         } else {
-            double cost = 0;
-            for (int i = 0; i<treatments.length; i++) {
-                cost = cost + treatments[i].getTreatment().getCost();
-            }
-            totalCost.setText("£"+cost);
-        }
-   }
-    
-    public void updateDropdown() {
-        treatmentsComboBox.removeAllItems();
-        for (int i = 0; i<treatments.length; i++) {
-            treatmentsComboBox.addItem(treatments[i].getTreatment().toString());
+           totalCost.setText("£"+cost);
         }
     }
 
@@ -530,8 +524,7 @@ public class ViewAppointment extends javax.swing.JPanel {
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         treatments[treatmentsComboBox.getSelectedIndex()].getTreatment().setCost(0.00);
-        updateCost();
-        updateDropdown();
+        updateCostAndDropdown();
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void useVisitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useVisitActionPerformed
