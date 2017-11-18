@@ -38,6 +38,8 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     
     private Partner partner;
     
+    private Appointment[][] weekAppointments;
+    
     private java.sql.Time dayStart = new java.sql.Time(28800000);
     private java.sql.Time dayEnd = new java.sql.Time(57600000);
 
@@ -48,6 +50,10 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         this.frame = frame;
         this.timeOffset = timeO;
         this.partner = partner;
+        
+        System.out.println(Color.RED.getBlue());
+        System.out.println(Color.ORANGE.getBlue());
+        System.out.println(Color.GREEN.getBlue());
         
         if (timeOffset != 0) {
             cToday.add(Calendar.DATE, timeOffset);
@@ -91,6 +97,8 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                 cFri.add(Calendar.DATE, 6); break;
         }
         
+        this.weekAppointments = getAppointments();
+        
         initComponents();
         
         if (this.partner == Partner.DENTIST)
@@ -98,6 +106,66 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         else
             partnerComboBox.setSelectedIndex(1);
 
+    }
+    
+    private Appointment[][] getAppointments() {
+        java.sql.Date weekStart = new java.sql.Date(cMon.getTimeInMillis());
+        java.sql.Date tuesDate = new java.sql.Date(cMon.getTimeInMillis());
+        java.sql.Date wedDate = new java.sql.Date(cMon.getTimeInMillis());
+        java.sql.Date thrsDate = new java.sql.Date(cMon.getTimeInMillis());
+        java.sql.Date weekEnd = new java.sql.Date(cFri.getTimeInMillis());
+        Appointment[] weekAppoints = Appointment.fetchBetweenDatesPartner(weekStart, weekEnd, partner);
+        
+        int monLength = 0;
+        int tuesLength = 0;
+        int wedLength = 0;
+        int thrsLength = 0;
+        int friLength = 0;
+        
+        for (int i=0; i<weekAppoints.length; i++) {
+            switch ((int)weekAppoints[i].getDate().getDay()) {
+                case 1: monLength++; break;
+                case 2: tuesLength++; break;
+                case 3: wedLength++; break;
+                case 4: thrsLength++; break;
+                case 5: friLength++; break;
+            }
+        }
+        
+        int monCount = 0;
+        int tuesCount = 0;
+        int wedCount = 0;
+        int thrsCount = 0;
+        int friCount = 0;
+        
+        Appointment[] monAppoints = new Appointment[monLength];
+        Appointment[] tuesAppoints = new Appointment[tuesLength];
+        Appointment[] wedAppoints = new Appointment[wedLength];
+        Appointment[] thrsAppoints = new Appointment[thrsLength];
+        Appointment[] friAppoints = new Appointment[friLength];
+        
+        for (int i=0; i<weekAppoints.length; i++) {
+            switch ((int)weekAppoints[i].getDate().getDay()) {
+                case 1: monAppoints[monCount] = weekAppoints[i];
+                    monCount++; break;
+                case 2: tuesAppoints[tuesCount] = weekAppoints[i];
+                    tuesCount++; break;
+                case 3: wedAppoints[wedCount] = weekAppoints[i];
+                    wedCount++; break;
+                case 4: thrsAppoints[thrsCount] = weekAppoints[i];
+                    thrsCount++; break;
+                case 5: friAppoints[friCount] = weekAppoints[i];
+                    friCount++; break;
+            }
+        }
+        
+        Appointment[][] ret = new Appointment[5][];
+        ret[0] = monAppoints;
+        ret[1] = tuesAppoints;
+        ret[2] = wedAppoints;
+        ret[3] = thrsAppoints;
+        ret[4] = friAppoints;
+        return ret;
     }
 
     /**
@@ -125,6 +193,12 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         friPanel = new javax.swing.JPanel();
         timesPanel = new javax.swing.JPanel();
         partnerComboBox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
 
         jButton1.setText("<<");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -150,7 +224,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
 
         monPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
         monPanel.setLayout(new java.awt.GridBagLayout());
-        setJPanel(monPanel, cMon);
+        setJPanel(monPanel, weekAppointments[0], cMon);
 
         jButton3.setText("Menu");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -165,14 +239,14 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
 
         tuesPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, new java.awt.Color(0, 0, 0)));
         tuesPanel.setLayout(new java.awt.GridBagLayout());
-        setJPanel(tuesPanel, cTues);
+        setJPanel(tuesPanel, weekAppointments[1], cTues);
 
         wedLabel.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         wedLabel.setText(dateFormat.format(cWed.getTime()));
         wedLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         wedPanel.setLayout(new java.awt.GridBagLayout());
-        setJPanel(wedPanel, cWed);
+        setJPanel(wedPanel, weekAppointments[2], cWed);
 
         thrsLabel.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         thrsLabel.setText(dateFormat.format(cThrs.getTime()));
@@ -180,7 +254,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
 
         thrsPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
         thrsPanel.setLayout(new java.awt.GridBagLayout());
-        setJPanel(thrsPanel, cThrs);
+        setJPanel(thrsPanel, weekAppointments[3], cThrs);
 
         friLabel.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         friLabel.setText(dateFormat.format(cFri.getTime()));
@@ -188,7 +262,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
 
         friPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, new java.awt.Color(0, 0, 0)));
         friPanel.setLayout(new java.awt.GridBagLayout());
-        setJPanel(friPanel, cFri);
+        setJPanel(friPanel, weekAppointments[4], cFri);
 
         timesPanel.setLayout(new java.awt.GridBagLayout());
         GridBagConstraints cTimes = new GridBagConstraints();
@@ -214,6 +288,58 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Booked Appointment");
+
+        jLabel2.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Treatments Added");
+        jLabel2.setBackground(Color.ORANGE);
+
+        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Complete/Paid");
+        jLabel3.setBackground(Color.GREEN);
+
+        jPanel1.setBackground(new java.awt.Color(255, 0, 0));
+        jPanel1.setPreferredSize(new java.awt.Dimension(26, 20));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 26, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
+        );
+
+        jPanel2.setBackground(new java.awt.Color(255, 200, 0));
+        jPanel2.setPreferredSize(new java.awt.Dimension(26, 20));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 26, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
+        );
+
+        jPanel3.setBackground(new java.awt.Color(0, 255, 0));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 26, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 14, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -223,8 +349,8 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                     .addComponent(timesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(monLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
@@ -235,35 +361,59 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                             .addComponent(tuesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addGap(313, 313, 313)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(partnerComboBox, 0, 181, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(wedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                        .addComponent(wedPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                        .addComponent(partnerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60)))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(thrsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                            .addComponent(thrsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, 0)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addContainerGap(30, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(friLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(friPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(312, 312, 312)
-                        .addComponent(jButton2)))
-                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(wedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(thrsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(wedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(thrsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(friPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(friLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
+                        .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(partnerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton3)
+                        .addComponent(partnerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jButton2))
+                .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(timeLabel)
                     .addComponent(monLabel)
@@ -273,7 +423,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                     .addComponent(friLabel))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(monPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(monPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
                     .addComponent(tuesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(wedPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(thrsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -304,12 +454,13 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         Partner p = Partner.valueOf(selectedItem.toUpperCase());
         if (this.partner != p) {
             this.partner = p;
-            setJPanel(monPanel, cMon);
-            setJPanel(tuesPanel, cTues);
-            setJPanel(wedPanel, cWed);
-            setJPanel(thrsPanel, cThrs);
-            setJPanel(friPanel, cFri);
-        }
+            weekAppointments = getAppointments();
+            setJPanel(monPanel, weekAppointments[0], cMon);
+            setJPanel(tuesPanel, weekAppointments[1], cTues);
+            setJPanel(wedPanel, weekAppointments[2], cWed);
+            setJPanel(thrsPanel, weekAppointments[3], cThrs);
+            setJPanel(friPanel, weekAppointments[4], cFri); 
+       }
     }//GEN-LAST:event_partnerComboBoxActionPerformed
 
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
@@ -329,14 +480,13 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         frame.setContentPane(book);
     }
     
-    private void setJPanel(JPanel panel, Calendar c) {
+    private void setJPanel(JPanel panel, Appointment[] appointments, Calendar c) {
         panel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.gridx = 0;
         java.sql.Date date = new java.sql.Date(c.getTimeInMillis());
-        Appointment[] appointments = Appointment.fetchDatePartner(date, this.partner);
         if(appointments.length == 0) {
             Calendar midnight = Calendar.getInstance();
             Calendar now = Calendar.getInstance();
@@ -412,7 +562,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         }
         if (a.getStatus() == 1)
             view.setBackground(Color.ORANGE);
-        else if (a.getStatus() == 2)
+        else if (a.getStatus() == 2 || a.getPaymentStatus() == 3)
             view.setBackground(Color.GREEN);
         else
             view.setBackground(Color.RED);
@@ -528,6 +678,12 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel monLabel;
     private javax.swing.JPanel monPanel;
     private javax.swing.JComboBox<String> partnerComboBox;

@@ -181,14 +181,14 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Date date = new java.sql.Date(cDisplay.getTimeInMillis());&#xa;java.sql.Time t9 = new java.sql.Time(28800000);&#xa;java.sql.Time t10 = new java.sql.Time(32400000);&#xa;Appointment[] nineAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t9, t10);&#xa;Appointment overlap = null;&#xa;overlap = showAppointments(nineAppoint, ninePanel, t9, t10);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Date date = new java.sql.Date(cDisplay.getTimeInMillis());&#xa;java.sql.Time t9 = new java.sql.Time(28800000);&#xa;java.sql.Time t10 = new java.sql.Time(32400000);&#xa;Appointment overlap = null;&#xa;overlap = showAppointments(dayAppointments[0], ninePanel, t9, t10);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="tenPanel">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t11 = new java.sql.Time(36000000);&#xa;Appointment[] tenAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t10, t11);&#xa;    tenAppoint = new Appointment[appoints.length+1];&#xa;    tenAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        tenAppoint[i+1] = appoints[i];&#xa;} else&#xa;    tenAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t10, t11);&#xa;overlap = showAppointments(tenAppoint, tenPanel, t10, t11);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t11 = new java.sql.Time(36000000);&#xa;Appointment[] tenAppoint; &#xa;if (overlap != null) {&#xa;    int length = dayAppointments[1].length;&#xa;    tenAppoint = new Appointment[length+1];&#xa;    tenAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;length; i++)&#xa;        tenAppoint[i+1] = dayAppointments[1][i];&#xa;} else&#xa;    tenAppoint = dayAppointments[1];&#xa;overlap = showAppointments(tenAppoint, tenPanel, t10, t11);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -202,7 +202,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t12 = new java.sql.Time(39600000);&#xa;Appointment[] elevernAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t11, t12);&#xa;    elevernAppoint = new Appointment[appoints.length+1];&#xa;    elevernAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        elevernAppoint[i+1] = appoints[i];&#xa;} else&#xa;    elevernAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t11, t12);&#xa;overlap = showAppointments(elevernAppoint, elevernPanel, t11, t12);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t12 = new java.sql.Time(39600000);&#xa;Appointment[] elevernAppoint; &#xa;if (overlap != null) {&#xa;    int length = dayAppointments[2].length;&#xa;    elevernAppoint = new Appointment[length+1];&#xa;    elevernAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;length; i++)&#xa;        elevernAppoint[i+1] = dayAppointments[2][i];&#xa;} else&#xa;    elevernAppoint = dayAppointments[2];&#xa;overlap = showAppointments(elevernAppoint, elevernPanel, t11, t12);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -214,7 +214,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="java.sql.Time t13 = new java.sql.Time(43200000);&#xa;Appointment[] twelveAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t12, t13);&#xa;    twelveAppoint = new Appointment[appoints.length+1];&#xa;    twelveAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        twelveAppoint[i+1] = appoints[i];&#xa;} else&#xa;    twelveAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t12, t13);&#xa;overlap = showAppointments(twelveAppoint, twelvePanel, t12, t13);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="java.sql.Time t13 = new java.sql.Time(43200000);&#xa;Appointment[] twelveAppoint; &#xa;if (overlap != null) {&#xa;    int length = dayAppointments[3].length;&#xa;    twelveAppoint = new Appointment[length+1];&#xa;    twelveAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;length; i++)&#xa;        twelveAppoint[i+1] = dayAppointments[3][i];&#xa;} else&#xa;    twelveAppoint = dayAppointments[3];&#xa;overlap = showAppointments(twelveAppoint, twelvePanel, t12, t13);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -228,14 +228,14 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t14 = new java.sql.Time(46800000);&#xa;Appointment[] oneAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t13, t14);&#xa;    oneAppoint = new Appointment[appoints.length+1];&#xa;    oneAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        oneAppoint[i+1] = appoints[i];&#xa;} else&#xa;    oneAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t13, t14);&#xa;overlap = showAppointments(oneAppoint, onePanel, t13, t14);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t14 = new java.sql.Time(46800000);&#xa;Appointment[] oneAppoint; &#xa;if (overlap != null) {&#xa;    int length = dayAppointments[4].length;&#xa;    oneAppoint = new Appointment[length+1];&#xa;    oneAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;length; i++)&#xa;        oneAppoint[i+1] = dayAppointments[4][i];&#xa;} else&#xa;    oneAppoint = dayAppointments[4];&#xa;overlap = showAppointments(oneAppoint, onePanel, t13, t14);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="twoPanel">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t15 = new java.sql.Time(50400000);&#xa;Appointment[] twoAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t14, t15);&#xa;    twoAppoint = new Appointment[appoints.length+1];&#xa;    twoAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        twoAppoint[i+1] = appoints[i];&#xa;} else&#xa;    twoAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t14, t15);&#xa;overlap = showAppointments(twoAppoint, twoPanel, t14, t15);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t15 = new java.sql.Time(50400000);&#xa;Appointment[] twoAppoint; &#xa;if (overlap != null) {&#xa;    int length = dayAppointments[5].length;&#xa;    twoAppoint = new Appointment[length+1];&#xa;    twoAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;length; i++)&#xa;        twoAppoint[i+1] = dayAppointments[5][i];&#xa;} else&#xa;    twoAppoint = dayAppointments[5];&#xa;overlap = showAppointments(twoAppoint, twoPanel, t14, t15);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -249,7 +249,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t16 = new java.sql.Time(54000000);&#xa;Appointment[] threeAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t15, t16);&#xa;    threeAppoint = new Appointment[appoints.length+1];&#xa;    threeAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        threeAppoint[i+1] = appoints[i];&#xa;} else&#xa;    threeAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t15, t16);&#xa;overlap = showAppointments(threeAppoint, threePanel, t15, t16);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t16 = new java.sql.Time(54000000);&#xa;Appointment[] threeAppoint; &#xa;if (overlap != null) {&#xa;    int length = dayAppointments[6].length;&#xa;    threeAppoint = new Appointment[length+1];&#xa;    threeAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;length; i++)&#xa;        threeAppoint[i+1] = dayAppointments[6][i];&#xa;} else&#xa;    threeAppoint = dayAppointments[6];&#xa;overlap = showAppointments(threeAppoint, threePanel, t15, t16);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -269,7 +269,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t17 = new java.sql.Time(57600000);&#xa;Appointment[] fourAppoint; &#xa;if (overlap != null) {&#xa;    Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t16, t17);&#xa;    fourAppoint = new Appointment[appoints.length+1];&#xa;    fourAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;appoints.length; i++)&#xa;        fourAppoint[i+1] = appoints[i];&#xa;} else&#xa;    fourAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t16, t17);&#xa;overlap = showAppointments(fourAppoint, fourPanel, t16, t17);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="java.sql.Time t17 = new java.sql.Time(57600000);&#xa;Appointment[] fourAppoint; &#xa;if (overlap != null) {&#xa;    int length = dayAppointments[7].length;&#xa;    fourAppoint = new Appointment[length+1];&#xa;    fourAppoint[0] = overlap;&#xa;    for(int i=0; i&lt;length; i++)&#xa;        fourAppoint[i+1] = dayAppointments[7][i];&#xa;} else&#xa;    fourAppoint = dayAppointments[7];&#xa;overlap = showAppointments(fourAppoint, fourPanel, t16, t17);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>

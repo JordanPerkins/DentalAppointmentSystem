@@ -30,6 +30,8 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     
     private Calendar cDisplay = Calendar.getInstance();
     
+    private Appointment[][] dayAppointments;
+    
     private Partner partner;
 
     /**
@@ -50,8 +52,89 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                 this.timeOffset++; break;
         }
         
+        this.dayAppointments = getAppointments();
+        
         initComponents();
         
+    }
+    
+        private Appointment[][] getAppointments() {
+        java.sql.Date day = new java.sql.Date(cDisplay.getTimeInMillis());
+        Appointment[] dayAppoints = Appointment.fetchDatePartner(day, partner);
+        
+        int nineLength = 0;
+        int tenLength = 0;
+        int elevernLength = 0;
+        int twelveLength = 0;
+        int oneLength = 0;
+        int twoLength = 0;
+        int threeLength = 0;
+        int fourLength = 0;
+        
+        for (int i=0; i<dayAppoints.length; i++) {
+            switch ((int)dayAppoints[i].getStartTime().getTime()/1000/60/60) {
+                case 8: nineLength++; break;
+                case 9: tenLength++; break;
+                case 10: elevernLength++; break;
+                case 11: twelveLength++; break;
+                case 12: oneLength++; break;
+                case 13: twoLength++; break;
+                case 14: threeLength++; break;
+                case 15: fourLength++; break;
+            }
+        }
+        
+        int nineCount = 0;
+        int tenCount = 0;
+        int elevernCount = 0;
+        int twelveCount = 0;
+        int oneCount = 0;
+        int twoCount = 0;
+        int threeCount = 0;
+        int fourCount = 0;
+        
+        Appointment[] nineAppoints = new Appointment[nineLength];
+        Appointment[] tenAppoints = new Appointment[tenLength];
+        Appointment[] elevernAppoints = new Appointment[elevernLength];
+        Appointment[] twelveAppoints = new Appointment[twelveLength];
+        Appointment[] oneAppoints = new Appointment[oneLength];
+        Appointment[] twoAppoints = new Appointment[twoLength];
+        Appointment[] threeAppoints = new Appointment[threeLength];
+        Appointment[] fourAppoints = new Appointment[fourLength];
+
+        
+        for (int i=0; i<dayAppoints.length; i++) {
+            System.out.println("Start Time: " + (int)dayAppoints[i].getStartTime().getTime()/1000/60/60);
+            switch ((int)dayAppoints[i].getStartTime().getTime()/1000/60/60) {
+                case 8: nineAppoints[nineCount] = dayAppoints[i];
+                    nineCount++; break;
+                case 9: tenAppoints[tenCount] = dayAppoints[i];
+                    tenCount++; break;
+                case 10: elevernAppoints[elevernCount] = dayAppoints[i];
+                    elevernCount++; break;
+                case 11: twelveAppoints[twelveCount] = dayAppoints[i];
+                    twelveCount++; break;
+                case 12: oneAppoints[oneCount] = dayAppoints[i];
+                    oneCount++; break;
+                case 13: twoAppoints[twoCount] = dayAppoints[i];
+                    twoCount++; break;
+                case 14: threeAppoints[threeCount] = dayAppoints[i];
+                    threeCount++; break;
+                case 15: fourAppoints[fourCount] = dayAppoints[i];
+                    fourCount++; break;
+            }
+        }
+        
+        Appointment[][] ret = new Appointment[8][];
+        ret[0] = nineAppoints;
+        ret[1] = tenAppoints;
+        ret[2] = elevernAppoints;
+        ret[3] = twelveAppoints;
+        ret[4] = oneAppoints;
+        ret[5] = twoAppoints;
+        ret[6] = threeAppoints;
+        ret[7] = fourAppoints;
+        return ret;
     }
 
     /**
@@ -138,21 +221,20 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         java.sql.Date date = new java.sql.Date(cDisplay.getTimeInMillis());
         java.sql.Time t9 = new java.sql.Time(28800000);
         java.sql.Time t10 = new java.sql.Time(32400000);
-        Appointment[] nineAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t9, t10);
         Appointment overlap = null;
-        overlap = showAppointments(nineAppoint, ninePanel, t9, t10);
+        overlap = showAppointments(dayAppointments[0], ninePanel, t9, t10);
 
         tenPanel.setLayout(new java.awt.GridBagLayout());
         java.sql.Time t11 = new java.sql.Time(36000000);
         Appointment[] tenAppoint;
         if (overlap != null) {
-            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t10, t11);
-            tenAppoint = new Appointment[appoints.length+1];
+            int length = dayAppointments[1].length;
+            tenAppoint = new Appointment[length+1];
             tenAppoint[0] = overlap;
-            for(int i=0; i<appoints.length; i++)
-            tenAppoint[i+1] = appoints[i];
+            for(int i=0; i<length; i++)
+            tenAppoint[i+1] = dayAppointments[1][i];
         } else
-        tenAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t10, t11);
+        tenAppoint = dayAppointments[1];
         overlap = showAppointments(tenAppoint, tenPanel, t10, t11);
 
         elevernPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
@@ -160,13 +242,13 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         java.sql.Time t12 = new java.sql.Time(39600000);
         Appointment[] elevernAppoint;
         if (overlap != null) {
-            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t11, t12);
-            elevernAppoint = new Appointment[appoints.length+1];
+            int length = dayAppointments[2].length;
+            elevernAppoint = new Appointment[length+1];
             elevernAppoint[0] = overlap;
-            for(int i=0; i<appoints.length; i++)
-            elevernAppoint[i+1] = appoints[i];
+            for(int i=0; i<length; i++)
+            elevernAppoint[i+1] = dayAppointments[2][i];
         } else
-        elevernAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t11, t12);
+        elevernAppoint = dayAppointments[2];
         overlap = showAppointments(elevernAppoint, elevernPanel, t11, t12);
 
         twelvePanel.setPreferredSize(new java.awt.Dimension(116, 0));
@@ -175,13 +257,13 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         java.sql.Time t13 = new java.sql.Time(43200000);
         Appointment[] twelveAppoint;
         if (overlap != null) {
-            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t12, t13);
-            twelveAppoint = new Appointment[appoints.length+1];
+            int length = dayAppointments[3].length;
+            twelveAppoint = new Appointment[length+1];
             twelveAppoint[0] = overlap;
-            for(int i=0; i<appoints.length; i++)
-            twelveAppoint[i+1] = appoints[i];
+            for(int i=0; i<length; i++)
+            twelveAppoint[i+1] = dayAppointments[3][i];
         } else
-        twelveAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t12, t13);
+        twelveAppoint = dayAppointments[3];
         overlap = showAppointments(twelveAppoint, twelvePanel, t12, t13);
 
         onePanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
@@ -189,26 +271,26 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         java.sql.Time t14 = new java.sql.Time(46800000);
         Appointment[] oneAppoint;
         if (overlap != null) {
-            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t13, t14);
-            oneAppoint = new Appointment[appoints.length+1];
+            int length = dayAppointments[4].length;
+            oneAppoint = new Appointment[length+1];
             oneAppoint[0] = overlap;
-            for(int i=0; i<appoints.length; i++)
-            oneAppoint[i+1] = appoints[i];
+            for(int i=0; i<length; i++)
+            oneAppoint[i+1] = dayAppointments[4][i];
         } else
-        oneAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t13, t14);
+        oneAppoint = dayAppointments[4];
         overlap = showAppointments(oneAppoint, onePanel, t13, t14);
 
         twoPanel.setLayout(new java.awt.GridBagLayout());
         java.sql.Time t15 = new java.sql.Time(50400000);
         Appointment[] twoAppoint;
         if (overlap != null) {
-            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t14, t15);
-            twoAppoint = new Appointment[appoints.length+1];
+            int length = dayAppointments[5].length;
+            twoAppoint = new Appointment[length+1];
             twoAppoint[0] = overlap;
-            for(int i=0; i<appoints.length; i++)
-            twoAppoint[i+1] = appoints[i];
+            for(int i=0; i<length; i++)
+            twoAppoint[i+1] = dayAppointments[5][i];
         } else
-        twoAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t14, t15);
+        twoAppoint = dayAppointments[5];
         overlap = showAppointments(twoAppoint, twoPanel, t14, t15);
 
         threePanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(0, 0, 0)));
@@ -216,13 +298,13 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         java.sql.Time t16 = new java.sql.Time(54000000);
         Appointment[] threeAppoint;
         if (overlap != null) {
-            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t15, t16);
-            threeAppoint = new Appointment[appoints.length+1];
+            int length = dayAppointments[6].length;
+            threeAppoint = new Appointment[length+1];
             threeAppoint[0] = overlap;
-            for(int i=0; i<appoints.length; i++)
-            threeAppoint[i+1] = appoints[i];
+            for(int i=0; i<length; i++)
+            threeAppoint[i+1] = dayAppointments[6][i];
         } else
-        threeAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t15, t16);
+        threeAppoint = dayAppointments[6];
         overlap = showAppointments(threeAppoint, threePanel, t15, t16);
 
         fourPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, new java.awt.Color(0, 0, 0)));
@@ -232,13 +314,13 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         java.sql.Time t17 = new java.sql.Time(57600000);
         Appointment[] fourAppoint;
         if (overlap != null) {
-            Appointment[] appoints = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t16, t17);
-            fourAppoint = new Appointment[appoints.length+1];
+            int length = dayAppointments[7].length;
+            fourAppoint = new Appointment[length+1];
             fourAppoint[0] = overlap;
-            for(int i=0; i<appoints.length; i++)
-            fourAppoint[i+1] = appoints[i];
+            for(int i=0; i<length; i++)
+            fourAppoint[i+1] = dayAppointments[7][i];
         } else
-        fourAppoint = Appointment.fetchDatePartnerBetweenTimes(date, this.partner, t16, t17);
+        fourAppoint = dayAppointments[7];
         overlap = showAppointments(fourAppoint, fourPanel, t16, t17);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -289,9 +371,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                             .addComponent(jLabel2))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(tenPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)))
+                            .addComponent(tenPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(elevernPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -414,6 +494,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     */
     
     private Appointment showAppointments(Appointment[] appointments, JPanel panel, java.sql.Time panelStart, java.sql.Time panelEnd) {
+        System.out.println("Panel start: " + panelStart);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
@@ -421,6 +502,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         if (appointments.length != 0) {
             int gridI = 0;
             for (int i=0; i<appointments.length; i++) {
+                System.out.println("Start Time : " + appointments[i].getStartTime());
                 int lengthI = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
                 if (lengthI >= 60 && appointments[i].getStartTime().getTime() == panelStart.getTime()) {
                     JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);

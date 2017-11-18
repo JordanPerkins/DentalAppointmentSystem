@@ -235,7 +235,7 @@ public class Appointment {
                     + "LEFT JOIN Address ON Patient.houseNumber = Address.houseNumber AND Patient.postCode = Address.postCode "
                     + "LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
                     + "LEFT JOIN Plan ON PatientPlan.name = Plan.name "
-                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ?";
+                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ? AND Appointment.patientID != 0";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
@@ -265,7 +265,7 @@ public class Appointment {
                     + "LEFT JOIN Address ON Patient.houseNumber = Address.houseNumber AND Patient.postCode = Address.postCode "
                     + "LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
                     + "LEFT JOIN Plan ON PatientPlan.name = Plan.name "
-                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ?";
+                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ? AND Appointment.patientID != 0";
             stmt = connect().prepareStatement(sql);
             stmt.setDate(1, date);
             stmt.setString(2, partner.toString());
@@ -299,20 +299,19 @@ public class Appointment {
         }
     }
     
-    public static int getCountDatePartnerBetweenTimes(Date date, Partner partner, Time t1, Time t2) {
-       PreparedStatement stmt = null;
+    public static int getCountBetweenDatesPartner(Date dateStart, Date dateEnd, Partner partner) {
+        PreparedStatement stmt = null;
         int count = 0;
         try {
             String sql = "SELECT COUNT(*) FROM Appointment LEFT JOIN Patient ON Patient.patientID = Appointment.patientID "
                     + "LEFT JOIN Address ON Patient.houseNumber = Address.houseNumber AND Patient.postCode = Address.postCode "
                     + "LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
                     + "LEFT JOIN Plan ON PatientPlan.name = Plan.name "
-                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ? AND Appointment.startTime >= ? AND Appointment.startTime < ? AND Appointment.patientID != 0";
+                    + "WHERE Appointment.appointmentDate >= ? AND Appointment.appointmentDate <= ? AND Appointment.partner = ?";
             stmt = connect().prepareStatement(sql);
-            stmt.setDate(1, date);
-            stmt.setString(2, partner.toString());
-            stmt.setTime(3, t1);
-            stmt.setTime(4, t2);
+            stmt.setDate(1, dateStart);
+            stmt.setDate(2, dateEnd);
+            stmt.setString(3, partner.toString());
             ResultSet res = stmt.executeQuery();
             res.next();
             count = res.getInt(1);
@@ -325,11 +324,11 @@ public class Appointment {
                 stmt.close();
             } catch (SQLException ex) {
             }
-        }  
+        } 
     }
     
-    public static Appointment[] fetchDatePartnerBetweenTimes(Date date, Partner partner, Time t1, Time t2) {
-        int size = getCountDatePartnerBetweenTimes(date, partner, t1, t2);
+    public static Appointment[] fetchBetweenDatesPartner(Date dateStart, Date dateEnd, Partner partner) {
+        int size = getCountBetweenDatesPartner(dateStart, dateEnd, partner);
         if (size == 0) return new Appointment[0];
         Appointment[] appointments = new Appointment[size];
         PreparedStatement stmt = null;
@@ -339,12 +338,11 @@ public class Appointment {
                     + "LEFT JOIN Address ON Patient.houseNumber = Address.houseNumber AND Patient.postCode = Address.postCode "
                     + "LEFT JOIN PatientPlan ON Patient.patientID = PatientPlan.patientID "
                     + "LEFT JOIN Plan ON PatientPlan.name = Plan.name "
-                    + "WHERE Appointment.appointmentDate = ? AND Appointment.partner = ? AND Appointment.startTime >= ? AND Appointment.startTime < ? AND Appointment.patientID != 0";
+                    + "WHERE Appointment.appointmentDate >= ? AND Appointment.appointmentDate <= ? AND Appointment.partner = ?";
             stmt = connect().prepareStatement(sql);
-            stmt.setDate(1, date);
-            stmt.setString(2, partner.toString());
-            stmt.setTime(3, t1);
-            stmt.setTime(4, t2);
+            stmt.setDate(1, dateStart);
+            stmt.setDate(2, dateEnd);
+            stmt.setString(3, partner.toString());
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
                 int planPatientID = res.getInt(8);
@@ -359,7 +357,8 @@ public class Appointment {
                     patient = new Patient(planPatientID, res.getString(9),
                         res.getString(10), res.getString(11), res.getDate(12), res.getString(13), address, patientPlan);
                 }
-                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"), res.getInt("status"));
+                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), 
+                        res.getDate("appointmentDate"), res.getInt("paymentStatus"), res.getInt("status"));
                 appointments[count] = appointment;
                 count++;
             }
