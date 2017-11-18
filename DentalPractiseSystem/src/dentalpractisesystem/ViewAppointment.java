@@ -20,7 +20,7 @@ public class ViewAppointment extends javax.swing.JPanel {
     private JFrame frame;
     private int timeOffset;
     private PatientPlan plan;
-    private ArrayList treatments = new ArrayList();
+    private VisitTreatment[] treatments;
     
     /**
      * Creates new form ViewAppointment
@@ -44,12 +44,9 @@ public class ViewAppointment extends javax.swing.JPanel {
                 repairButton.setEnabled(false);
                 checkupButton.setEnabled(false);
             }
-            VisitTreatment[] visitTreatments = VisitTreatment.fetch(a);
-            for (int i = 0; i<visitTreatments.length; i++) {
-                treatmentsComboBox.addItem(visitTreatments[i].getTreatment().toString());
-                treatments.add(visitTreatments[i]);
-            }
+            treatments = VisitTreatment.fetch(a);
             updateCost();
+            updateDropdown();
         }
     }
     
@@ -76,13 +73,17 @@ public class ViewAppointment extends javax.swing.JPanel {
             totalCost.setText("£0.00");
         } else {
             double cost = 0;
-            for (int i = 0; i<treatments.size(); i++) {
-                VisitTreatment treatment = (VisitTreatment) treatments.get(i);
-                if (treatment != null) {
-                    cost = cost + treatment.getTreatment().getCost();
-                }
+            for (int i = 0; i<treatments.length; i++) {
+                cost = cost + treatments[i].getTreatment().getCost();
             }
             totalCost.setText("£"+cost);
+        }
+   }
+    
+    public void updateDropdown() {
+        treatmentsComboBox.removeAllItems();
+        for (int i = 0; i<treatments.length; i++) {
+            treatmentsComboBox.addItem(treatments[i].getTreatment().toString());
         }
     }
 
@@ -528,10 +529,9 @@ public class ViewAppointment extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-        int index = treatmentsComboBox.getSelectedIndex();
-        treatments.remove(index);
-        treatmentsComboBox.removeItemAt(index);
+        treatments[treatmentsComboBox.getSelectedIndex()].getTreatment().setCost(0.00);
         updateCost();
+        updateDropdown();
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void useVisitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useVisitActionPerformed
