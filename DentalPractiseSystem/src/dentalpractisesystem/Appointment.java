@@ -271,16 +271,20 @@ public class Appointment {
             stmt.setString(2, partner.toString());
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
-                int planPatientID = res.getInt(8);
+                int patientID = res.getInt(8);
                 Patient patient = null;
                 if (!res.wasNull()) {
-                    Plan plan = new Plan(res.getString(27), res.getDouble(28),
-                            res.getInt(29), res.getInt(30), res.getInt(31));
-                    PatientPlan patientPlan = new PatientPlan(planPatientID, plan, res.getDate(23),
-                            res.getInt(24), res.getInt(25), res.getInt(26));
+                    int planPatientID = res.getInt(26);
+                    PatientPlan patientPlan = null;
+                    if (!res.wasNull()) {
+                        Plan plan = new Plan(res.getString(27), res.getDouble(28),
+                                res.getInt(29), res.getInt(30), res.getInt(31));
+                        patientPlan = new PatientPlan(planPatientID, plan, res.getDate(23),
+                                res.getInt(24), res.getInt(25), res.getInt(26));
+                    }
                     Address address = new Address(res.getInt(16), res.getString(17),
                         res.getString(18), res.getString(19), res.getString(20));
-                    patient = new Patient(planPatientID, res.getString(9),
+                    patient = new Patient(patientID, res.getString(9),
                         res.getString(10), res.getString(11), res.getDate(12), res.getString(13), address, patientPlan);
                 }
                 Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"), res.getInt("status"));
@@ -345,16 +349,20 @@ public class Appointment {
             stmt.setString(3, partner.toString());
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
-                int planPatientID = res.getInt(8);
+                int patientID = res.getInt(8);
                 Patient patient = null;
                 if (!res.wasNull()) {
-                    Plan plan = new Plan(res.getString(27), res.getDouble(28),
-                            res.getInt(29), res.getInt(30), res.getInt(31));
-                    PatientPlan patientPlan = new PatientPlan(planPatientID, plan, res.getDate(23),
-                            res.getInt(24), res.getInt(25), res.getInt(26));
+                    int planPatientID = res.getInt(26);
+                    PatientPlan patientPlan = null;
+                    if (!res.wasNull()) {
+                        Plan plan = new Plan(res.getString(27), res.getDouble(28),
+                                res.getInt(29), res.getInt(30), res.getInt(31));
+                        patientPlan = new PatientPlan(planPatientID, plan, res.getDate(23),
+                                res.getInt(24), res.getInt(25), res.getInt(26));
+                    }
                     Address address = new Address(res.getInt(16), res.getString(17),
                         res.getString(18), res.getString(19), res.getString(20));
-                    patient = new Patient(planPatientID, res.getString(9),
+                    patient = new Patient(patientID, res.getString(9),
                         res.getString(10), res.getString(11), res.getDate(12), res.getString(13), address, patientPlan);
                 }
                 Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), 
