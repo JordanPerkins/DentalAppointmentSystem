@@ -6,6 +6,7 @@
 package dentalpractisesystem;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 
 /**
@@ -19,7 +20,7 @@ public class ViewAppointment extends javax.swing.JPanel {
     private JFrame frame;
     private int timeOffset;
     private PatientPlan plan;
-    private VisitTreatment[] treatments;
+    private ArrayList treatments = new ArrayList();
     
     /**
      * Creates new form ViewAppointment
@@ -43,10 +44,12 @@ public class ViewAppointment extends javax.swing.JPanel {
                 repairButton.setEnabled(false);
                 checkupButton.setEnabled(false);
             }
-            treatments = VisitTreatment.fetch(a);
-            for (int i = 0; i<treatments.length; i++) {
-                treatmentsComboBox.addItem(treatments[i].getTreatment().toString());
+            VisitTreatment[] visitTreatments = VisitTreatment.fetch(a);
+            for (int i = 0; i<visitTreatments.length; i++) {
+                treatmentsComboBox.addItem(visitTreatments[i].getTreatment().toString());
+                treatments.add(visitTreatments[i]);
             }
+            updateCost();
         }
     }
     
@@ -66,6 +69,21 @@ public class ViewAppointment extends javax.swing.JPanel {
         visitRemaining.setText(visits + " Remaining");
         repairRemaining.setText(repairs + " Remaining");
         checkupRemaining.setText(checkups + " Remaining");
+    }
+    
+    public void updateCost() {
+        if (appointment.getStatus() == 2 || appointment.getPaymentStatus() == 2) {
+            totalCost.setText("£0.00");
+        } else {
+            double cost = 0;
+            for (int i = 0; i<treatments.size(); i++) {
+                VisitTreatment treatment = (VisitTreatment) treatments.get(i);
+                if (treatment != null) {
+                    cost = cost + treatment.getTreatment().getCost();
+                }
+            }
+            totalCost.setText("£"+cost);
+        }
     }
 
     /**
@@ -110,14 +128,14 @@ public class ViewAppointment extends javax.swing.JPanel {
         visitButton = new javax.swing.JButton();
         repairButton = new javax.swing.JButton();
         treatmentsComboBox = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
+        removeButton = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         planLabel = new javax.swing.JLabel();
         visitRemaining = new javax.swing.JLabel();
         repairRemaining = new javax.swing.JLabel();
         checkupRemaining = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
+        totalCost = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         cancel = new javax.swing.JButton();
         complete = new javax.swing.JButton();
@@ -321,10 +339,10 @@ public class ViewAppointment extends javax.swing.JPanel {
             }
         });
 
-        jButton5.setText("<html>Remove from<br> cost<html>");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        removeButton.setText("<html>Remove from<br> cost<html>");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                removeButtonActionPerformed(evt);
             }
         });
 
@@ -337,8 +355,6 @@ public class ViewAppointment extends javax.swing.JPanel {
         checkupRemaining.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
 
         jLabel26.setText("Total cost due today:");
-
-        jLabel27.setText("jLabel27");
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -374,11 +390,11 @@ public class ViewAppointment extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(treatmentsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(46, 46, 46)
-                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(totalCost, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(53, 53, 53)))
                 .addContainerGap())
         );
@@ -390,11 +406,11 @@ public class ViewAppointment extends javax.swing.JPanel {
                         .addGap(6, 6, 6)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(treatmentsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel27)))
+                            .addComponent(totalCost)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -511,9 +527,12 @@ public class ViewAppointment extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cancelActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        int index = treatmentsComboBox.getSelectedIndex();
+        treatments.remove(index);
+        treatmentsComboBox.removeItemAt(index);
+        updateCost();
+    }//GEN-LAST:event_removeButtonActionPerformed
 
     private void useVisitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useVisitActionPerformed
         plan.setUsedVisits(plan.getUsedVisits()+1);
@@ -538,7 +557,6 @@ public class ViewAppointment extends javax.swing.JPanel {
     private javax.swing.JLabel checkupRemaining;
     private javax.swing.JButton complete;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -554,7 +572,6 @@ public class ViewAppointment extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -571,8 +588,10 @@ public class ViewAppointment extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel planLabel;
     private javax.swing.JButton print;
+    private javax.swing.JButton removeButton;
     private javax.swing.JButton repairButton;
     private javax.swing.JLabel repairRemaining;
+    private javax.swing.JLabel totalCost;
     private javax.swing.JComboBox<String> treatmentsComboBox;
     private javax.swing.JButton visitButton;
     private javax.swing.JLabel visitRemaining;

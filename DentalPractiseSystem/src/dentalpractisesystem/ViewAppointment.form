@@ -465,12 +465,12 @@
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="treatmentsComboBox" min="-2" pref="307" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jButton5" min="-2" pref="105" max="-2" attributes="0"/>
+                              <Component id="removeButton" min="-2" pref="105" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel26" min="-2" pref="133" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                              <Component id="jLabel27" min="-2" pref="118" max="-2" attributes="0"/>
+                              <Component id="totalCost" min="-2" pref="118" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -486,12 +486,12 @@
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="treatmentsComboBox" min="-2" pref="67" max="-2" attributes="0"/>
-                                  <Component id="jButton5" min="-2" pref="75" max="-2" attributes="0"/>
+                                  <Component id="removeButton" min="-2" pref="75" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel26" alignment="3" max="32767" attributes="0"/>
-                                  <Component id="jLabel27" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="totalCost" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -559,12 +559,12 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton5">
+            <Component class="javax.swing.JButton" name="removeButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&lt;html&gt;Remove from&lt;br&gt; cost&lt;html&gt;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeButtonActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel21">
@@ -600,10 +600,7 @@
                 <Property name="text" type="java.lang.String" value="Total cost due today:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel27">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel27"/>
-              </Properties>
+            <Component class="javax.swing.JLabel" name="totalCost">
             </Component>
             <Component class="javax.swing.JSeparator" name="jSeparator1">
               <Properties>
