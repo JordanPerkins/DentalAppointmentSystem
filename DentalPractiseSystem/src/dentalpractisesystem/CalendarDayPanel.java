@@ -453,7 +453,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
         Appointment a = (Appointment)((JButton)evt.getSource()).getClientProperty("appointment");
-        AddTreatment add = new AddTreatment(frame,a,partner);
+        AddTreatment add = new AddTreatment(frame,a,partner, this.timeOffset);
         frame.setContentPane(add);
     }
     

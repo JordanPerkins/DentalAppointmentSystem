@@ -44,7 +44,14 @@ public class ViewAppointment extends javax.swing.JPanel {
                 repairButton.setEnabled(false);
                 checkupButton.setEnabled(false);
             }
-            treatments = VisitTreatment.fetch(a);
+            if (appointment.getPaymentStatus() == 0) {
+                treatments = VisitTreatment.fetch(a);
+            } else if (appointment.getPaymentStatus() == 1) {
+                treatments = VisitTreatment.fetch(a);
+                setZeroCosts();
+            } else if (appointment.getPaymentStatus() == 2) {
+                treatments = VisitTreatment.fetchTreatmentCourse(a);
+            }
             updateCostAndDropdown();
         }
     }
@@ -79,6 +86,12 @@ public class ViewAppointment extends javax.swing.JPanel {
         } else {
            totalCost.setText("£"+cost);
         }
+    }
+    
+    public void setZeroCosts() {
+            for (int i = 0; i<treatments.length; i++) {
+                treatments[i].getTreatment().setCost(0.00);
+            }    
     }
 
     /**

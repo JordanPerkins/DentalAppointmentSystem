@@ -133,6 +133,72 @@ public class VisitTreatment extends SQLConnector {
         }       
     }
     
+        public static int getCountTreatmentCourse(Appointment appointment) {
+        PreparedStatement stmt = null;
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM VisitTreatment NATURAL JOIN Appointment NATURAL JOIN Treatment WHERE (Appointment.appointmentDate = ? AND Appointment.partner = ? AND Appointment.startTime = ? AND Appointment.paymentStatus = 2)"
+                    + "OR ((Appointment.appointmentDate < ? OR (Appointment.appointmentDate = ? AND Appointment.startTime < ?)) AND Appointment.paymentStatus = 1 AND Appointment.patientID = ?)";
+            stmt = connect().prepareStatement(sql);
+            stmt.setDate(1, appointment.getDate());
+            stmt.setString(2, appointment.getPartner().toString());
+            stmt.setTime(3, appointment.getStartTime());
+            stmt.setDate(4, appointment.getDate());
+            stmt.setDate(5, appointment.getDate());
+            stmt.setTime(6, appointment.getStartTime());
+            stmt.setInt(7, appointment.getPatient().getPatientID());
+            ResultSet res = stmt.executeQuery();
+            res.next();
+            count = res.getInt(1);
+            return count;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex) {
+            }
+        }    
+    }
+        
+    public static VisitTreatment[] fetchTreatmentCourse(Appointment appointment) {
+        int size = getCountTreatmentCourse(appointment);
+        if (size == 0) return new VisitTreatment[0];
+        VisitTreatment[] list = new VisitTreatment[size];
+        PreparedStatement stmt = null;
+        int count = 0;
+        try {
+            String sql = "SELECT * FROM VisitTreatment NATURAL JOIN Appointment NATURAL JOIN Treatment WHERE (Appointment.appointmentDate = ? AND Appointment.partner = ? AND Appointment.startTime = ? AND Appointment.paymentStatus = 2)"
+                    + "OR ((Appointment.appointmentDate < ? OR (Appointment.appointmentDate = ? AND Appointment.startTime < ?)) AND Appointment.paymentStatus = 1 AND Appointment.patientID = ?)";
+            stmt = connect().prepareStatement(sql);
+            stmt.setDate(1, appointment.getDate());
+            stmt.setString(2, appointment.getPartner().toString());
+            stmt.setTime(3, appointment.getStartTime());
+            stmt.setDate(4, appointment.getDate());
+            stmt.setDate(5, appointment.getDate());
+            stmt.setTime(6, appointment.getStartTime());
+            stmt.setInt(7, appointment.getPatient().getPatientID());
+            ResultSet res = stmt.executeQuery();
+            while (res.next()) {
+                Treatment treatment = new Treatment(res.getString(1), res.getDouble(9));
+                VisitTreatment visit = new VisitTreatment(appointment, treatment);
+                list[count] = visit;
+                count++;
+            }
+            return list;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new VisitTreatment[0];
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+                close();
+            } catch (SQLException ex) {
+            }
+        }       
+    }
+    
     public static void addList(ArrayList treatments, Appointment a) {
         for (int i = 0; i<treatments.size(); i++) {
             Treatment treatment = (Treatment) treatments.get(i);

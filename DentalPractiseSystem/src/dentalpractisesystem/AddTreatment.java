@@ -22,12 +22,13 @@ public class AddTreatment extends javax.swing.JPanel {
     private javax.swing.JFrame frame;
     private Appointment appointment;
     private Partner partner;
+    private int timeOffset;
     
 
     /**
      * Creates new form AddTreatment
      */
-    public AddTreatment(javax.swing.JFrame frame, Appointment appointment, Partner partner) {
+    public AddTreatment(javax.swing.JFrame frame, Appointment appointment, Partner partner, int timeOffset) {
         initComponents();
         for (int i = 0; i<treatments.length; i++) {
             listModel.addElement(treatments[i].toString());
@@ -35,6 +36,7 @@ public class AddTreatment extends javax.swing.JPanel {
         this.frame = frame;
         this.appointment = appointment;
         this.partner = partner;
+        this.timeOffset = timeOffset;
     }
 
     /**
@@ -94,7 +96,7 @@ public class AddTreatment extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected Treatments"));
 
-        jList1.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jList1.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jList1);
 
@@ -110,11 +112,10 @@ public class AddTreatment extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,7 +124,7 @@ public class AddTreatment extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(107, 107, 107)
+                .addGap(105, 105, 105)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -137,7 +138,7 @@ public class AddTreatment extends javax.swing.JPanel {
             }
         });
 
-        jList2.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jList2.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jList2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(jList2);
 
@@ -145,15 +146,14 @@ public class AddTreatment extends javax.swing.JPanel {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(266, 266, 266))
+                .addContainerGap(319, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addContainerGap(207, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(11, 11, 11)))
+                    .addGap(0, 141, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,9 +186,9 @@ public class AddTreatment extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(362, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addGap(29, 29, 29)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -215,7 +215,7 @@ public class AddTreatment extends javax.swing.JPanel {
 
     private void calendarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calendarButtonActionPerformed
         setVisible(false);
-        CalendarDayPanel panel = new CalendarDayPanel(frame, 0, partner);
+        CalendarDayPanel panel = new CalendarDayPanel(frame, timeOffset, partner);
         frame.setContentPane(panel);
     }//GEN-LAST:event_calendarButtonActionPerformed
 
@@ -241,7 +241,7 @@ public class AddTreatment extends javax.swing.JPanel {
         VisitTreatment.addList(selected, appointment);
         appointment.setStatus(1);
         setVisible(false);
-        CalendarDayPanel panel = new CalendarDayPanel(frame, 0, partner);
+        CalendarDayPanel panel = new CalendarDayPanel(frame, timeOffset, partner);
         frame.setContentPane(panel);
     }//GEN-LAST:event_saveActionPerformed
 
