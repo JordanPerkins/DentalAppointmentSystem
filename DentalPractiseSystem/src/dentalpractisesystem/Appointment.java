@@ -380,6 +380,25 @@ public class Appointment extends SQLConnector {
         }
     }
     
+    public static boolean deleteByPatient(Patient p) {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "DELETE FROM Appointment WHERE patientID = ?";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, p.getPatientID());
+            int res = stmt.executeUpdate();
+            return res == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (SQLException ex){
+            }
+        }
+    }
+    
     public static void createTable() {
         update("CREATE TABLE IF NOT EXISTS Appointment(" +
             "     patientID INTEGER," +

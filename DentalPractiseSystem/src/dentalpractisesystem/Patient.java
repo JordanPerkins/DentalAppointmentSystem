@@ -217,6 +217,7 @@ public class Patient extends SQLConnector {
         PreparedStatement stmt = null;
         try {
             if (getPatientPlan() != null) plan.delete();
+            Appointment.deleteByPatient(this);
             String sql = "DELETE FROM Patient WHERE patientID = ?";
             stmt = connect().prepareStatement(sql);
             stmt.setInt(1, patientID);

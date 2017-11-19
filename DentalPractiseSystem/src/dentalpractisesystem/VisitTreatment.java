@@ -50,7 +50,7 @@ public class VisitTreatment extends SQLConnector {
             "    name VARCHAR(30)," +
             "    PRIMARY KEY (partner, startTime, appointmentDate, name)," +
             "    FOREIGN KEY (name) REFERENCES Treatment(name), " +
-            "    FOREIGN KEY (startTime, appointmentDate, partner) REFERENCES Appointment(startTime, appointmentDate, partner));");
+            "    FOREIGN KEY (startTime, appointmentDate, partner) REFERENCES Appointment(startTime, appointmentDate, partner) ON DELETE CASCADE);");
     }
     
     public boolean add() {
