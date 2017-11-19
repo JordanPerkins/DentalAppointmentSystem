@@ -466,7 +466,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         JButton view = new JButton();
         view.setPreferredSize(new Dimension(1,1));
         view.setText("<html>" + patient.getFirstName() + "<br>" + patient.getSurname() + "</html>");
-        if (a.getStatus() == 1) {
+        if (a.getStatus() == 1 || a.getStatus() == 2) {
             view.setBackground(Color.GREEN);
         } else {
             view.setFont(new Font("Tahoma", Font.PLAIN, 10));
