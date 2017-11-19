@@ -550,22 +550,22 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             view.setText(patient.getFirstName() + " " + patient.getSurname());
             view.setPreferredSize(new Dimension(1,1));
             view.putClientProperty("appointment", a);
-            view.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    viewAppointmentActionPerformed(evt);
-                }
-            });
+            if (a.getStatus() == 1)
+                view.setBackground(Color.ORANGE);
+            else if (a.getStatus() == 2 || a.getPaymentStatus() == 3)
+                view.setBackground(Color.GREEN);
+            else
+                view.setBackground(Color.RED);
         } else {
+            System.out.println(a.getStartTime());
             view.setText("Blank");
-            view.setEnabled(false);
             view.setPreferredSize(new Dimension(1,1));
         }
-        if (a.getStatus() == 1)
-            view.setBackground(Color.ORANGE);
-        else if (a.getStatus() == 2 || a.getPaymentStatus() == 3)
-            view.setBackground(Color.GREEN);
-        else
-            view.setBackground(Color.RED);
+        view.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAppointmentActionPerformed(evt);
+            }
+        });
         return view;
     }
     
