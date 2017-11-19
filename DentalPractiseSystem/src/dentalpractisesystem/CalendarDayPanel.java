@@ -5,6 +5,7 @@
  */
 package dentalpractisesystem;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -434,7 +435,11 @@ public class CalendarDayPanel extends javax.swing.JPanel {
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         setVisible(false);
-        CalendarDayPanel next = new CalendarDayPanel(this.frame, this.timeOffset-1, this.partner);
+        int timeOffsetNew = this.timeOffset-1;
+        if (cDisplay.get(Calendar.DAY_OF_WEEK) == 2) {
+            timeOffsetNew = this.timeOffset-3;
+        }
+        CalendarDayPanel next = new CalendarDayPanel(this.frame, timeOffsetNew, this.partner);
         this.frame.setContentPane(next);
     }//GEN-LAST:event_backActionPerformed
 
@@ -460,12 +465,10 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     private JButton createViewButton(Patient patient, Appointment a) {
         JButton view = new JButton();
         view.setPreferredSize(new Dimension(1,1));
+        view.setText("<html>" + patient.getFirstName() + "<br>" + patient.getSurname() + "</html>");
         if (a.getStatus() == 1) {
-            view.setOpaque(false);
-            view.setContentAreaFilled(false);
-            view.setBorderPainted(false);
+            view.setBackground(Color.GREEN);
         } else {
-            view.setText("<html>" + patient.getFirstName() + "<br>" + patient.getSurname() + "</html>");
             view.setFont(new Font("Tahoma", Font.PLAIN, 10));
             view.putClientProperty("appointment", a);
             view.addActionListener(new java.awt.event.ActionListener() {
