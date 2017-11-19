@@ -174,7 +174,10 @@ public class Patient extends SQLConnector {
     
     public static Patient[] fetchAll() {
         int size = getCount();
-        if (size == 0) return new Patient[0];
+        if (size == 0) {
+            close();
+            return new Patient[0];
+        }
         Patient[] list = new Patient[size];
         PreparedStatement stmt = null;
         int count = 0;

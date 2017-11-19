@@ -231,7 +231,10 @@ public class Appointment extends SQLConnector {
     
     public static Appointment[] fetchDatePartner(Date date, Partner partner) {
         int size = getCountDatePartner(date, partner);
-        if (size == 0) return new Appointment[0];
+        if (size == 0) {
+            close();
+            return new Appointment[0];
+        }
         Appointment[] appointments = new Appointment[size];
         PreparedStatement stmt = null;
         int count = 0;
@@ -309,7 +312,10 @@ public class Appointment extends SQLConnector {
     
     public static Appointment[] fetchBetweenDatesPartner(Date dateStart, Date dateEnd, Partner partner) {
         int size = getCountBetweenDatesPartner(dateStart, dateEnd, partner);
-        if (size == 0) return new Appointment[0];
+        if (size == 0) {            
+            close();
+            return new Appointment[0];
+        }
         Appointment[] appointments = new Appointment[size];
         PreparedStatement stmt = null;
         int count = 0;
