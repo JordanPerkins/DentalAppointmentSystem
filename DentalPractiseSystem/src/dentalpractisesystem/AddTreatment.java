@@ -238,10 +238,7 @@ public class AddTreatment extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-        for (int i = 0; i<selected.size(); i++) {
-            Treatment treatment = (Treatment) selected.get(i);
-            new VisitTreatment(appointment, treatment).add();
-        }
+        VisitTreatment.addList(selected, appointment);
         appointment.setStatus(1);
         setVisible(false);
         CalendarDayPanel panel = new CalendarDayPanel(frame, 0, partner);

@@ -124,6 +124,7 @@ public class Plan extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
         }

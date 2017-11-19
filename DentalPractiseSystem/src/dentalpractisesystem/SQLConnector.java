@@ -26,7 +26,7 @@ public class SQLConnector {
     // Connect to SQL
     public static Connection connect() {
     try {
-            if (connection == null) {
+            if (connection == null || !connection.isValid(5)) {
                 DriverManager.setLoginTimeout(10);
                 connection = DriverManager.getConnection("jdbc:mysql://"+server+"/"+db, user, password);
                 System.out.println("Connecting");
@@ -78,5 +78,6 @@ public class SQLConnector {
         Appointment.createTable();
         Treatment.createTable();
         VisitTreatment.createTable();
+        close();
     }
 }

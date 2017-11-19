@@ -9,6 +9,7 @@ import static dentalpractisesystem.SQLConnector.connect;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -126,9 +127,19 @@ public class VisitTreatment extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
-        }  
+        }       
     }
+    
+    public static void addList(ArrayList treatments, Appointment a) {
+        for (int i = 0; i<treatments.size(); i++) {
+            Treatment treatment = (Treatment) treatments.get(i);
+            new VisitTreatment(a, treatment).add();
+        }
+        SQLConnector.close();
+    }
+    
     
 }

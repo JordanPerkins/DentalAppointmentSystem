@@ -5,8 +5,6 @@
  */
 package dentalpractisesystem;
 
-import static dentalpractisesystem.SQLConnector.connect;
-import static dentalpractisesystem.SQLConnector.update;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author James-PowerPC
  */
-public class Appointment {
+public class Appointment extends SQLConnector {
     
     // Instance Variables
     private Patient patient;
@@ -52,6 +50,7 @@ public class Appointment {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex){
             }
         }    
@@ -79,6 +78,7 @@ public class Appointment {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex){
             }
         } 
@@ -167,37 +167,12 @@ public class Appointment {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
          }
     }
-    
-    public boolean exists() {
-        PreparedStatement stmt = null;
-        try {
-            int count = 0;
-            String sql = "SELECT COUNT(*) FROM Appointment WHERE partner = ? AND startTime = ? AND appointmentDate = ?";
-            stmt = connect().prepareStatement(sql);
-            stmt.setString(1, partner.toString());
-            stmt.setTime(2, startTime);
-            stmt.setDate(3, date);
-            ResultSet res = stmt.executeQuery();
-            res.next();
-            count = res.getInt(1);
-            if (count == 1) return true;
-            return false;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
-        } finally {
-            if (stmt != null) try {
-                stmt.close();
-            } catch (SQLException ex){
-                
-            }
-        }
-    }
-    
+        
     /*public boolean fetch() {
         if (!exists()) return false;
         PreparedStatement stmt = null;
@@ -298,6 +273,7 @@ public class Appointment {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
         }
@@ -377,13 +353,13 @@ public class Appointment {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
         }
     }
     
     public boolean cancel() {
-        if (!exists()) return false;
         PreparedStatement stmt = null;
         try {
             String sql = "DELETE FROM Appointment WHERE appointmentDate = ? AND partner = ? AND startTime = ?";

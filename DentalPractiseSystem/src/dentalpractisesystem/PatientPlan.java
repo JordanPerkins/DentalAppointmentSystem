@@ -67,6 +67,7 @@ public class PatientPlan extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex){
             }
         } 
@@ -92,6 +93,7 @@ public class PatientPlan extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex){
             }
         } 
@@ -117,6 +119,7 @@ public class PatientPlan extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex){
             }
         } 
@@ -184,6 +187,7 @@ public class PatientPlan extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
         }

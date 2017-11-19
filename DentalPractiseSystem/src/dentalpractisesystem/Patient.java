@@ -113,32 +113,7 @@ public class Patient extends SQLConnector {
         this.patientID = patientID;
     }
     
-    public boolean exists() {
-       PreparedStatement stmt = null;
-        try {
-            int count = 0;
-            String sql = "SELECT COUNT(*) FROM Patient WHERE patientID = ?";
-            stmt = connect().prepareStatement(sql);
-            stmt.setInt(1, getPatientID());
-            ResultSet res = stmt.executeQuery();
-            res.next();
-            count = res.getInt(1);
-            if (count == 1) return true;
-            return false;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
-        } finally {
-            if (stmt != null) try {
-                stmt.close();
-            } catch (SQLException ex) {
-            }
-        }
-    }
-   
-    
     public boolean fetch() {
-        if (!exists()) return false;
         PreparedStatement stmt = null;
         try {
             String sql = "SELECT * FROM Patient NATURAL JOIN Address LEFT JOIN PatientPlan ON Patient.patientID"
@@ -170,6 +145,7 @@ public class Patient extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
         }
@@ -230,6 +206,7 @@ public class Patient extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
         }
@@ -237,7 +214,6 @@ public class Patient extends SQLConnector {
     }
     
     public boolean delete() {
-        if (!exists()) return false;
         PreparedStatement stmt = null;
         try {
             if (getPatientPlan() != null) plan.delete();
@@ -254,6 +230,7 @@ public class Patient extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
         }
@@ -299,6 +276,7 @@ public class Patient extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
+                close();
             } catch (SQLException ex) {
             }
          }
