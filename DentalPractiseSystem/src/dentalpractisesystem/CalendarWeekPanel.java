@@ -560,6 +560,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             System.out.println(a.getStartTime());
             view.setText("Blank");
             view.setPreferredSize(new Dimension(1,1));
+            view.putClientProperty("appointment", a);
         }
         view.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

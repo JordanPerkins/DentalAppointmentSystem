@@ -30,7 +30,15 @@ public class ViewAppointment extends javax.swing.JPanel {
         this.frame = frame;
         timeOffset = tO;
         initComponents();
-        plan = appointment.getPatient().getPatientPlan();
+        if (appointment.getPatient() != null) {
+            jLabel3.setText(appointment.getPatient().getFirstName() + " " + appointment.getPatient().getSurname());
+            jLabel5.setText(appointment.getPatient().getDob().toString());
+            jLabel7.setText(appointment.getPatient().getPhoneNumber());
+            jLabel9.setText(appointment.getPatient().getAddress().toString());
+            plan = appointment.getPatient().getPatientPlan();
+        } else {
+            jPanel1.setVisible(false);
+        }
         if (appointment.getStatus() == 0) {
             jPanel4.setVisible(false);
             complete.setEnabled(false);
@@ -191,19 +199,11 @@ public class ViewAppointment extends javax.swing.JPanel {
 
         jLabel2.setText("Name: ");
 
-        jLabel3.setText(appointment.getPatient().getFirstName() + " " + appointment.getPatient().getSurname());
-
         jLabel4.setText("DoB: ");
-
-        jLabel5.setText(appointment.getPatient().getDob().toString());
 
         jLabel6.setText("PhoneNo: ");
 
-        jLabel7.setText(appointment.getPatient().getPhoneNumber());
-
         jLabel8.setText("Address: ");
-
-        jLabel9.setText(appointment.getPatient().getAddress().toString());
 
         jLabel28.setText("Address:");
 
