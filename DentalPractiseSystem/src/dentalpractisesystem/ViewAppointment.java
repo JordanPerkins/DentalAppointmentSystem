@@ -34,7 +34,12 @@ public class ViewAppointment extends javax.swing.JPanel {
         if (appointment.getStatus() == 0) {
             jPanel4.setVisible(false);
             complete.setEnabled(false);
+            cancel.setEnabled(true);
+        } else if (appointment.getStatus() == 2) {
+            jPanel4.setVisible(false);
+            complete.setEnabled(false);
         } else {
+            cancel.setEnabled(false);
             if (plan != null) {
                 planLabel.setText(plan.getPlan().toString());
                 updateRemaining();
@@ -441,6 +446,7 @@ public class ViewAppointment extends javax.swing.JPanel {
         );
 
         cancel.setText("Cancel");
+        cancel.setEnabled(false);
         cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelActionPerformed(evt);
