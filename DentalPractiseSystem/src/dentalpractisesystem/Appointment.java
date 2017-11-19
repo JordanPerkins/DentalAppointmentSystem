@@ -78,7 +78,6 @@ public class Appointment extends SQLConnector {
         } finally {
             if (stmt != null) try {
                 stmt.close();
-                close();
             } catch (SQLException ex){
             }
         } 

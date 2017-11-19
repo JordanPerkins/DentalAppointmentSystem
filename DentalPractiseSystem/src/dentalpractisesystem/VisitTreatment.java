@@ -181,8 +181,10 @@ public class VisitTreatment extends SQLConnector {
             stmt.setInt(7, appointment.getPatient().getPatientID());
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
+                Appointment a = new Appointment(null, Partner.valueOf(res.getString(2)), res.getTime(3),res.getTime(6), 
+                        res.getDate(4), res.getInt(8),res.getInt(7));
                 Treatment treatment = new Treatment(res.getString(1), res.getDouble(9));
-                VisitTreatment visit = new VisitTreatment(appointment, treatment);
+                VisitTreatment visit = new VisitTreatment(a, treatment);
                 list[count] = visit;
                 count++;
             }
@@ -205,6 +207,13 @@ public class VisitTreatment extends SQLConnector {
             new VisitTreatment(a, treatment).add();
         }
         SQLConnector.close();
+    }
+    
+    public static void changeListStatus(VisitTreatment[] treatments) {
+        for (int i = 0; i<treatments.length; i++) {
+                treatments[i].getAppointment().setPaymentStatus(3);
+        }
+        close();
     }
     
     

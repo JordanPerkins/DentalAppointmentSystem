@@ -454,6 +454,11 @@ public class ViewAppointment extends javax.swing.JPanel {
         });
 
         complete.setText("<html>Complete<br><br>\nPrint Receipt</html>");
+        complete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                completeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -560,6 +565,16 @@ public class ViewAppointment extends javax.swing.JPanel {
         plan.setUsedCheckups(plan.getUsedCheckups()+1);
         updateRemaining();
     }//GEN-LAST:event_useCheckupActionPerformed
+
+    private void completeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeActionPerformed
+        appointment.setStatus(2);
+        if (appointment.getPaymentStatus() == 2) {
+            VisitTreatment.changeListStatus(treatments);
+        }
+        setVisible(false);
+        CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, appointment.getPartner());
+        frame.setContentPane(calendar);
+    }//GEN-LAST:event_completeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

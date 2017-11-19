@@ -602,6 +602,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;Complete&lt;br&gt;&lt;br&gt;&#xa;Print Receipt&lt;/html&gt;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="completeActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
