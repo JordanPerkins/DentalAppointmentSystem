@@ -10,8 +10,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -581,8 +588,9 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             now.add(Calendar.MINUTE, 1);
             java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
             int length = (int)((appointments[0].getStartTime().getTime())/1000/60 - dayStart.getTime()/1000/60);
-            if (((midnight.getTimeInMillis() + (dayStart.getTime()/1000/60)) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[0].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis()) && length > 10) {
-                int after = (int)(nowTime.getTime()/1000/60 - (dayStart.getTime())/1000/60);
+            int after = (int)(nowTime.getTime()/1000/60 - (dayStart.getTime())/1000/60);
+            boolean enter = (length-after) > 10;
+            if (((midnight.getTimeInMillis() + (dayStart.getTime()/1000/60)) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[0].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis()) && enter) {
                 JButton half1 = createBookButton(date, this.partner, dayStart, nowTime);
                 layout.weighty = (100.0/480.0)*after;
                 layout.gridy = gridValue;
@@ -619,8 +627,9 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                     now.add(Calendar.MINUTE, 1);
                     java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
                     int length = (int)(dayEnd.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                    if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + dayEnd.getTime() + (long)3.6e+6) > now.getTimeInMillis()) && length>10) {
-                        int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
+                    int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
+                    boolean enter = (length-after) > 10;
+                    if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + dayEnd.getTime() + (long)3.6e+6) > now.getTimeInMillis()) && enter) {
                         JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime);
                         layout.weighty = (100.0/480.0)*after;
                         layout.gridy = gridValue;
@@ -649,8 +658,9 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                 now.add(Calendar.MINUTE, 1);
                 java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
                 int length = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[i+1].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis()) && length > 10) {
-                    int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
+                int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
+                boolean enter = (length-after) > 10;
+                if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[i+1].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis()) && enter) {
                     JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime);
                     layout.weighty = (100.0/480.0)*after;
                     layout.gridy = gridValue;
@@ -671,6 +681,18 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                 }
             }   
         }
+    }
+    
+    private boolean publicHoliday(java.sql.Date date) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader((new URL("https://www.gov.uk/bank-holidays/england-and-wales.ics")).openStream()));
+            reader.
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(CalendarWeekPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(CalendarWeekPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
