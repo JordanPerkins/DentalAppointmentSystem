@@ -1,12 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * JPanel which allows the viewing of appointments. It will take an
+ * appointment object via the constructor from the calendar and
+ * allows cancellation and completion via buttons.
  */
 package dentalpractisesystem;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 
 /**

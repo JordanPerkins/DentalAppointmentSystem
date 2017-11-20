@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * JPanel allowing a particular patient to be viewed. This
+ * patient is selected using the ComboBox on the panel and selected
+ * from the array containing all Patients.
  */
 package dentalpractisesystem;
 

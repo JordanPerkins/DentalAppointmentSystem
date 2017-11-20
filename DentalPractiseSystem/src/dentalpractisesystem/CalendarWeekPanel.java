@@ -1,24 +1,26 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Creates a panel containing a calendar based on the week selected by the user 
+ * or the current week. Empty spaces give the user an option to book an appointment, otherwise
+ * clicking a booked time allows the user to view appointment information.
  */
 package dentalpractisesystem;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,9 +31,9 @@ import javax.swing.SwingConstants;
  * @author James
  */
 public class CalendarWeekPanel extends javax.swing.JPanel {
-    
+
     private javax.swing.JFrame frame;
-    
+
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMMM");
 
     private Calendar cToday = Calendar.getInstance();
@@ -42,11 +44,11 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     private Calendar cWed = Calendar.getInstance();
     private Calendar cThrs = Calendar.getInstance();
     private Calendar cFri = Calendar.getInstance();
-    
+
     private Partner partner;
-    
+
     private Appointment[][] weekAppointments;
-    
+
     private java.sql.Time dayStart = new java.sql.Time(28800000);
     private java.sql.Time dayEnd = new java.sql.Time(57600000);
 
@@ -57,11 +59,11 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         this.frame = frame;
         this.timeOffset = timeO;
         this.partner = partner;
-        
+
         System.out.println(Color.RED.getBlue());
         System.out.println(Color.ORANGE.getBlue());
         System.out.println(Color.GREEN.getBlue());
-        
+
         if (timeOffset != 0) {
             cToday.add(Calendar.DATE, timeOffset);
             cMon.add(Calendar.DATE, timeOffset);
@@ -70,51 +72,66 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             cThrs.add(Calendar.DATE, timeOffset);
             cFri.add(Calendar.DATE, timeOffset);
         }
-        
+
         switch (cToday.get(Calendar.DAY_OF_WEEK)) {
-            case 1: cMon.add(Calendar.DATE, 1);
+            case 1:
+                cMon.add(Calendar.DATE, 1);
                 cTues.add(Calendar.DATE, 2);
                 cWed.add(Calendar.DATE, 3);
                 cThrs.add(Calendar.DATE, 4);
-                cFri.add(Calendar.DATE, 5); break;
-            case 2: cTues.add(Calendar.DATE, 1);
+                cFri.add(Calendar.DATE, 5);
+                break;
+            case 2:
+                cTues.add(Calendar.DATE, 1);
                 cWed.add(Calendar.DATE, 2);
                 cThrs.add(Calendar.DATE, 3);
-                cFri.add(Calendar.DATE, 4); break;
-            case 3: cMon.add(Calendar.DATE, -1);
+                cFri.add(Calendar.DATE, 4);
+                break;
+            case 3:
+                cMon.add(Calendar.DATE, -1);
                 cWed.add(Calendar.DATE, 1);
                 cThrs.add(Calendar.DATE, 2);
-                cFri.add(Calendar.DATE, 3); break;
-            case 4: cMon.add(Calendar.DATE, -2);
+                cFri.add(Calendar.DATE, 3);
+                break;
+            case 4:
+                cMon.add(Calendar.DATE, -2);
                 cTues.add(Calendar.DATE, -1);
                 cThrs.add(Calendar.DATE, 1);
-                cFri.add(Calendar.DATE, 2); break;
-            case 5: cMon.add(Calendar.DATE, -3);
+                cFri.add(Calendar.DATE, 2);
+                break;
+            case 5:
+                cMon.add(Calendar.DATE, -3);
                 cTues.add(Calendar.DATE, -2);
                 cWed.add(Calendar.DATE, -1);
-                cFri.add(Calendar.DATE, 1); break;
-            case 6: cMon.add(Calendar.DATE, -4);
+                cFri.add(Calendar.DATE, 1);
+                break;
+            case 6:
+                cMon.add(Calendar.DATE, -4);
                 cTues.add(Calendar.DATE, -3);
                 cWed.add(Calendar.DATE, -2);
-                cThrs.add(Calendar.DATE, -1); break;
-            case 7: cMon.add(Calendar.DATE, 2);
+                cThrs.add(Calendar.DATE, -1);
+                break;
+            case 7:
+                cMon.add(Calendar.DATE, 2);
                 cTues.add(Calendar.DATE, 3);
                 cWed.add(Calendar.DATE, 4);
                 cThrs.add(Calendar.DATE, 5);
-                cFri.add(Calendar.DATE, 6); break;
+                cFri.add(Calendar.DATE, 6);
+                break;
         }
-        
+
         this.weekAppointments = getAppointments();
-        
+
         initComponents();
-        
-        if (this.partner == Partner.DENTIST)
+
+        if (this.partner == Partner.DENTIST) {
             partnerComboBox.setSelectedIndex(0);
-        else
+        } else {
             partnerComboBox.setSelectedIndex(1);
+        }
 
     }
-    
+
     private Appointment[][] getAppointments() {
         java.sql.Date weekStart = new java.sql.Date(cMon.getTimeInMillis());
         java.sql.Date tuesDate = new java.sql.Date(cMon.getTimeInMillis());
@@ -122,50 +139,70 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         java.sql.Date thrsDate = new java.sql.Date(cMon.getTimeInMillis());
         java.sql.Date weekEnd = new java.sql.Date(cFri.getTimeInMillis());
         Appointment[] weekAppoints = Appointment.fetchBetweenDatesPartner(weekStart, weekEnd, partner);
-        
+
         int monLength = 0;
         int tuesLength = 0;
         int wedLength = 0;
         int thrsLength = 0;
         int friLength = 0;
-        
-        for (int i=0; i<weekAppoints.length; i++) {
-            switch ((int)weekAppoints[i].getDate().getDay()) {
-                case 1: monLength++; break;
-                case 2: tuesLength++; break;
-                case 3: wedLength++; break;
-                case 4: thrsLength++; break;
-                case 5: friLength++; break;
+
+        for (int i = 0; i < weekAppoints.length; i++) {
+            switch ((int) weekAppoints[i].getDate().getDay()) {
+                case 1:
+                    monLength++;
+                    break;
+                case 2:
+                    tuesLength++;
+                    break;
+                case 3:
+                    wedLength++;
+                    break;
+                case 4:
+                    thrsLength++;
+                    break;
+                case 5:
+                    friLength++;
+                    break;
             }
         }
-        
+
         int monCount = 0;
         int tuesCount = 0;
         int wedCount = 0;
         int thrsCount = 0;
         int friCount = 0;
-        
+
         Appointment[] monAppoints = new Appointment[monLength];
         Appointment[] tuesAppoints = new Appointment[tuesLength];
         Appointment[] wedAppoints = new Appointment[wedLength];
         Appointment[] thrsAppoints = new Appointment[thrsLength];
         Appointment[] friAppoints = new Appointment[friLength];
-        
-        for (int i=0; i<weekAppoints.length; i++) {
-            switch ((int)weekAppoints[i].getDate().getDay()) {
-                case 1: monAppoints[monCount] = weekAppoints[i];
-                    monCount++; break;
-                case 2: tuesAppoints[tuesCount] = weekAppoints[i];
-                    tuesCount++; break;
-                case 3: wedAppoints[wedCount] = weekAppoints[i];
-                    wedCount++; break;
-                case 4: thrsAppoints[thrsCount] = weekAppoints[i];
-                    thrsCount++; break;
-                case 5: friAppoints[friCount] = weekAppoints[i];
-                    friCount++; break;
+
+        for (int i = 0; i < weekAppoints.length; i++) {
+            switch ((int) weekAppoints[i].getDate().getDay()) {
+                case 1:
+                    monAppoints[monCount] = weekAppoints[i];
+                    monCount++;
+                    break;
+                case 2:
+                    tuesAppoints[tuesCount] = weekAppoints[i];
+                    tuesCount++;
+                    break;
+                case 3:
+                    wedAppoints[wedCount] = weekAppoints[i];
+                    wedCount++;
+                    break;
+                case 4:
+                    thrsAppoints[thrsCount] = weekAppoints[i];
+                    thrsCount++;
+                    break;
+                case 5:
+                    friAppoints[friCount] = weekAppoints[i];
+                    friCount++;
+                    break;
             }
         }
-        
+
         Appointment[][] ret = new Appointment[5][];
         ret[0] = monAppoints;
         ret[1] = tuesAppoints;
@@ -441,12 +478,12 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        CalendarWeekPanel next = new CalendarWeekPanel(this.frame, this.timeOffset-7, this.partner);
+        CalendarWeekPanel next = new CalendarWeekPanel(this.frame, this.timeOffset - 7, this.partner);
         this.frame.setContentPane(next);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        CalendarWeekPanel next = new CalendarWeekPanel(this.frame, this.timeOffset+7, this.partner);
+        CalendarWeekPanel next = new CalendarWeekPanel(this.frame, this.timeOffset + 7, this.partner);
         this.frame.setContentPane(next);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -457,7 +494,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_menuActionPerformed
 
     private void partnerComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partnerComboBoxActionPerformed
-        String selectedItem = (String)partnerComboBox.getSelectedItem();
+        String selectedItem = (String) partnerComboBox.getSelectedItem();
         Partner p = Partner.valueOf(selectedItem.toUpperCase());
         if (this.partner != p) {
             this.partner = p;
@@ -466,27 +503,27 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             setJPanel(tuesPanel, weekAppointments[1], cTues);
             setJPanel(wedPanel, weekAppointments[2], cWed);
             setJPanel(thrsPanel, weekAppointments[3], cThrs);
-            setJPanel(friPanel, weekAppointments[4], cFri); 
-       }
+            setJPanel(friPanel, weekAppointments[4], cFri);
+        }
     }//GEN-LAST:event_partnerComboBoxActionPerformed
 
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
-        Appointment a = (Appointment)((JButton)evt.getSource()).getClientProperty("appointment");
+        Appointment a = (Appointment) ((JButton) evt.getSource()).getClientProperty("appointment");
         ViewAppointment view = new ViewAppointment(frame, a, timeOffset);
         frame.setContentPane(view);
     }
-    
+
     private void createAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
-        java.sql.Date date = (java.sql.Date)(((JButton)evt.getSource()).getClientProperty("date"));
-        Partner partner = (Partner)(((JButton)evt.getSource()).getClientProperty("partner"));
-        java.sql.Time timeFrom = (java.sql.Time)(((JButton)evt.getSource()).getClientProperty("timeFrom"));
-        java.sql.Time timeTill = (java.sql.Time)(((JButton)evt.getSource()).getClientProperty("timeTill"));
+        java.sql.Date date = (java.sql.Date) (((JButton) evt.getSource()).getClientProperty("date"));
+        Partner partner = (Partner) (((JButton) evt.getSource()).getClientProperty("partner"));
+        java.sql.Time timeFrom = (java.sql.Time) (((JButton) evt.getSource()).getClientProperty("timeFrom"));
+        java.sql.Time timeTill = (java.sql.Time) (((JButton) evt.getSource()).getClientProperty("timeTill"));
         BookAppointment book = new BookAppointment(frame, date, partner, timeFrom, timeTill, timeOffset);
         frame.setContentPane(book);
     }
-    
+
     private void setJPanel(JPanel panel, Appointment[] appointments, Calendar c) {
         panel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -494,79 +531,95 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         gbc.weightx = 1;
         gbc.gridx = 0;
         java.sql.Date date = new java.sql.Date(c.getTimeInMillis());
-        if(appointments.length == 0) {
-            Calendar midnight = Calendar.getInstance();
-            Calendar now = Calendar.getInstance();
-            midnight.setTimeInMillis(date.getTime());
-            CalendarWeekPanel.midnight(midnight);
-            now.add(Calendar.MINUTE, 1);
-            java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-            int timeRemaining = (int)(dayEnd.getTime()/1000/60 - nowTime.getTime()/1000/60);
-            if (((midnight.getTimeInMillis() + (long)3.24e+7) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + (long)6.12e+7) > now.getTimeInMillis()) && timeRemaining > 10) {
-                int after = (int)(((midnight.getTimeInMillis() + (long)6.12e+7) - now.getTimeInMillis())/1000/60);
-                JButton dayHalf1 = createBookButton(date, this.partner, this.dayStart, nowTime);
-                gbc.weighty = (100.0/480.0)*(480-after);
-                gbc.gridy = 0;
-                panel.add(dayHalf1, gbc);
-                JButton dayHalf2 = createBookButton(date, this.partner, nowTime, this.dayEnd);
-                gbc.weighty = (100.0/480.0)*after;
-                gbc.gridy = 1;
-                panel.add(dayHalf2, gbc);
-            } else { 
+        if (appointments.length == 0) {
+            if (publicHoliday(date)) {
+                System.out.println("Here");
+                JButton pHButton = createBookButton(date, this.partner, dayStart, dayEnd, true);
                 gbc.weighty = 1;
-                JButton bookDay = createBookButton(date, this.partner, this.dayStart, this.dayEnd);
-                panel.add(bookDay, gbc);
+                gbc.gridy = 0;
+                panel.add(pHButton, gbc);
+            } else {
+                System.out.println("Here Instead");
+                Calendar midnight = Calendar.getInstance();
+                Calendar now = Calendar.getInstance();
+                midnight.setTimeInMillis(date.getTime());
+                CalendarWeekPanel.midnight(midnight);
+                now.add(Calendar.MINUTE, 1);
+                java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
+                int timeRemaining = (int) (dayEnd.getTime() / 1000 / 60 - nowTime.getTime() / 1000 / 60);
+                if (((midnight.getTimeInMillis() + (long) 3.24e+7) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + (long) 6.12e+7) > now.getTimeInMillis()) && timeRemaining > 10) {
+                    int after = (int) (((midnight.getTimeInMillis() + (long) 6.12e+7) - now.getTimeInMillis()) / 1000 / 60);
+                    JButton dayHalf1 = createBookButton(date, this.partner, this.dayStart, nowTime, false);
+                    gbc.weighty = (100.0 / 480.0) * (480 - after);
+                    gbc.gridy = 0;
+                    panel.add(dayHalf1, gbc);
+                    JButton dayHalf2 = createBookButton(date, this.partner, nowTime, this.dayEnd, false);
+                    gbc.weighty = (100.0 / 480.0) * after;
+                    gbc.gridy = 1;
+                    panel.add(dayHalf2, gbc);
+                } else {
+                    gbc.weighty = 1;
+                    JButton bookDay = createBookButton(date, this.partner, this.dayStart, this.dayEnd, false);
+                    panel.add(bookDay, gbc);
+                }
             }
-        } else
+        } else {
             createDay(panel, appointments, gbc, date, this.partner);
+        }
         panel.revalidate();
         panel.repaint();
     }
 
-    
-    private JButton createBookButton(java.sql.Date date, Partner partner, java.sql.Time timeFrom, java.sql.Time timeTill) {
+    private JButton createBookButton(java.sql.Date date, Partner partner, java.sql.Time timeFrom, java.sql.Time timeTill, boolean pH) {
         JButton book = new JButton("Book Appointment");
-        Calendar midnight = Calendar.getInstance();
-        midnight.setTimeInMillis(date.getTime());
-        CalendarWeekPanel.midnight(midnight);
-        if ((midnight.getTimeInMillis() + timeFrom.getTime() + (long)3.6e+6) < Calendar.getInstance().getTimeInMillis())
+        if (pH) {
             book.setEnabled(false);
-        book.setPreferredSize(new Dimension(1,1));
-        book.putClientProperty("date", date);
-        book.putClientProperty("partner", partner);
-        book.putClientProperty("timeFrom", timeFrom);
-        book.putClientProperty("timeTill", timeTill);
-        book.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createAppointmentActionPerformed(evt);
+            book.setText("Public Holiday");
+        } else {
+            Calendar midnight = Calendar.getInstance();
+            midnight.setTimeInMillis(date.getTime());
+            CalendarWeekPanel.midnight(midnight);
+            if ((midnight.getTimeInMillis() + timeFrom.getTime() + (long) 3.6e+6) < Calendar.getInstance().getTimeInMillis()) {
+                book.setEnabled(false);
             }
-        });
+            book.setPreferredSize(new Dimension(1, 1));
+            book.putClientProperty("date", date);
+            book.putClientProperty("partner", partner);
+            book.putClientProperty("timeFrom", timeFrom);
+            book.putClientProperty("timeTill", timeTill);
+            book.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    createAppointmentActionPerformed(evt);
+                }
+            });
+        }
         return book;
     }
-    
+
     private static void midnight(Calendar cal) {
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
     }
-    
+
     private JButton createViewButton(Patient patient, Appointment a) {
         JButton view = new JButton();
         if (patient != null) {
             view.setText(patient.getFirstName() + " " + patient.getSurname());
-            view.setPreferredSize(new Dimension(1,1));
+            view.setPreferredSize(new Dimension(1, 1));
             view.putClientProperty("appointment", a);
-            if (a.getStatus() == 1)
+            if (a.getStatus() == 1) {
                 view.setBackground(Color.ORANGE);
-            else if (a.getStatus() == 2 || a.getPaymentStatus() == 3)
+            } else if (a.getStatus() == 2 || a.getPaymentStatus() == 3) {
                 view.setBackground(Color.GREEN);
-            else
+            } else {
                 view.setBackground(Color.RED);
+            }
         } else {
             System.out.println(a.getStartTime());
             view.setText("Blank");
-            view.setPreferredSize(new Dimension(1,1));
+            view.setPreferredSize(new Dimension(1, 1));
             view.putClientProperty("appointment", a);
         }
         view.addActionListener(new java.awt.event.ActionListener() {
@@ -576,80 +629,16 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
         });
         return view;
     }
-    
+
     private void createDay(JPanel panel, Appointment[] appointments, GridBagConstraints layout, java.sql.Date date, Partner partner) {
-        int gridValue = 0;
-        if ((appointments[0].getStartTime().getTime())/1000.0/60/60 != 8){
-            Calendar midnight = Calendar.getInstance();
-            Calendar now = Calendar.getInstance();
-            now.add(Calendar.MINUTE, 1);
-            midnight.setTimeInMillis(date.getTime());
-            CalendarWeekPanel.midnight(midnight);
-            now.add(Calendar.MINUTE, 1);
-            java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-            int length = (int)((appointments[0].getStartTime().getTime())/1000/60 - dayStart.getTime()/1000/60);
-            int after = (int)(nowTime.getTime()/1000/60 - (dayStart.getTime())/1000/60);
-            boolean enter = (length-after) > 10;
-            if (((midnight.getTimeInMillis() + (dayStart.getTime()/1000/60)) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[0].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis()) && enter) {
-                JButton half1 = createBookButton(date, this.partner, dayStart, nowTime);
-                layout.weighty = (100.0/480.0)*after;
-                layout.gridy = gridValue;
-                gridValue++;
-                panel.add(half1, layout);
-                JButton half2 = createBookButton(date, this.partner, nowTime, appointments[0].getStartTime());
-                layout.weighty = (100.0/480.0)*(length-after);
-                layout.gridy = gridValue;
-                gridValue++;
-                panel.add(half2, layout);
-            } else {
-                int minutes = (int)((appointments[0].getStartTime().getTime())/1000/60 - dayStart.getTime()/1000/60);
-                JButton book = createBookButton(date, partner, dayStart, appointments[0].getStartTime());
-                layout.weighty = (100.0/480.0)*minutes;
-                layout.gridy = gridValue;
-                gridValue++;
-                panel.add(book, layout);
-            }   
-        }
-        for (int i=0; i<appointments.length; i++) {
-            int minutesA = (int)((appointments[i].getEndTime().getTime())/1000/60 - (appointments[i].getStartTime().getTime())/1000/60);
-            JButton view = createViewButton(appointments[i].getPatient(), appointments[i]);
-            layout.weighty = (100.0/480.0)*minutesA;
-            layout.gridy = gridValue;
-            gridValue++;
-            panel.add(view, layout);
-            if (i == appointments.length-1) {
-                if (appointments[i].getEndTime().getTime() != dayEnd.getTime()) {
-                    Calendar midnight = Calendar.getInstance();
-                    Calendar now = Calendar.getInstance();
-                    now.add(Calendar.MINUTE, 1);
-                    midnight.setTimeInMillis(date.getTime());
-                    CalendarWeekPanel.midnight(midnight);
-                    now.add(Calendar.MINUTE, 1);
-                    java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-                    int length = (int)(dayEnd.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                    int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                    boolean enter = (length-after) > 10;
-                    if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + dayEnd.getTime() + (long)3.6e+6) > now.getTimeInMillis()) && enter) {
-                        JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime);
-                        layout.weighty = (100.0/480.0)*after;
-                        layout.gridy = gridValue;
-                        gridValue++;
-                        panel.add(half1, layout);
-                        JButton half2 = createBookButton(date, this.partner, nowTime, dayEnd);
-                        layout.weighty = (100.0/480.0)*(length-after);
-                        layout.gridy = gridValue;
-                        gridValue++;
-                        panel.add(half2, layout);
-                    } else {
-                        int minutes = (int)(dayEnd.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                        JButton book = createBookButton(date, partner, appointments[i].getEndTime(), dayEnd);
-                        layout.weighty = (100.0/480.0)*minutes;
-                        layout.gridy = gridValue;
-                        gridValue++;
-                        panel.add(book, layout);
-                    }
-                }
-            } else if (appointments[i].getEndTime().getTime() != appointments[i+1].getStartTime().getTime()) {
+        if (publicHoliday(date)) {
+            JButton half1 = createBookButton(date, this.partner, dayStart, dayEnd, true);
+            layout.weighty = 1;
+            layout.gridy = 0;
+            panel.add(half1, layout);
+        } else {
+            int gridValue = 0;
+            if ((appointments[0].getStartTime().getTime()) / 1000.0 / 60 / 60 != 8) {
                 Calendar midnight = Calendar.getInstance();
                 Calendar now = Calendar.getInstance();
                 now.add(Calendar.MINUTE, 1);
@@ -657,36 +646,113 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                 CalendarWeekPanel.midnight(midnight);
                 now.add(Calendar.MINUTE, 1);
                 java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-                int length = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                int after = (int)(nowTime.getTime()/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                boolean enter = (length-after) > 10;
-                if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long)3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[i+1].getStartTime().getTime() + (long)3.6e+6) > now.getTimeInMillis()) && enter) {
-                    JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime);
-                    layout.weighty = (100.0/480.0)*after;
+                int length = (int) ((appointments[0].getStartTime().getTime()) / 1000 / 60 - dayStart.getTime() / 1000 / 60);
+                int after = (int) (nowTime.getTime() / 1000 / 60 - (dayStart.getTime()) / 1000 / 60);
+                boolean enter = (length - after) > 10;
+                if (((midnight.getTimeInMillis() + (dayStart.getTime() / 1000 / 60)) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[0].getStartTime().getTime() + (long) 3.6e+6) > now.getTimeInMillis()) && enter) {
+                    JButton half1 = createBookButton(date, this.partner, dayStart, nowTime, false);
+                    layout.weighty = (100.0 / 480.0) * after;
                     layout.gridy = gridValue;
                     gridValue++;
                     panel.add(half1, layout);
-                    JButton half2 = createBookButton(date, this.partner, nowTime, appointments[i+1].getStartTime());
-                    layout.weighty = (100.0/480.0)*(length-after);
+                    JButton half2 = createBookButton(date, this.partner, nowTime, appointments[0].getStartTime(), false);
+                    layout.weighty = (100.0 / 480.0) * (length - after);
                     layout.gridy = gridValue;
                     gridValue++;
                     panel.add(half2, layout);
                 } else {
-                    int minutes = (int)((appointments[i+1].getStartTime().getTime())/1000/60 - (appointments[i].getEndTime().getTime())/1000/60);
-                    JButton book = createBookButton(date, partner, appointments[i].getEndTime(), appointments[i+1].getStartTime());
-                    layout.weighty = (100.0/480.0)*minutes;
+                    int minutes = (int) ((appointments[0].getStartTime().getTime()) / 1000 / 60 - dayStart.getTime() / 1000 / 60);
+                    JButton book = createBookButton(date, partner, dayStart, appointments[0].getStartTime(), false);
+                    layout.weighty = (100.0 / 480.0) * minutes;
                     layout.gridy = gridValue;
                     gridValue++;
                     panel.add(book, layout);
                 }
-            }   
+            }
+            for (int i = 0; i < appointments.length; i++) {
+                int minutesA = (int) ((appointments[i].getEndTime().getTime()) / 1000 / 60 - (appointments[i].getStartTime().getTime()) / 1000 / 60);
+                JButton view = createViewButton(appointments[i].getPatient(), appointments[i]);
+                layout.weighty = (100.0 / 480.0) * minutesA;
+                layout.gridy = gridValue;
+                gridValue++;
+                panel.add(view, layout);
+                if (i == appointments.length - 1) {
+                    if (appointments[i].getEndTime().getTime() != dayEnd.getTime()) {
+                        Calendar midnight = Calendar.getInstance();
+                        Calendar now = Calendar.getInstance();
+                        now.add(Calendar.MINUTE, 1);
+                        midnight.setTimeInMillis(date.getTime());
+                        CalendarWeekPanel.midnight(midnight);
+                        now.add(Calendar.MINUTE, 1);
+                        java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
+                        int length = (int) (dayEnd.getTime() / 1000 / 60 - (appointments[i].getEndTime().getTime()) / 1000 / 60);
+                        int after = (int) (nowTime.getTime() / 1000 / 60 - (appointments[i].getEndTime().getTime()) / 1000 / 60);
+                        boolean enter = (length - after) > 10;
+                        if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long) 3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + dayEnd.getTime() + (long) 3.6e+6) > now.getTimeInMillis()) && enter) {
+                            JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime, false);
+                            layout.weighty = (100.0 / 480.0) * after;
+                            layout.gridy = gridValue;
+                            gridValue++;
+                            panel.add(half1, layout);
+                            JButton half2 = createBookButton(date, this.partner, nowTime, dayEnd, false);
+                            layout.weighty = (100.0 / 480.0) * (length - after);
+                            layout.gridy = gridValue;
+                            gridValue++;
+                            panel.add(half2, layout);
+                        } else {
+                            int minutes = (int) (dayEnd.getTime() / 1000 / 60 - (appointments[i].getEndTime().getTime()) / 1000 / 60);
+                            JButton book = createBookButton(date, partner, appointments[i].getEndTime(), dayEnd, false);
+                            layout.weighty = (100.0 / 480.0) * minutes;
+                            layout.gridy = gridValue;
+                            gridValue++;
+                            panel.add(book, layout);
+                        }
+                    }
+                } else if (appointments[i].getEndTime().getTime() != appointments[i + 1].getStartTime().getTime()) {
+                    Calendar midnight = Calendar.getInstance();
+                    Calendar now = Calendar.getInstance();
+                    now.add(Calendar.MINUTE, 1);
+                    midnight.setTimeInMillis(date.getTime());
+                    CalendarWeekPanel.midnight(midnight);
+                    now.add(Calendar.MINUTE, 1);
+                    java.sql.Time nowTime = new java.sql.Time(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
+                    int length = (int) (appointments[i + 1].getStartTime().getTime() / 1000 / 60 - (appointments[i].getEndTime().getTime()) / 1000 / 60);
+                    int after = (int) (nowTime.getTime() / 1000 / 60 - (appointments[i].getEndTime().getTime()) / 1000 / 60);
+                    boolean enter = (length - after) > 10;
+                    if (((midnight.getTimeInMillis() + appointments[i].getEndTime().getTime() + (long) 3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + appointments[i + 1].getStartTime().getTime() + (long) 3.6e+6) > now.getTimeInMillis()) && enter) {
+                        JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime, false);
+                        layout.weighty = (100.0 / 480.0) * after;
+                        layout.gridy = gridValue;
+                        gridValue++;
+                        panel.add(half1, layout);
+                        JButton half2 = createBookButton(date, this.partner, nowTime, appointments[i + 1].getStartTime(), false);
+                        layout.weighty = (100.0 / 480.0) * (length - after);
+                        layout.gridy = gridValue;
+                        gridValue++;
+                        panel.add(half2, layout);
+                    } else {
+                        int minutes = (int) ((appointments[i + 1].getStartTime().getTime()) / 1000 / 60 - (appointments[i].getEndTime().getTime()) / 1000 / 60);
+                        JButton book = createBookButton(date, partner, appointments[i].getEndTime(), appointments[i + 1].getStartTime(), false);
+                        layout.weighty = (100.0 / 480.0) * minutes;
+                        layout.gridy = gridValue;
+                        gridValue++;
+                        panel.add(book, layout);
+                    }
+                }
+            }
         }
     }
-    
+
     private boolean publicHoliday(java.sql.Date date) {
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader((new URL("https://www.gov.uk/bank-holidays/england-and-wales.ics")).openStream()));
-            reader.
+            SimpleDateFormat govForm = new SimpleDateFormat("YYYYMMdd");
+            String match = "DTSTART;VALUE=DATE:" + govForm.format(date);
+            Scanner reader = new Scanner(new InputStreamReader((new URL("https://www.gov.uk/bank-holidays/england-and-wales.ics")).openStream()));
+            while (reader.hasNextLine()) {
+                if (reader.nextLine().equals(match)) {
+                    return true;
+                }
+            }
         } catch (MalformedURLException ex) {
             Logger.getLogger(CalendarWeekPanel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

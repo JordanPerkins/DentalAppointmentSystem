@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Creates a JPanel which allows the registration of new patients.
+ * Checks for an existing address instance with a particular postcode and house number
+ * before creating a new one if it does not exist and then adding the patient.
  */
 package dentalpractisesystem;
 

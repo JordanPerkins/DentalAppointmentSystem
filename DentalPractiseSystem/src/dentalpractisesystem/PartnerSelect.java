@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * JPanel which allows selection of a particular partner to pass to a new
+ * day calendar object. Designed to allow easy usage on touch screens.
  */
 package dentalpractisesystem;
 
