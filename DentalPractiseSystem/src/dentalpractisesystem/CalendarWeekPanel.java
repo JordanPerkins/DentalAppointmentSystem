@@ -498,11 +498,11 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             if (((midnight.getTimeInMillis() + (long)3.24e+7) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + (long)6.12e+7) > now.getTimeInMillis()) && timeRemaining > 10) {
                 int after = (int)(((midnight.getTimeInMillis() + (long)6.12e+7) - now.getTimeInMillis())/1000/60);
                 JButton dayHalf1 = createBookButton(date, this.partner, this.dayStart, nowTime);
-                gbc.weighty = (100.0/480.0)*after;
+                gbc.weighty = (100.0/480.0)*(480-after);
                 gbc.gridy = 0;
                 panel.add(dayHalf1, gbc);
                 JButton dayHalf2 = createBookButton(date, this.partner, nowTime, this.dayEnd);
-                gbc.weighty = (100.0/480.0)*(480-after);
+                gbc.weighty = (100.0/480.0)*after;
                 gbc.gridy = 1;
                 panel.add(dayHalf2, gbc);
             } else { 
