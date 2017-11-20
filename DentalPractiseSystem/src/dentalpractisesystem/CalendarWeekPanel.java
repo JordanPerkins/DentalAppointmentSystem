@@ -1,15 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Creates a panel containing a calendar based on the week selected by the user 
+ * or the current week. Empty spaces give the user an option to book an appointment, otherwise
+ * clicking a booked time allows the user to view appointment information.
  */
 package dentalpractisesystem;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import javax.swing.JButton;

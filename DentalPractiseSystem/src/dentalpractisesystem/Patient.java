@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Represents a particular Patient entity.
+ * Allows fetching a list of all of them using via a static method,
+ * or deleting and adding individual patients.
+ * This is encapsulated by appointments and contains a related Address object.
  */
 package dentalpractisesystem;
 

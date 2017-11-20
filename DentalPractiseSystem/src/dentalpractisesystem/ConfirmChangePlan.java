@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * A modal JDialog which allows the user to select a new plan
+ * to assign to a Patient using a Combo box and
+ * completes the operation.
  */
 package dentalpractisesystem;
 
@@ -14,7 +14,6 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import java.util.Calendar;
 import java.sql.Date;
-import javax.swing.JFrame;
 
 /**
  *
