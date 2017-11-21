@@ -5,9 +5,11 @@
  */
 package dentalpractisesystem;
 
+import static dentalpractisesystem.SQLConnector.connect;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.ResultSet;
 /**
  *
  * @author jordan
@@ -59,6 +61,7 @@ public class PatientPlan extends SQLConnector {
             stmt.setInt(1, usedRepairs);
             stmt.setInt(2, getPatientID());
             int res = stmt.executeUpdate();
+            System.out.println(getPatientID());
             return res == 1;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -192,8 +195,27 @@ public class PatientPlan extends SQLConnector {
         }
     }
     
+    public boolean resetPlan() {
+        this.usedVisits = usedVisits;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "UPDATE PatientPlan SET usedVisits = 0, usedRepairs = 0, usedCheckups = 0, startDate = CURDATE()"
+                    + "WHERE patientID = ? AND DATEDIFF(CURDATE(), startDate) >= 365";
+            stmt = connect().prepareStatement(sql);
+            stmt.setInt(1, getPatientID());
+            int res = stmt.executeUpdate();
+            return res == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+                close();
+            } catch (SQLException ex){
+            }
+        } 
+    }
     
-    
-    
-    
+
 }

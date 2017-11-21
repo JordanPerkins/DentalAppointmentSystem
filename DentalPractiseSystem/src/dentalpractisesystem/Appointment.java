@@ -249,7 +249,7 @@ public class Appointment extends SQLConnector {
                 int patientID = res.getInt(8);
                 Patient patient = null;
                 if (!res.wasNull()) {
-                    int planPatientID = res.getInt(26);
+                    int planPatientID = res.getInt(21);
                     PatientPlan patientPlan = null;
                     if (!res.wasNull()) {
                         Plan plan = new Plan(res.getString(27), res.getDouble(28),
@@ -331,7 +331,7 @@ public class Appointment extends SQLConnector {
                 int patientID = res.getInt(8);
                 Patient patient = null;
                 if (!res.wasNull()) {
-                    int planPatientID = res.getInt(26);
+                    int planPatientID = res.getInt(21);
                     PatientPlan patientPlan = null;
                     if (!res.wasNull()) {
                         Plan plan = new Plan(res.getString(27), res.getDouble(28),

@@ -49,6 +49,7 @@ public class ViewAppointment extends javax.swing.JPanel {
             cancel.setEnabled(false);
             if (plan != null) {
                 planLabel.setText(plan.getPlan().toString());
+                plan.resetPlan();
                 updateRemaining();
             } else {
                 planLabel.setText("None");
