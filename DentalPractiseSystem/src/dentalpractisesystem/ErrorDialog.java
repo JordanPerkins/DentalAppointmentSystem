@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This creates a generic modal JDialog which takes a string
+ * via the constructor to display to the user in order to inform them
+ * an error has occured.
  */
 package dentalpractisesystem;
 

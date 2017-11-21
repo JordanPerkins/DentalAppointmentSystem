@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Represents the main GUI frame.
+ * Preferred dimensions of 1024x576
+ * Requires Jpanels added via setContentPane
  */
 package dentalpractisesystem;
 

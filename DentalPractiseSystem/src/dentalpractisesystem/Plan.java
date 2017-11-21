@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Represents a subscribable plan including the
+ * monthly cost and the level of service the plan provides.
  */
 package dentalpractisesystem;
 

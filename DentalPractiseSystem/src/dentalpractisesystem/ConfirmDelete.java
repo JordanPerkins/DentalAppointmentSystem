@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Creates a modal JDialog asking the user to confirm the
+ * deletion of the Patient object passed via the constructor
+ * and then carries out this operation.
  */
 package dentalpractisesystem;
 
@@ -12,7 +12,6 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
-import javax.swing.JComboBox;
 
 /**
  *
