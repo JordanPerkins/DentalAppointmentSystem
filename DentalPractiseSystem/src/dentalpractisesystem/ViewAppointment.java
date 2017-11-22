@@ -5,7 +5,18 @@
  */
 package dentalpractisesystem;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
 import java.awt.Point;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import javax.swing.JFrame;
 
 /**
@@ -567,13 +578,48 @@ public class ViewAppointment extends javax.swing.JPanel {
     }//GEN-LAST:event_useCheckupActionPerformed
 
     private void completeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeActionPerformed
-        appointment.setStatus(2);
-        if (appointment.getPaymentStatus() == 2) {
-            VisitTreatment.changeListStatus(treatments);
-        }
-        setVisible(false);
-        CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, appointment.getPartner());
-        frame.setContentPane(calendar);
+        try {
+            appointment.setStatus(2);
+            if (appointment.getPaymentStatus() == 2) {
+                VisitTreatment.changeListStatus(treatments);
+            }
+            setVisible(false);
+            CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, appointment.getPartner());
+            frame.setContentPane(calendar);
+            
+            Document doc = new Document();
+            try {
+                PdfWriter.getInstance(doc, new FileOutputStream("Receipt.pdf"));
+            } catch (FileNotFoundException ex) {}
+            
+            doc.open();
+            Font titleFont = new Font(Font.getFamily("TIMES_ROMAN"), 16,    Font.BOLD|Font.UNDERLINE);
+            doc.add(new Paragraph("Receipt",titleFont));
+            doc.add(new Paragraph("First Name: " + appointment.getPatient().getFirstName()));
+            doc.add(new Paragraph("Last Name: " + appointment.getPatient().getSurname()));
+            doc.add(new Paragraph(" "));
+            PdfPTable table = new PdfPTable(2);
+            table.setWidths(new float[] { 3, 1 });
+            table.addCell("Treatment");
+            table.addCell("Cost");
+            Double total = 0.0;
+            for (int i = 0; i<treatments.length; i++){
+                String name = treatments[i].getTreatment().getName();
+                Double costD = treatments[i].getTreatment().getCost();
+                total += costD;
+                String cost = Double.toString(costD);
+                table.addCell(name);
+                table.addCell(cost);
+            }
+            table.addCell("Total");
+            table.addCell(total.toString());
+            doc.add(table);
+
+            doc.close();
+            try {
+                Desktop.getDesktop().open(new File("Receipt.pdf"));
+            } catch (IOException ex) {}
+        } catch (DocumentException e) {}
     }//GEN-LAST:event_completeActionPerformed
 
 
