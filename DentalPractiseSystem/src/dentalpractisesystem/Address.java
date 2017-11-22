@@ -19,35 +19,72 @@ public class Address extends SQLConnector {
     private String district;
     private String city;
 
+    /**
+     * Gets the address' house number
+     * @return the house number
+     */
     public int getHouseNumber() {
         return houseNumber;
     }
 
+    /**
+     * Sets the house number in this object (not database)
+     * @param houseNumber the house number that should be set
+     */
     public void setHouseNumber(int houseNumber) {
         this.houseNumber = houseNumber;
     }
 
+    /**
+     * Gets the address' post code
+     * @return the post code
+     */
     public String getPostCode() {
         return postCode;
     }
 
+    /**
+     * Sets the post code in this object (not the database)
+     * @param postCode the postcode that should be said
+     */
     public void setPostCode(String postCode) {
         this.postCode = postCode;
     }
 
+    /**
+     * Gets the address' street name
+     * @return the street name
+     */
     public String getStreetName() {
         return streetName;
     }
 
+    /**
+     * Sets the street name in the object (not database)
+     * @param streetName the street name that should be set
+     */
     public void setStreetName(String streetName) {
         this.streetName = streetName;
     }
 
+    /**
+     * Creates a new address object just containing the tables primary keys
+     * @param houseNumber the house number to be set in the object
+     * @param postCode the post code to be set in the object
+     */
     public Address(int houseNumber, String postCode) {
         this.houseNumber = houseNumber;
         this.postCode = postCode;
     }
 
+    /**
+     * Creates an address object based on all of its parameters
+     * @param houseNumber the house number to be set
+     * @param postCode the post code to be set
+     * @param streetName the street name to be set
+     * @param district the district to be set
+     * @param city the city to be set
+     */
     public Address(int houseNumber, String postCode, String streetName, String district, String city) {
         this.houseNumber = houseNumber;
         this.postCode = postCode;
@@ -56,22 +93,44 @@ public class Address extends SQLConnector {
         this.city = city;
     }
 
+    /**
+     * Gets the district of the address
+     * @return the district
+     */
     public String getDistrict() {
         return district;
     }
 
+    /**
+     * Sets the district in the object (not the database)
+     * @param district the district to be set
+     */
     public void setDistrict(String district) {
         this.district = district;
     }
 
+    /**
+     * Gets the city of the address
+     * @return string of the city
+     */
     public String getCity() {
         return city;
     }
 
+    /** 
+     * Sets the city in the object (not database
+     * @param city the city to set to the address
+     */
     public void setCity(String city) {
         this.city = city;
     }
     
+    /**
+     * Fetches the address as an object based on the primary keys from the database
+     * @param houseNumber the house number of the wanted address
+     * @param postCode the post code of the wanted address
+     * @return an address object containing the address information
+     */
     public static Address fetch(int houseNumber, String postCode) {
         PreparedStatement stmt = null;
         Address address = null;
@@ -97,6 +156,10 @@ public class Address extends SQLConnector {
          }
     }
     
+    /**
+     * Adds a new address to the database based on the data in the object
+     * @return if it has been correctly added or not
+     */
     public boolean add() {
         PreparedStatement stmt = null;
         try {
@@ -122,6 +185,10 @@ public class Address extends SQLConnector {
          }
     }
     
+    /**
+     * Converts the address into a string to be printed
+     * @return the string
+     */
     public String toString() {
         return "<html>" + houseNumber+" " + streetName + ",<br>" +
                 district + ",<br>" +
@@ -129,6 +196,9 @@ public class Address extends SQLConnector {
                 postCode + "</html>";      
     }
     
+    /**
+     * Creates the address table within the database
+     */
     public static void createTable() {
         update("CREATE TABLE IF NOT EXISTS Address(" +
             "    houseNumber INTEGER," +
@@ -139,6 +209,10 @@ public class Address extends SQLConnector {
             "    PRIMARY KEY (houseNumber, postCode))");
     }
     
+    /**
+     * Deletes the address contained in the object from the database
+     * @return if the deletion was successful for not
+     */
     public boolean delete() {
         PreparedStatement stmt = null;
         try {
@@ -160,7 +234,6 @@ public class Address extends SQLConnector {
             }
         }
     }
-    
     
     
 }

@@ -14,11 +14,14 @@ import javax.swing.DefaultListModel;
  */
 public class AddTreatment extends javax.swing.JPanel {
     
-    // Treatment list
+    // Instance Variables
+
     private Treatment[] treatments = Treatment.fetchAll();
+    
     private DefaultListModel listModel = new DefaultListModel();
     private DefaultListModel listModel1 = new DefaultListModel();
     private ArrayList selected = new ArrayList();
+    
     private javax.swing.JFrame frame;
     private Appointment appointment;
     private Partner partner;
@@ -26,13 +29,20 @@ public class AddTreatment extends javax.swing.JPanel {
     
 
     /**
-     * Creates new form AddTreatment
+     * Creates a new add treatment panel to allow treatments to be added to an appointment
+     * @param frame the frame the panel will be displayed on
+     * @param appointment the appointment the treatments should be added to
+     * @param partner the partner who's appointment it is & who's adding the treatments
+     * @param timeOffset the time offset currently in use by the partner calendar
      */
     public AddTreatment(javax.swing.JFrame frame, Appointment appointment, Partner partner, int timeOffset) {
         initComponents();
+        
+        // Adds treatments to the list
         for (int i = 0; i<treatments.length; i++) {
             listModel.addElement(treatments[i].toString());
         }
+        
         this.frame = frame;
         this.appointment = appointment;
         this.partner = partner;
@@ -213,13 +223,22 @@ public class AddTreatment extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /** 
+     * Action listener for the button to take you back to the calendar
+     * @param evt the event that triggered the button
+     */
     private void calendarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calendarButtonActionPerformed
         setVisible(false);
         CalendarDayPanel panel = new CalendarDayPanel(frame, timeOffset, partner);
         frame.setContentPane(panel);
     }//GEN-LAST:event_calendarButtonActionPerformed
 
+    /**
+     * The action listener for adding a treatment to the appointment
+     * @param evt the event triggered by the button
+     */
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+        // Checks if a treatment was selected and adds it if it hasnt been added
         if (jList2.getSelectedIndex() != -1) {
             Treatment treatment = treatments[jList2.getSelectedIndex()];
             if (!existsInList(treatment)) {
@@ -229,7 +248,12 @@ public class AddTreatment extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_addActionPerformed
 
+    /**
+     * Action listener for deleting treatments from the appointment
+     * @param evt the event that triggered the button
+     */
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        // Checks if an appointment is selected before attempting to delete it
         if (jList1.getSelectedIndex() != -1) {
             int index = jList1.getSelectedIndex();
             listModel1.removeElementAt(index);
@@ -237,14 +261,26 @@ public class AddTreatment extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_deleteActionPerformed
 
+    /**
+     * Action listener saving the treatment selection for the appointment
+     * @param evt the event used to trigger the button
+     */
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
+        // Adds treatments to the visit treatment objects
         VisitTreatment.addList(selected, appointment);
         appointment.setStatus(1);
+        
+        // Goes back to the calendar where the partner was at previously
         setVisible(false);
         CalendarDayPanel panel = new CalendarDayPanel(frame, timeOffset, partner);
         frame.setContentPane(panel);
     }//GEN-LAST:event_saveActionPerformed
 
+    /**
+     * Checks if a treatment exists within the list of treatments
+     * @param treatment the treatment to check if its in the list
+     * @return true/false if the treatment exists in the list or not
+     */
     private boolean existsInList(Treatment treatment) {
         boolean exists = false;
         for (int i = 0; i<selected.size(); i++) {

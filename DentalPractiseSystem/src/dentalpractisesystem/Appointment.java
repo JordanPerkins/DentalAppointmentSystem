@@ -26,10 +26,19 @@ public class Appointment extends SQLConnector {
     private int status;
     private int paymentStatus;
 
+    /**
+     * Gets the status of the appointment
+     * @return the appointment status
+     */
     public int getStatus() {
         return status;
     }
 
+    /**
+     * Sets the appointment status in the database
+     * @param status the status of the appointment
+     * @return if the status update was successful or not
+     */
     public boolean setStatus(int status) {
         this.status = status;
         PreparedStatement stmt = null;
@@ -54,10 +63,19 @@ public class Appointment extends SQLConnector {
         }    
     }
 
+    /**
+     * Gets the current payment status of the appointment
+     * @return the appointments payment status
+     */
     public int getPaymentStatus() {
         return paymentStatus;
     }
 
+    /**
+     * Sets the payment status of the appointment in the database
+     * @param paymentStatus the payment status of the appointment
+     * @return if the update was successful or not
+     */
     public boolean setPaymentStatus(int paymentStatus) {
         this.paymentStatus = paymentStatus;
         PreparedStatement stmt = null;
@@ -81,46 +99,96 @@ public class Appointment extends SQLConnector {
         } 
     }
     
+    /**
+     * Gets the patient object from the appointment
+     * @return the patient object
+     */
     public Patient getPatient() {
         return patient;
     }
     
+    /**
+     * Gets the partner associated with the appointment
+     * @return the partner
+     */
     public Partner getPartner() {
         return partner;
     }
     
+    /**
+     * Gets the start time of the associated with the appointment
+     * @return the start time
+     */
     public Time getStartTime() {
         return startTime;
     }
     
+    /**
+     * Gets the end time associated with the appointment
+     * @return the end time
+     */
     public Time getEndTime() {
         return endTime;
     }
     
+    /**
+     * Gets the date of the associated appointment
+     * @return the appointment date
+     */
     public Date getDate() {
         return date;
     }
     
+    /**
+     * Sets the patient object in the appointment object (not database)
+     * @param patient the patient object
+     */
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
     
+    /**
+     * Sets the partner to be associated with the appointment object (not database)
+     * @param partner the partner 
+     */
     public void setPartner(Partner partner) {
         this.partner = partner;
     }
     
+    /**
+     * Sets the start time for the appointment object (not database)
+     * @param start the appointments new start time
+     */
     public void setStartTime(Time start) {
         this.startTime = start;
     }
     
+    /**
+     * Sets the end time for the appointment object (not in database)
+     * @param end the appointments new end time
+     */
     public void setEndTime(Time end) {
         this.endTime = end;
     }
     
+    /**
+     * Sets the date for the appointment object (not in database)
+     * @param d the appointments new date
+     */
     public void setDate(Date d) {
         this.date = d;
     }
     
+    /**
+     * Creates a new appointment object based on all the information in the appointment table
+     * @param patient the patient object associated with the appointment
+     * @param partner the partner associated with the appointment
+     * @param start the start time of the appointment
+     * @param end the end time of the appointment
+     * @param d the date the appointment will take place
+     * @param paymentStatus the ititial payment status of the appointment
+     * @param status the inital status of the appointment
+     */
     public Appointment(Patient patient, Partner partner, Time start, Time end, Date d, int paymentStatus, int status) {
         this.patient = patient;
         this.partner = partner;
@@ -131,6 +199,10 @@ public class Appointment extends SQLConnector {
         this.paymentStatus = paymentStatus;
     }
     
+    /**
+     * Adds the current appointment information in the object to the database
+     * @return if the addition was successful or not
+     */
     public boolean add() {
         PreparedStatement stmt = null;
         try {
@@ -169,35 +241,6 @@ public class Appointment extends SQLConnector {
             }
          }
     }
-        
-    /*public boolean fetch() {
-        if (!exists()) return false;
-        PreparedStatement stmt = null;
-        try {
-            String sql = "SELECT * FROM Appointment NATURAL JOIN Patient WHERE partner = ? AND startTime = ? AND appointmentDate = ?";
-            stmt = connect().prepareStatement(sql);
-            stmt.setString(1, partner.toString());
-            stmt.setTime(2, getStartTime());
-            stmt.setDate(3, getDate());
-            ResultSet res = stmt.executeQuery();
-            res.next();
-            setPatient(new Patient(res.getInt("patientID")));
-            setPartner(Partner.valueOf(res.getString("partner")));
-            setStartTime(res.getTime("startTime"));
-            setEndTime(res.getTime("endTime"));
-            setDate(res.getDate("appointmentDate"));
-            return true;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
-        } finally {
-            if (stmt != null) try {
-                stmt.close();
-            } catch (SQLException ex){
-                
-            }
-        }
-    }*/
     
     public static int getCountDatePartner(Date date, Partner partner) {
         PreparedStatement stmt = null;
@@ -402,6 +445,9 @@ public class Appointment extends SQLConnector {
         }
     }
     
+    /**
+     * Creates an appointment table in the database
+     */
     public static void createTable() {
         update("CREATE TABLE IF NOT EXISTS Appointment(" +
             "     patientID INTEGER," +

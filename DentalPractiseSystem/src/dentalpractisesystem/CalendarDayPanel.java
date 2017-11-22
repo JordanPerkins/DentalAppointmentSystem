@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
  */
 public class CalendarDayPanel extends javax.swing.JPanel {
     
+    // Instance Variables
     private javax.swing.JFrame frame;
     
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMMM");
@@ -34,16 +35,21 @@ public class CalendarDayPanel extends javax.swing.JPanel {
     private Partner partner;
 
     /**
-     * Creates new form CalendarDayPanel
+     * Constructor for creating a new calendar day panel to be displayed on a frame
+     * @param frame the frame the panel will be displayed on
+     * @param timeO the time offset from current used in this instance of the panel
+     * @param partner the partner who's appointments are to be displayed
      */
     public CalendarDayPanel(javax.swing.JFrame frame, int timeO, Partner partner) {
         this.frame = frame;
         this.timeOffset = timeO;
         this.partner = partner;
         
+        // Adjusts the display time 
         if (timeOffset != 0)
             cDisplay.add(Calendar.DATE, timeOffset);
         
+        // Adjusts the display date if current day is incorrect
         switch(cDisplay.get(Calendar.DAY_OF_WEEK)) {
             case 7: cDisplay.add(Calendar.DATE, 2);
                 this.timeOffset += 2; break;
@@ -57,10 +63,15 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         
     }
     
-        private Appointment[][] getAppointments() {
+    /**
+     * Gets the days appointments from the database based on the panels instance variables
+     * @return An array of appointment lists for each of the given times
+     */
+    private Appointment[][] getAppointments() {
         java.sql.Date day = new java.sql.Date(cDisplay.getTimeInMillis());
         Appointment[] dayAppoints = Appointment.fetchDatePartner(day, partner);
         
+        // Counts the number of appointments start times that fall into each hour
         int nineLength = 0;
         int tenLength = 0;
         int elevernLength = 0;
@@ -83,6 +94,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
             }
         }
         
+        // Splits the data up and puts it into the correct arrays
         int nineCount = 0;
         int tenCount = 0;
         int elevernCount = 0;
@@ -124,6 +136,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
             }
         }
         
+        // Combines are returns the arrays
         Appointment[][] ret = new Appointment[8][];
         ret[0] = nineAppoints;
         ret[1] = tenAppoints;
@@ -436,28 +449,47 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Action performed method for going back a day on the calendar
+     * @param evt the event triggered by the button
+     */
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         setVisible(false);
         int timeOffsetNew = this.timeOffset-1;
+        
+        // Editis time offset if the current day displayed is a monday
         if (cDisplay.get(Calendar.DAY_OF_WEEK) == 2) {
             timeOffsetNew = this.timeOffset-3;
         }
+        
         CalendarDayPanel next = new CalendarDayPanel(this.frame, timeOffsetNew, this.partner);
         this.frame.setContentPane(next);
     }//GEN-LAST:event_backActionPerformed
 
+    /**
+     * Action performed method for going forward a day on the calendar
+     * @param evt the event triggered by the button
+     */
     private void forwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardActionPerformed
         setVisible(false);
         CalendarDayPanel next = new CalendarDayPanel(this.frame, this.timeOffset+1, this.partner);
         this.frame.setContentPane(next);
     }//GEN-LAST:event_forwardActionPerformed
 
+    /**
+     * Action performed method for going back to the partner selection menu
+     * @param evt the event that triggered the button
+     */
     private void selectPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPartnerActionPerformed
         setVisible(false);
         PartnerSelect select = new PartnerSelect(frame);
         frame.setContentPane(select);
     }//GEN-LAST:event_selectPartnerActionPerformed
 
+    /**
+     * Action listener for viewing an appointment when one is clicked
+     * @param evt the event that triggered the button
+     */ 
     private void viewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
         Appointment a = (Appointment)((JButton)evt.getSource()).getClientProperty("appointment");
@@ -465,24 +497,38 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         frame.setContentPane(add);
     }
     
+    /**
+     * Creates a button that when clicked will allow a partner to add treatments to the appointment
+     * @param patient the patient whos appointment the button is a display for 
+     * @param a the appointment that a button is a reference for
+     * @return the button linked to the correct action listener
+     */
     private JButton createViewButton(Patient patient, Appointment a) {
         JButton view = new JButton();
         view.setPreferredSize(new Dimension(1,1));
         view.setText("<html>" + patient.getFirstName() + "<br>" + patient.getSurname() + "</html>");
+        
+        // Correctly sets up the button based on the appointments status
         if (a.getStatus() == 1 || a.getStatus() == 2) {
             view.setBackground(Color.GREEN);
         } else {
             view.setFont(new Font("Tahoma", Font.PLAIN, 10));
             view.putClientProperty("appointment", a);
             view.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewAppointmentActionPerformed(evt);
-            }
-        });
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    viewAppointmentActionPerformed(evt);
+                }
+            });
         }
+        
         return view;
     }
     
+    /**
+     * Creates a blank button that can't be viewed and doesn't link anywhere. Can be used
+     * to fill in blank space within a panel.
+     * @return A JButton with properties that display blank
+     */
     private JButton createBlankButton() {
         JButton blank = new JButton();
         blank.setPreferredSize(new Dimension(1,1));
@@ -492,33 +538,44 @@ public class CalendarDayPanel extends javax.swing.JPanel {
         blank.setBorderPainted(false);
         return blank;
     }
-    /*
-    
-    Change so that each panel only deals with itself and returns an appointment if the endTime of the appointment would overlap so it can
-    be delt with by the panel who needs it (means removing panel next and adding panelSart to params).
-    
-    */
-    
-    private Appointment showAppointments(Appointment[] appointments, JPanel panel, java.sql.Time panelStart, java.sql.Time panelEnd) {
-        System.out.println("Panel start: " + panelStart);
+
+    /**
+     * Displays the set of appointments passed in on the panel passed in
+     * @param appointments the set of appointments to be displayed
+     * @param panel the panel the appointments should be displayed on
+     * @param panelStart the appointment time the panel displays from
+     * @param panelEnd the appointment time the panel displays to
+     * @return an appointment that carries over to the next panel, null if there isn't one
+     */
+    private Appointment showAppointments(Appointment[] appointments, JPanel panel, 
+            java.sql.Time panelStart, java.sql.Time panelEnd) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.gridx = 0;
+        
+        // Checks if it has appointments to display or not
         if (appointments.length != 0) {
             int gridI = 0;
+            // Steps through all the appointments
             for (int i=0; i<appointments.length; i++) {
-                System.out.println("Start Time : " + appointments[i].getStartTime());
-                int lengthI = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
+                int lengthI = (int)(appointments[i].getEndTime().getTime()/1000/60 - 
+                        appointments[i].getStartTime().getTime()/1000/60);
+                // Checks if the appointment will fill the panel ir not
                 if (lengthI >= 60 && appointments[i].getStartTime().getTime() == panelStart.getTime()) {
                     JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
                     gbc.weighty = 1;
                     gbc.gridy = gridI;
                     panel.add(viewAppoint, gbc);
                     gridI++;
+
                     if (lengthI > 60) return appointments[i];
+                // Checks if the appointment starts before the panel start time
                 } else if (appointments[i].getStartTime().getTime() < panelStart.getTime()) {
-                    int appointmentLengthP = (int)(appointments[i].getEndTime().getTime()/1000/60 - panelStart.getTime()/1000/60);
+                    int appointmentLengthP = (int)(appointments[i].getEndTime().getTime()/1000/60 -
+                            panelStart.getTime()/1000/60);
+                    
+                    // Checks the appointment length based on the panel that it is in
                     if (appointmentLengthP >= 60) {
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
                         gbc.weighty = 1;
@@ -532,14 +589,18 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                         gbc.gridy = gridI;
                         panel.add(viewAppoint, gbc);
                         gridI++;
+                        
+                        // Adds space to the panel based on how many appointments are left to display in the panel       
                         if (i == appointments.length-1) {
                             JButton blank = createBlankButton();
                             gbc.weighty = (100.0/60.0)*(60-appointmentLengthP);
                             gbc.gridy = gridI;
                             panel.add(blank, gbc);
                             gridI++;
-                        } else if (appointments[i].getEndTime().getTime() != appointments[i+1].getStartTime().getTime()) {
-                           int lengthGap = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                        } else if (appointments[i].getEndTime().getTime() != 
+                                appointments[i+1].getStartTime().getTime()) {
+                           int lengthGap = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - 
+                                   appointments[i].getEndTime().getTime()/1000/60);
                            JButton blank = createBlankButton();
                            gbc.weighty = (100.0/60.0)*lengthGap;
                            gbc.gridy = gridI;
@@ -547,16 +608,22 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                            gridI++;
                         }
                     }
+                // Sets up the buttons and gap if this is the first appointment in the list
                 } else if (i == 0) {
-                    int gapFromStart = (int)(appointments[i].getStartTime().getTime()/1000/60 - panelStart.getTime()/1000/60);
+                    int gapFromStart = (int)(appointments[i].getStartTime().getTime()/1000/60 - 
+                            panelStart.getTime()/1000/60);
                     JButton blankTop = createBlankButton();
                     gbc.weighty = (100.0/60.0)*gapFromStart;
                     gbc.gridy = gridI;
                     panel.add(blankTop, gbc);
                     gridI++;
+                    
+                    // Sets up buttons and space based on if the appointment is longer than the panel
                     if (appointments[i].getEndTime().getTime() > panelEnd.getTime()) {
-                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
-                        int overTime = (int)(appointments[i].getEndTime().getTime()/1000/60 - panelEnd.getTime()/1000/60);
+                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - 
+                                appointments[i].getStartTime().getTime()/1000/60);
+                        int overTime = (int)(appointments[i].getEndTime().getTime()/1000/60 - 
+                                panelEnd.getTime()/1000/60);
                         int appointmentLengthFactored = appointmentLength - overTime;
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
                         gbc.weighty = (100.0/60.0)*appointmentLengthFactored;
@@ -565,21 +632,27 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                         gridI++;
                         return appointments[i];
                     } else {
-                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
+                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - 
+                                appointments[i].getStartTime().getTime()/1000/60);
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
                         gbc.weighty = (100.0/60.0)*appointmentLength;
                         gbc.gridy = gridI;
                         panel.add(viewAppoint, gbc);
                         gridI++;
+                        
+                        // Sets the buttons up depending on the number of appointments gone through
                         if (i == appointments.length-1) { 
                             JButton blank = createBlankButton();
-                            int bottomGap = (int)(panelEnd.getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                            int bottomGap = (int)(panelEnd.getTime()/1000/60 - 
+                                    appointments[i].getEndTime().getTime()/1000/60);
                             gbc.weighty = (100.0/60.0)*bottomGap;
                             gbc.gridy = gridI;
                             panel.add(blank, gbc);
                             gridI++;
-                        } else if (appointments[i].getEndTime().getTime() != appointments[i+1].getStartTime().getTime()) {
-                            int lengthGap = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                        } else if (appointments[i].getEndTime().getTime() != 
+                                appointments[i+1].getStartTime().getTime()) {
+                            int lengthGap = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - 
+                                    appointments[i].getEndTime().getTime()/1000/60);
                             JButton blank = createBlankButton();
                             gbc.weighty = (100.0/60.0)*lengthGap;
                             gbc.gridy = gridI;
@@ -588,9 +661,12 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                         }
                     }
                 } else {
+                    // Sets up buttons and space based on if the appointment is longer than the panel
                     if (appointments[i].getEndTime().getTime() > panelEnd.getTime()) {
-                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
-                        int overTime = (int)(appointments[i].getEndTime().getTime()/1000/60 - panelEnd.getTime()/1000/60);
+                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - 
+                                appointments[i].getStartTime().getTime()/1000/60);
+                        int overTime = (int)(appointments[i].getEndTime().getTime()/1000/60 -
+                                panelEnd.getTime()/1000/60);
                         int appointmentLengthFactored = appointmentLength - overTime;
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
                         gbc.weighty = (100.0/60.0)*appointmentLengthFactored;
@@ -599,21 +675,27 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                         gridI++;
                         return appointments[i];
                     } else {
-                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - appointments[i].getStartTime().getTime()/1000/60);
+                        int appointmentLength = (int)(appointments[i].getEndTime().getTime()/1000/60 - 
+                                appointments[i].getStartTime().getTime()/1000/60);
                         JButton viewAppoint = createViewButton(appointments[i].getPatient(), appointments[i]);
                         gbc.weighty = (100.0/60.0)*appointmentLength;
                         gbc.gridy = gridI;
                         panel.add(viewAppoint, gbc);
                         gridI++;
+                        
+                        // Sets the buttons up depending on the number of appointments gone through
                         if (i == appointments.length-1) {
                             JButton blank = createBlankButton();
-                            int bottomGap = (int)(panelEnd.getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                            int bottomGap = (int)(panelEnd.getTime()/1000/60 - 
+                                    appointments[i].getEndTime().getTime()/1000/60);
                             gbc.weighty = (100.0/60.0)*bottomGap;
                             gbc.gridy = gridI;
                             panel.add(blank, gbc);
                             gridI++;
-                        } else if (appointments[i].getEndTime().getTime() != appointments[i+1].getStartTime().getTime()) {
-                            int lengthGap = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - appointments[i].getEndTime().getTime()/1000/60);
+                        } else if (appointments[i].getEndTime().getTime() != 
+                                appointments[i+1].getStartTime().getTime()) {
+                            int lengthGap = (int)(appointments[i+1].getStartTime().getTime()/1000/60 - 
+                                    appointments[i].getEndTime().getTime()/1000/60);
                             JButton blank = createBlankButton();
                             gbc.weighty = (100.0/60.0)*lengthGap;
                             gbc.gridy = gridI;
@@ -624,6 +706,7 @@ public class CalendarDayPanel extends javax.swing.JPanel {
                 }
             }
         }
+        
         return null;
     }
     
