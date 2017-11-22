@@ -5,10 +5,15 @@
  */
 package dentalpractisesystem;
 
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
@@ -593,36 +598,55 @@ public class ViewAppointment extends javax.swing.JPanel {
             } catch (FileNotFoundException ex) {}
             
             doc.open();
-            Font titleFont = new Font(Font.getFamily("TIMES_ROMAN"), 16,    Font.BOLD|Font.UNDERLINE);
-            doc.add(new Paragraph("Sheffield Dental Care",titleFont));
-            doc.add(new Paragraph("First Name: " + appointment.getPatient().getFirstName()));
-            doc.add(new Paragraph("Last Name: " + appointment.getPatient().getSurname()));
-            int houseNo = appointment.getPatient().getAddress().getHouseNumber();
-            doc.add(new Paragraph("House " + Integer.toString(houseNo)));
-            doc.add(new Paragraph(appointment.getPatient().getAddress().getStreetName() + " Street"));
-            doc.add(new Paragraph(appointment.getPatient().getAddress().getDistrict()));
-            doc.add(new Paragraph(appointment.getPatient().getAddress().getCity()));
-            doc.add(new Paragraph(appointment.getPatient().getAddress().getPostCode()));
+            Font titleFont = new Font(Font.getFamily("TIMES_ROMAN"), 16,Font.BOLD|Font.UNDERLINE);
+            Paragraph printTitle = new Paragraph("Sheffield Dental Care",titleFont);
+            printTitle.setAlignment(Element.ALIGN_CENTER);
+            doc.add(printTitle);
             
-            doc.add(new Paragraph(" "));
+            Paragraph printAddress = new Paragraph(
+                    "House " + Integer.toString(appointment.getPatient().getAddress().getHouseNumber()) + "\n" +
+                    appointment.getPatient().getAddress().getStreetName() + " Street" + "\n" +
+                    appointment.getPatient().getAddress().getDistrict() + "\n" +
+                    appointment.getPatient().getAddress().getCity() + "\n" +
+                    appointment.getPatient().getAddress().getPostCode()        
+            );
+            printAddress.setAlignment(Element.ALIGN_RIGHT);
+            doc.add(printAddress);
+            
+            Paragraph printName = new Paragraph (
+                    "First Name: " + appointment.getPatient().getFirstName() + "\n" +
+                    "Last Name: " + appointment.getPatient().getSurname()       
+            );
+            doc.add(printName);
+            
+            doc.add(new Paragraph(Chunk.NEWLINE));
             PdfPTable table = new PdfPTable(2);
             table.setWidths(new float[] { 3, 1 });
             table.addCell("Treatment");
             table.addCell("Cost");
             Double total = 0.0;
             for (int i = 0; i<treatments.length; i++){
-                String name = treatments[i].getTreatment().getName();
-                Double costD = treatments[i].getTreatment().getCost();
-                total += costD;
-                String cost = Double.toString(costD);
-                table.addCell(name);
-                table.addCell(cost);
+                total += treatments[i].getTreatment().getCost();
+                table.addCell(treatments[i].getTreatment().getName());
+                table.addCell(Double.toString(treatments[i].getTreatment().getCost()));
             }
-            table.addCell("Total");
-            table.addCell(total.toString());
+
+            Paragraph totalParagraph = new Paragraph("Total");
+            PdfPCell totalCell = new PdfPCell (totalParagraph);
+            totalCell.setBorder(Rectangle.NO_BORDER);
+            totalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            table.addCell(totalCell);
+            
+            PdfPCell printTotalCost = new PdfPCell (new Phrase(total.toString()));
+            printTotalCost.setBorder(Rectangle.NO_BORDER);
+            table.addCell(printTotalCost);
             doc.add(table);
+
             if (appointment.getPaymentStatus() == 1) {
-                doc.add(new Paragraph("Course of treatment, Payment due at the end."));
+                doc.add(new Paragraph(Chunk.NEWLINE));
+                Paragraph p = new Paragraph("Course of treatment, Payment due at the end.");
+                p.setAlignment(Element.ALIGN_CENTER);
+                doc.add(p);
             }
             
 
