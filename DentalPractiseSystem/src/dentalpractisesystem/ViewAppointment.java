@@ -594,9 +594,16 @@ public class ViewAppointment extends javax.swing.JPanel {
             
             doc.open();
             Font titleFont = new Font(Font.getFamily("TIMES_ROMAN"), 16,    Font.BOLD|Font.UNDERLINE);
-            doc.add(new Paragraph("Receipt",titleFont));
+            doc.add(new Paragraph("Sheffield Dental Care",titleFont));
             doc.add(new Paragraph("First Name: " + appointment.getPatient().getFirstName()));
             doc.add(new Paragraph("Last Name: " + appointment.getPatient().getSurname()));
+            int houseNo = appointment.getPatient().getAddress().getHouseNumber();
+            doc.add(new Paragraph("House " + Integer.toString(houseNo)));
+            doc.add(new Paragraph(appointment.getPatient().getAddress().getStreetName() + "Street"));
+            doc.add(new Paragraph(appointment.getPatient().getAddress().getDistrict()));
+            doc.add(new Paragraph(appointment.getPatient().getAddress().getCity()));
+            doc.add(new Paragraph(appointment.getPatient().getAddress().getPostCode()));
+            
             doc.add(new Paragraph(" "));
             PdfPTable table = new PdfPTable(2);
             table.setWidths(new float[] { 3, 1 });
@@ -614,6 +621,10 @@ public class ViewAppointment extends javax.swing.JPanel {
             table.addCell("Total");
             table.addCell(total.toString());
             doc.add(table);
+            if (appointment.getPaymentStatus() == 1) {
+                doc.add(new Paragraph("Course of treatment, Payment due at the end."));
+            }
+            
 
             doc.close();
             try {
