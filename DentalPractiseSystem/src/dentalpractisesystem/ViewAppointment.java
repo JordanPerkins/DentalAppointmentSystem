@@ -599,7 +599,7 @@ public class ViewAppointment extends javax.swing.JPanel {
             doc.add(new Paragraph("Last Name: " + appointment.getPatient().getSurname()));
             int houseNo = appointment.getPatient().getAddress().getHouseNumber();
             doc.add(new Paragraph("House " + Integer.toString(houseNo)));
-            doc.add(new Paragraph(appointment.getPatient().getAddress().getStreetName() + "Street"));
+            doc.add(new Paragraph(appointment.getPatient().getAddress().getStreetName() + " Street"));
             doc.add(new Paragraph(appointment.getPatient().getAddress().getDistrict()));
             doc.add(new Paragraph(appointment.getPatient().getAddress().getCity()));
             doc.add(new Paragraph(appointment.getPatient().getAddress().getPostCode()));
