@@ -11,8 +11,8 @@ package dentalpractisesystem;
  */
 public class GUIFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GUIFrame
+    /** 
+     * Creates a new GUI frame to be used for displaying panels
      */
     public GUIFrame() {
         initComponents();
@@ -47,6 +47,7 @@ public class GUIFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
+     * Creates the new frame and runs in it a new thread
      * @param args the command line arguments
      */
     public static void main(String args[]) {

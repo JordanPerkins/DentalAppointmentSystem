@@ -22,7 +22,10 @@ public class SQLConnector {
     private static String password = "03508513";
     private static Connection connection;
     
-    // Connect to SQL
+    /**
+     * Creates a new connection to the SQL database
+     * @return the database connection
+     */
     public static Connection connect() {
     try {
             if (connection == null || !connection.isValid(5)) {
@@ -39,6 +42,9 @@ public class SQLConnector {
         }
     }
     
+    /**
+     * Closes the currently open SQL database connection
+     */
     public static void close() {
         if (connection != null) {
             try {
@@ -51,6 +57,11 @@ public class SQLConnector {
         }
     }
     
+    /**
+     * Updates the sql connection through a statement with the provided string
+     * @param update the update variable
+     * @return the result of the update (or -1 if unsuccessful)
+     */
     public static int update(String update) {
         Statement stmt = null; // SQL statement object
         try {
@@ -69,6 +80,9 @@ public class SQLConnector {
         }
     }
     
+    /**
+     * Creates the tables required for the system
+     */
     public void createTables() {
         Address.createTable();
         Patient.createTable();

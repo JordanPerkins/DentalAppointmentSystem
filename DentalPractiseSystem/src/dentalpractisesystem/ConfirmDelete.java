@@ -31,7 +31,10 @@ public class ConfirmDelete extends javax.swing.JDialog {
     private ViewPatient view;
 
     /**
-     * Creates new form OkCancelDialog
+     * Creates a new dialog for confirming the deletion of a patient plan
+     * @param parent the parent frame this will be displayed over
+     * @param modal if the dialog should act as a modal
+     * @param view the view patient object to be altered
      */
     public ConfirmDelete(java.awt.Frame parent, boolean modal, ViewPatient view) {
         super(parent, modal);
@@ -51,6 +54,7 @@ public class ConfirmDelete extends javax.swing.JDialog {
     }
 
     /**
+     * Gets the current return status of the dialog box
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
     public int getReturnStatus() {
@@ -128,6 +132,10 @@ public class ConfirmDelete extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * The action listener for the ok button that confirms the plans deletion
+     * @param evt the event that triggered the action
+     */
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         int index = view.getjComboBox1().getSelectedIndex();
         view.getLis()[index].delete();
@@ -135,17 +143,26 @@ public class ConfirmDelete extends javax.swing.JDialog {
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
+    /** 
+     * Action listener for pressing the dialogs cancel button
+     * @param evt the event that triggered the action 
+     */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
-     * Closes the dialog
+     * Closes the dialog box if the user closes it
+     * @param evt the event that triggered the action 
      */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
     
+    /**
+     * Sets the return status and disposes of the unused dialog box
+     * @param retStatus the return status of the dialog
+     */
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -153,6 +170,7 @@ public class ConfirmDelete extends javax.swing.JDialog {
     }
 
     /**
+     * The method to run the dialog box, loading it in a new thread
      * @param args the command line arguments
      */
     public static void main(String args[]) {

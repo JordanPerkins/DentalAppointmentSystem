@@ -24,73 +24,148 @@ public class Patient extends SQLConnector {
     private String surname;
     private Date dob;
     private Address address;
+    private String phoneNumber;
     private PatientPlan plan;
 
+    /**
+     * Gets the current patient plan associated with the patient 
+     * @return the patient plan object
+     */
     public PatientPlan getPatientPlan() {
         return plan;
     }
 
+    /**
+     * Sets the patient plan associated with the patient in the object (not database)
+     * @param plan the new plan to be set
+     */
     public void setPatientPlan(PatientPlan plan) {
         this.plan = plan;
     }
 
+    /**
+     * Gets the address object associated with the patient
+     * @return the address object
+     */
     public Address getAddress() {
         return address;
     }
 
+    /**
+     * Sets the associated address in the object (not database)
+     * @param address the new address to be set
+     */
     public void setAddress(Address address) {
         this.address = address;
     }
 
+    /**
+     * Gets the ID associated with the patient
+     * @return the patientID
+     */
     public int getPatientID() {
         return patientID;
     }
 
+    /**
+     * Sets the patient ID in the object (not the database)
+     * @param patientID the new patientID
+     */
     public void setPatientID(int patientID) {
         this.patientID = patientID;
     }
-    private String phoneNumber;
 
+    /**
+     * Gets the title of the patient
+     * @return the patients title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets the patients title in the object (not database)
+     * @param title the patients new title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Gets the patients first name
+     * @return the patients first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Sets the patients first name in the object (not database)
+     * @param firstName the patients new first name
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Gets the surname of the patient 
+     * @return the patients surname
+     */
     public String getSurname() {
         return surname;
     }
 
+    /**
+     * Sets the surname of the patient in the object (not database)
+     * @param surname the patients new surname
+     */
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    /**
+     * Gets the patients date of birth
+     * @return the patients DoB 
+     */
     public Date getDob() {
         return dob;
     }
 
+    /**
+     * Sets the patients date of birth in the object (not database)
+     * @param dob the new date of birth
+     */
     public void setDob(Date dob) {
         this.dob = dob;
     }
 
+    /**
+     * Gets the patients phone number
+     * @return the patients phone number
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * Sets the patients phone number in the object (not database)
+     * @param phoneNumber the new phone number
+     */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
     
+    /**
+     * Creates a new patient containing all its applicable parameters
+     * @param patientID the patient ID
+     * @param title the patients title
+     * @param firstName the patients first name
+     * @param surname the patients surname
+     * @param dob the patients date of birth
+     * @param phoneNumber the patients phone number
+     * @param address the patients address object
+     * @param plan the patients plan object
+     */
     public Patient(int patientID, String title, String firstName, String surname, Date dob, String phoneNumber, Address address, PatientPlan plan) {
         this.patientID = patientID;
         this.title = title;
@@ -102,6 +177,14 @@ public class Patient extends SQLConnector {
         this.plan = plan;
     }
     
+    /**
+     * Creates a new patient without the object references
+     * @param title the patients title
+     * @param firstName the patients first name
+     * @param surname the patients surname
+     * @param dob the patients date of birth
+     * @param phoneNumber the patients phone number
+     */
     public Patient(String title, String firstName, String surname, Date dob, String phoneNumber) {
         this.title = title;
         this.firstName = firstName;
@@ -110,10 +193,18 @@ public class Patient extends SQLConnector {
         this.phoneNumber = phoneNumber;
     }
     
+    /**
+     * Creates a new patient object solely containing the patientID
+     * @param patientID the patientID
+     */
     public Patient(int patientID) {
         this.patientID = patientID;
     }
     
+    /**
+     * Fetches the patient data from the database based on the patientID
+     * @return if the fetch was a success or not
+     */
     public boolean fetch() {
         PreparedStatement stmt = null;
         try {
@@ -152,6 +243,10 @@ public class Patient extends SQLConnector {
         }
     }
     
+    /**
+     * Gets the count of patients currently stored in the database
+     * @return the number of patients in the database
+     */
     public static int getCount() {
         PreparedStatement stmt = null;
         int count = 0;
@@ -173,6 +268,11 @@ public class Patient extends SQLConnector {
         }    
     }
     
+    /**
+     * Fetches the data of all the patients in the database returning all there corresponding
+     * objects as an array
+     * @return an array of patient objects 
+     */
     public static Patient[] fetchAll() {
         int size = getCount();
         if (size == 0) {
@@ -217,6 +317,10 @@ public class Patient extends SQLConnector {
            
     }
     
+    /**
+     * Deletes a given patient from the database based on the objects currently set patient ID
+     * @return if the deletion was a success or not
+     */
     public boolean delete() {
         PreparedStatement stmt = null;
         try {
@@ -241,10 +345,17 @@ public class Patient extends SQLConnector {
         }
     }
     
+    /**
+     * Converts the patient name and ID to a string
+     * @return the patient name string
+     */
     public String toString() {
         return patientID + " - " + firstName + " " + surname;
     }
     
+    /**
+     * Creates the table for storing patients in the database
+     */
     public static void createTable() {
         update("CREATE TABLE IF NOT EXISTS Patient(" +
             "    patientID INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT," +
@@ -259,6 +370,10 @@ public class Patient extends SQLConnector {
             "        REFERENCES Address(houseNumber, postCode));");
     }
     
+    /**
+     * Adds the information in the object to the database as a nee patient
+     * @return if the addition of the patient was a success or not
+     */
     public boolean add() {
         PreparedStatement stmt = null;
         try {
@@ -287,6 +402,5 @@ public class Patient extends SQLConnector {
          }
     }
    
-    
     
 }

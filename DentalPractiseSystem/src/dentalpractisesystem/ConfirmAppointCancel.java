@@ -19,7 +19,16 @@ import javax.swing.KeyStroke;
  */
 public class ConfirmAppointCancel extends javax.swing.JDialog {
     
+    // Instance Variables
+    
+    /**
+     * A return status code - returned if Cancel button has been pressed
+     */
     public static final int RET_CANCEL = 0;
+    
+    /**
+     * A return status code - returned if OK button has been pressed
+     */
     public static final int RET_OK = 1;
     
     private static Appointment appointment;
@@ -29,7 +38,11 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
     private int returnStatus = RET_CANCEL;
 
     /**
-     * Creates new form ConfirmAppointCancel
+     * Creates a new dialog box for confirming the cancellation of an appointment 
+     * @param parent the parent frame this will be displayed over
+     * @param modal if the dialog should act as a modal
+     * @param a the appointment to confirm cancellation of
+     * @param tO the time offset used on the calendar this appears from
      */
     public ConfirmAppointCancel(java.awt.Frame parent, boolean modal, Appointment a, int tO) {
         super(parent, modal);
@@ -48,6 +61,10 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
         });
     }
     
+    /**
+     * Gets the set return status for the dialog
+     * @return the return status of this dialog - one of RET_OK or RET_CANCEL
+     */
     public int getReturnStatus() {
         return returnStatus;
     }
@@ -114,19 +131,35 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Action listener for the confirm button that cancels the appointment
+     * @param evt the event that triggered the listener
+     */
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
         appointment.cancel();
         doClose(RET_OK);
     }//GEN-LAST:event_confirmActionPerformed
 
+    /**
+     * The action listener for the cancel button that cancels the cancellation
+     * @param evt the event that triggered the listener
+     */
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelActionPerformed
 
+    /**
+     * Sets an action to complete if the dialog box is closed
+     * @param evt the event that triggered the listener 
+     */
     private void closeDialog(java.awt.event.WindowEvent evt) {                             
         doClose(RET_CANCEL);
     }   
     
+    /**
+     * Closes the dialog
+     * @param retStatus the return status to close with
+     */
     private void doClose(int retStatus) {
         this.returnStatus = retStatus;
         setVisible(false);
@@ -134,6 +167,7 @@ public class ConfirmAppointCancel extends javax.swing.JDialog {
     }
     
     /**
+     * The method to run the dialog box, loading it in a new thread
      * @param args the command line arguments
      */
     public static void main(String args[]) {

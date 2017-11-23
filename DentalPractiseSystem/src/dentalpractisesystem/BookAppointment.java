@@ -13,6 +13,7 @@ import javax.swing.JFrame;
  */
 public class BookAppointment extends javax.swing.JPanel {
     
+    // Instance Variables
     private JFrame frame;
     
     private java.sql.Date date;
@@ -27,7 +28,13 @@ public class BookAppointment extends javax.swing.JPanel {
     private java.sql.Time[] endTimes;
     
     /**
-     * Creates new form BookAppointment
+     * Creates a new frame that allows for the booking of appointments
+     * @param frame the frame the panel will be displayed on
+     * @param date the date the appointment will be on
+     * @param partner the partner the booking will be made for 
+     * @param tF the time appointments can be booked from
+     * @param tT the time appointments can be booked to
+     * @param tO the time offset currently been used on the calendar
      */
     public BookAppointment(javax.swing.JFrame frame, java.sql.Date date, Partner partner, java.sql.Time tF, java.sql.Time tT, int tO) {
         this.frame = frame;
@@ -278,18 +285,29 @@ public class BookAppointment extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Action performed method for the button that takes you back to the calendar
+     * @param evt the event that triggered the method
+     */
     private void calendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calendarActionPerformed
         setVisible(false);
         CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, partner);
         frame.setContentPane(calendar);
     }//GEN-LAST:event_calendarActionPerformed
 
+    /**
+     * The action performed method for pressing the button to book an appointment
+     * @param evt the event that triggered the method
+     */
     private void bookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookActionPerformed
         Patient p;
+        
+        // Sets the status' and attributes of the appointment
         if (patientComboBox.isEnabled()) {
             p = this.patientList[patientComboBox.getSelectedIndex()];
         } else
             p = null;
+        
         int paymentStatus;
         if (treatmentCourseCheckbox.isSelected()) {
             if (paymentRequiredCheckbox.isSelected()) {
@@ -300,10 +318,13 @@ public class BookAppointment extends javax.swing.JPanel {
         } else {
             paymentStatus = 0;
         }
+        
         int status = 0;
         java.sql.Time sT = this.startTimes[jComboBox1.getSelectedIndex()];
         java.sql.Time eT = this.endTimes[jComboBox2.getSelectedIndex()];
         boolean success = (new Appointment(p, this.partner, sT, eT, this.date, paymentStatus, status)).add();
+        
+        // Sets the panel based on booking sucsess or failure
         if (success) {
             setVisible(false);
             CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, partner);
@@ -323,6 +344,10 @@ public class BookAppointment extends javax.swing.JPanel {
 
     }//GEN-LAST:event_patientComboBoxActionPerformed
 
+    /**
+     * The action listener for the combo box that allows patient selection
+     * @param evt the event that triggered the method
+     */
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         int index = jComboBox1.getSelectedIndex();
         if (index != -1) {
@@ -330,6 +355,11 @@ public class BookAppointment extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    /**
+     * Action listener for the selection of the button that allows a blank appointment to
+     * be booked.
+     * @param evt the event that triggered the method
+     */
     private void blankAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blankAppointmentActionPerformed
         if(patientComboBox.isEnabled())
             patientComboBox.setEnabled(false);
@@ -337,6 +367,11 @@ public class BookAppointment extends javax.swing.JPanel {
             patientComboBox.setEnabled(true);
     }//GEN-LAST:event_blankAppointmentActionPerformed
 
+    /**
+     * Action listener for the selection of the button that sets the appointment as part
+     * of a course of treatment
+     * @param evt the event that triggered the method 
+     */
     private void treatmentCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_treatmentCourseActionPerformed
         if (treatmentCourseCheckbox.isSelected()) {
             paymentRequiredCheckbox.setEnabled(true);
@@ -347,6 +382,9 @@ public class BookAppointment extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_treatmentCourseActionPerformed
 
+    /**
+     * Updates the patient dropdown list with information form the database
+     */
     public void updatePatientDropdown() {
         patientComboBox.removeAllItems();
         Patient[] lis = Patient.fetchAll();
@@ -356,13 +394,19 @@ public class BookAppointment extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Updates the start times displayed in the dropdown based on the first bookable time
+     */
     public void updateStartTimes() {
+        // Sets the times to a round of 10 minutes
         java.sql.Time baseTime = timeFrom;
         if ((timeFrom.getTime()/1000/60)%10 != 0) {
             int mins = (int)((timeFrom.getTime()/1000/60)%10);
             long millis = (10-mins)*60*1000;
             baseTime = new java.sql.Time(timeFrom.getTime() + millis);
         }
+        
+        // Counts and adds the required values to the combobox
         baseTime.setSeconds(0);
         int count = 0;
         java.sql.Time baseTimeCount = new java.sql.Time(baseTime.getTime());
@@ -370,6 +414,7 @@ public class BookAppointment extends javax.swing.JPanel {
             count++;
             baseTimeCount.setTime(baseTimeCount.getTime() + (10*1000*60));
         }
+        
         int timesCount = 0;   
         java.sql.Time[] localStartTime = new java.sql.Time[count];
         while (baseTime.getTime() < timeTill.getTime()) {
@@ -377,20 +422,29 @@ public class BookAppointment extends javax.swing.JPanel {
             timesCount++;
             baseTime.setTime(baseTime.getTime() + (10*1000*60));
         }
+        
         startTimes = localStartTime;
         for (int i=0; i<startTimes.length; i++) {
             jComboBox1.addItem(startTimes[i].toString());
         }
     }
     
+    /**
+     * Updates the displayed end times based on the panel end time and the time currently
+     * selected as the start time
+     * @param selectedTime the currently selected start time
+     */
     public void updateEndTimes(java.sql.Time selectedTime) {
         jComboBox2.removeAllItems();
+        
+        // Counts and displays the fesible times from the start times list
         int count = 0;
         for (int i=0; i<startTimes.length; i++) {
             if (startTimes[i].getTime() > selectedTime.getTime())
                 count++;
         }
         count++;
+        
         int timesCount = 0;   
         java.sql.Time[] localEndTime = new java.sql.Time[count];
         for (int i=0; i<startTimes.length; i++) {
@@ -399,6 +453,7 @@ public class BookAppointment extends javax.swing.JPanel {
                 timesCount++;
             }
         }
+        
         localEndTime[timesCount] = new java.sql.Time(startTimes[startTimes.length-1].getTime() + (10*1000*60));
         timesCount++;
         endTimes = localEndTime;
@@ -406,7 +461,6 @@ public class BookAppointment extends javax.swing.JPanel {
             jComboBox2.addItem(endTimes[i].toString());
         }
     }
-    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

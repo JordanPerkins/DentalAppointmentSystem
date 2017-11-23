@@ -10,10 +10,12 @@ package dentalpractisesystem;
  */
 public class Menu extends javax.swing.JPanel {
     
+    // Instnace Variables
     private javax.swing.JFrame frame;
 
     /**
-     * Creates new form MainMenu
+     * Creates a new system main menu panel
+     * @param frame the frame the panel will be displayed on
      */
     public Menu(javax.swing.JFrame frame) {
         this.frame = frame;
@@ -147,18 +149,30 @@ public class Menu extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Action listener for the secretary menu button that takes you to the secretary menu
+     * @param evt the event that triggered the action listener
+     */
     private void secretaryViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secretaryViewActionPerformed
         setVisible(false);
         SecretaryMenu menu = new SecretaryMenu(frame);
         frame.setContentPane(menu);
     }//GEN-LAST:event_secretaryViewActionPerformed
 
+    /**
+     * Action listener for the partner view menu button that takes you to the partner menu
+     * @param evt the event that triggered the action listener 
+     */
     private void partnerViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partnerViewActionPerformed
         setVisible(false);
         PartnerSelect select = new PartnerSelect(frame);
         frame.setContentPane(select);
     }//GEN-LAST:event_partnerViewActionPerformed
 
+    /**
+     * Action listener that if triggered exits the system
+     * @param evt the event that triggered the action listener 
+     */
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitActionPerformed

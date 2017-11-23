@@ -38,7 +38,10 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
     private static final Plan[] list = Plan.fetchAll();
 
     /**
-     * Creates new form ConfirmChangePlan
+     * Creates a new confirm changes to plan dialog box
+     * @param parent the parent frame this will be displayed over
+     * @param modal if the dialog should act as a modal
+     * @param view the view patient object to be altered
      */
     public ConfirmChangePlan(java.awt.Frame parent, boolean modal, ViewPatient view) {
         super(parent, modal);
@@ -59,6 +62,7 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
     }
 
     /**
+     * Gets the return status of the dialog box
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
     public int getReturnStatus() {
@@ -144,11 +148,15 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * The action listener for the ok button that confirms changes to the plan
+     * @param evt the event that triggered the action
+     */
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         int index = view.getjComboBox1().getSelectedIndex();
         PatientPlan oldPlan = view.getLis()[index].getPatientPlan();
         if (oldPlan != null) oldPlan.delete();
-        System.out.println(jComboBox1.getSelectedIndex());
+        
         if (jComboBox1.getSelectedIndex() != 0) {
             Plan plan = list[jComboBox1.getSelectedIndex()-1];
             Date date = new Date(Calendar.getInstance().getTimeInMillis());
@@ -159,27 +167,40 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
         } else {
             view.getLis()[index].setPatientPlan(null);
         }
+        
         view.setInfo(view.getLis()[index]);
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
+    /** 
+     * Action listener for pressing the dialogs cancel button
+     * @param evt the event that triggered the action 
+     */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
-     * Closes the dialog
+     * Sets the status if the dialog box is closed by the user
+     * @param evt the event that triggered the action 
      */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
     
+    /**
+     * Closes the dialog box and takes action based on the return status
+     * @param retStatus the return status of the dialog box when closed
+     */
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
     }
     
+    /**
+     * Updates the dropdown box displayed on the page with plan options
+     */
     public void updateDropdown() {
         jComboBox1.addItem("No Plan");
         for (int i = 0; i<list.length; i++) {
@@ -188,6 +209,7 @@ public class ConfirmChangePlan extends javax.swing.JDialog {
     }
 
     /**
+     * The method to run the dialog box, loading it in a new thread
      * @param args the command line arguments
      */
     public static void main(String args[]) {

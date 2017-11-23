@@ -29,7 +29,10 @@ public class ErrorDialog extends javax.swing.JDialog {
     public static final int RET_OK = 1;
 
     /**
-     * Creates new form ErrorDialog
+     * Creates a new error dialog for any specified error
+     * @param parent the parent frame this will be displayed over
+     * @param modal if the dialog should act as a modal
+     * @param error the error message that should be displayed on the dialog
      */
     public ErrorDialog(java.awt.Frame parent, boolean modal, String error) {
         super(parent, modal);
@@ -49,6 +52,7 @@ public class ErrorDialog extends javax.swing.JDialog {
     }
 
     /**
+     * Gets the current return status of the dialog
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
     public int getReturnStatus() {
@@ -123,21 +127,34 @@ public class ErrorDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Action listener for the ok button
+     * @param evt the event that triggered the action 
+     */
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
+    /**
+     * Action listener for the cancel button
+     * @param evt the event that triggered the action  
+     */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
-     * Closes the dialog
+     * Closes the dialog if the user does so
+     * @param evt the event that triggered the action 
      */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
     
+    /**
+     * Sets the return status and disposes of the dialog before closing
+     * @param retStatus the return status to be set to the dialog
+     */
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -145,6 +162,7 @@ public class ErrorDialog extends javax.swing.JDialog {
     }
 
     /**
+     * The method to run the dialog box, loading it in a new thread
      * @param args the command line arguments
      */
     public static void main(String args[]) {

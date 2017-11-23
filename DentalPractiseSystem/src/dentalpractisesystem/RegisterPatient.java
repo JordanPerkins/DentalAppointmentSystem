@@ -24,7 +24,8 @@ public class RegisterPatient extends javax.swing.JPanel {
     private boolean addressChecked = false;
 
     /**
-     * Creates new form JPanel
+     * Create a new panel for registering of new patients
+     * @param frame the frame the panel will be displayed on
      */
     public RegisterPatient(javax.swing.JFrame frame) {
         initComponents();
@@ -467,16 +468,25 @@ public class RegisterPatient extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_foreNameTextFieldActionPerformed
 
+    /**
+     * Action listener for the menu button that takes you back to the menu
+     * @param evt the event that triggered the action listener
+     */
     private void mainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuActionPerformed
         setVisible(false);
         SecretaryMenu menu = new SecretaryMenu(frame);
         frame.setContentPane(menu);
     }//GEN-LAST:event_mainMenuActionPerformed
 
+    /**
+     * Action listener that checks the current postcode and house number
+     * @param evt the event that triggered the action
+     */
     private void checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkActionPerformed
         jButton1.setEnabled(false);
         String houseNumber = houseNoTextField.getText();
         String postCode = postcodeTextField.getText();
+        
         if (!isInteger(houseNumber)) {
             createErrorDialog("House number not valid");
         } else if (!Pattern.matches("^[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}$", postCode.toUpperCase())) {
@@ -502,11 +512,19 @@ public class RegisterPatient extends javax.swing.JPanel {
         }        
     }//GEN-LAST:event_checkActionPerformed
 
+    /**
+     * Action listener for making changes if the address key has been typed
+     * @param evt the event that triggered the action 
+     */
     private void addressKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addressKeyTyped
         jButton1.setEnabled(false);
         addressChecked = false;
     }//GEN-LAST:event_addressKeyTyped
 
+    /**
+     * Action listener to make changes to the key field
+     * @param evt the event that triggered the action
+     */
     private void textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyTyped
         validateTextFields();
         if (addressChecked == false) {
@@ -514,12 +532,21 @@ public class RegisterPatient extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_textFieldKeyTyped
 
+    /**
+     * Action listener used for setting the text field if the date of birth button is clicked
+     * @param evt the event that triggered the action
+     */
     private void dobClickActionPerformed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dobClickActionPerformed
         javax.swing.JTextField field = (javax.swing.JTextField) evt.getSource(); 
         field.setText("");
     }//GEN-LAST:event_dobClickActionPerformed
 
+    /**
+     * Action listener for the register patient button that registers the new patient
+     * @param evt the event that triggered the action
+     */
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
+        // Cheks if any of the required feilds are not properly filled in
         if (!isInteger(dobDayField.getText())) {
             createErrorDialog("Invalid day");
         } else if (!isInteger(dobMonthField.getText())) {
@@ -533,6 +560,7 @@ public class RegisterPatient extends javax.swing.JPanel {
         } else if (phoneTextField.getText().length() > 17) {
             createErrorDialog("Phone number too long");     
         } else {
+            // Registers and adds the new patient
             int day = Integer.parseInt(dobDayField.getText());
             int month = Integer.parseInt(dobMonthField.getText());
             int year = Integer.parseInt(dobYearField.getText());
@@ -565,6 +593,9 @@ public class RegisterPatient extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_registerActionPerformed
 
+    /**
+     * Validates the text fields to check they contain the right information
+     */
     private void validateTextFields() {
         javax.swing.JTextField[] fields = { cityTextField, districtTextField, foreNameTextField, phoneTextField,
         streetNameTextField, surNameTextField, dobDayField, dobMonthField, dobYearField };
@@ -582,6 +613,11 @@ public class RegisterPatient extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Tests if the value of the passed in string is an integer
+     * @param s the string to test
+     * @return if the string is an integer or not
+     */
     public static boolean isInteger(String s) {
         try { 
             Integer.parseInt(s); 
@@ -593,6 +629,10 @@ public class RegisterPatient extends javax.swing.JPanel {
         return true;
     }
     
+    /**
+     * Creates a new error dialog and displays it if there is an error occur
+     * @param error the text that should be displayed on the error dialog
+     */
     private void createErrorDialog(String error) {
         ErrorDialog dialog = new ErrorDialog(frame, true, error);
         Point point = frame.getLocationOnScreen();

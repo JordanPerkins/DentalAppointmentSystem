@@ -24,34 +24,67 @@ public class PatientPlan extends SQLConnector {
     private int usedCheckups;
     private int usedVisits;
 
+    /**
+     * Gets the ID of the patient associated with the plan
+     * @return the associated patient ID
+     */
     public int getPatientID() {
         return patientID;
     }
 
+    /**
+     * Sets the patient ID in the object (not database)
+     * @param patientID the new patient ID
+     */
     public void setPatientID(int patientID) {
         this.patientID = patientID;
     }
 
+    /**
+     * Gets the plan object associated with this patient plan
+     * @return the plan associated with the patient
+     */
     public Plan getPlan() {
         return plan;
     }
 
+    /**
+     * Sets the plan associated with this patient plan (not in database)
+     * @param plan the plan to be associated with the object
+     */
     public void setPlan(Plan plan) {
         this.plan = plan;
     }
     
+    /**
+     * Gets the start date of the patients plan
+     * @return the start date of the plan
+     */
     public Date getStartDate() {
         return startDate;
     }
 
+    /**
+     * Sets the patient plans start date in the object (not the database)
+     * @param startDate the new start date of the patient plan
+     */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
+    /**
+     * Gets the number of repairs used by the patient in this current plan cycle
+     * @return the number of repairs used
+     */
     public int getUsedRepairs() {
         return usedRepairs;
     }
 
+    /**
+     * Sets the number of repairs used in this cycle in the object and database
+     * @param usedRepairs the updated number of used repairs
+     * @return if the update was a success or not
+     */
     public boolean setUsedRepairs(int usedRepairs) {
         this.usedRepairs = usedRepairs;
         PreparedStatement stmt = null;
@@ -75,10 +108,19 @@ public class PatientPlan extends SQLConnector {
         } 
     }
 
+    /**
+     * Gets the number of checkup used in the current plan cycle
+     * @return the number of used checkups
+     */
     public int getUsedCheckups() {
         return usedCheckups;
     }
 
+    /**
+     * Sets the number of checkups used in this cycle in the object and database
+     * @param usedCheckups the updated number of checkups that have been used
+     * @return if the update was a success or not
+     */
     public boolean setUsedCheckups(int usedCheckups) {
         this.usedCheckups = usedCheckups;
         PreparedStatement stmt = null;
@@ -101,10 +143,19 @@ public class PatientPlan extends SQLConnector {
         } 
     }
 
+    /**
+     * Gets the number of visits used by the patient in the current plan cycle
+     * @return the number of used visits
+     */
     public int getUsedVisits() {
         return usedVisits;
     }
 
+    /**
+     * Sets the number of visits used in this course in the object and database
+     * @param usedVisits the updated number of visits used this cycle
+     * @return if the update was a success or not
+     */
     public boolean setUsedVisits(int usedVisits) {
         this.usedVisits = usedVisits;
         PreparedStatement stmt = null;
@@ -127,6 +178,15 @@ public class PatientPlan extends SQLConnector {
         } 
     }
 
+    /**
+     * Creates a new patient plan with all the associated fields
+     * @param patientID the ID of the associated patient
+     * @param plan the associated plan object
+     * @param startDate the patient plans start date
+     * @param usedRepairs the initial number of repairs used
+     * @param usedCheckups the initial number of checkups used
+     * @param usedVisits the initial number of visits used
+     */
     public PatientPlan(int patientID, Plan plan, Date startDate, int usedRepairs, int usedCheckups, int usedVisits) {
         this.patientID = patientID;
         this.plan = plan;
@@ -136,6 +196,9 @@ public class PatientPlan extends SQLConnector {
         this.usedVisits = usedVisits;
     }
 
+    /**
+     * Creates the table that is used for storing patient plan information in the database
+     */
     public static void createTable() {
         update("CREATE TABLE IF NOT EXISTS PatientPlan(" +
             "    patientID INTEGER," +
@@ -149,6 +212,10 @@ public class PatientPlan extends SQLConnector {
             "    FOREIGN KEY (name) REFERENCES Plan(name));");
     }
     
+    /**
+     * Deletes a given patient plan from the database, based on the objects patientID
+     * @return if the deletion was a success or not
+     */
     public boolean delete() {
         PreparedStatement stmt = null;
         try {
@@ -169,6 +236,10 @@ public class PatientPlan extends SQLConnector {
         }
     }
     
+    /**
+     * Adds a new patient plan to the database based on the information in the object
+     * @return if the addition was successful or not
+     */
     public boolean add() {
         PreparedStatement stmt = null;
         try {
@@ -195,6 +266,11 @@ public class PatientPlan extends SQLConnector {
         }
     }
     
+    /**
+     * Resets a patient plan setting the start date to when this method is called and resetting the
+     * use of all the provided options in the plan
+     * @return if the update was a success or not
+     */
     public boolean resetPlan() {
         this.usedVisits = usedVisits;
         PreparedStatement stmt = null;
@@ -217,5 +293,4 @@ public class PatientPlan extends SQLConnector {
         } 
     }
     
-
 }

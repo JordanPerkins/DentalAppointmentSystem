@@ -242,6 +242,12 @@ public class Appointment extends SQLConnector {
          }
     }
     
+    /**
+     * Gets the count of the appointments on a given day for a specific partner
+     * @param date the date the appointments should be on
+     * @param partner the parter who should be seeing the appointments
+     * @return the number of appointments that exist
+     */
     public static int getCountDatePartner(Date date, Partner partner) {
         PreparedStatement stmt = null;
         int count = 0;
@@ -269,13 +275,22 @@ public class Appointment extends SQLConnector {
         } 
     }
     
+    /**
+     * Fetches from the database all the appointments on a specific date for a given partner,
+     * returning the results as an array.
+     * @param date the date the appointments should be on
+     * @param partner the partner who should be seeing the appointments
+     * @return the appointments matching the request
+     */
     public static Appointment[] fetchDatePartner(Date date, Partner partner) {
         int size = getCountDatePartner(date, partner);
+        
         if (size == 0) {
             close();
             return new Appointment[0];
         }
         Appointment[] appointments = new Appointment[size];
+        
         PreparedStatement stmt = null;
         int count = 0;
         try {
@@ -305,7 +320,8 @@ public class Appointment extends SQLConnector {
                     patient = new Patient(patientID, res.getString(9),
                         res.getString(10), res.getString(11), res.getDate(12), res.getString(13), address, patientPlan);
                 }
-                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), date, res.getInt("paymentStatus"), res.getInt("status"));
+                Appointment appointment = new Appointment(patient, partner, res.getTime("startTime"), res.getTime("endTime"), 
+                        date, res.getInt("paymentStatus"), res.getInt("status"));
                 appointments[count] = appointment;
                 count++;
             }
@@ -322,6 +338,14 @@ public class Appointment extends SQLConnector {
         }
     }
     
+    /**
+     * Gets a count of the number of appointments in the system for a given partner between two
+     * specified dates
+     * @param dateStart the date appointments should be gotten from
+     * @param dateEnd the date appointments should be gotten to
+     * @param partner the partner who should be seeing the appointments
+     * @return the count of appointments matching the query
+     */
     public static int getCountBetweenDatesPartner(Date dateStart, Date dateEnd, Partner partner) {
         PreparedStatement stmt = null;
         int count = 0;
@@ -350,6 +374,14 @@ public class Appointment extends SQLConnector {
         } 
     }
     
+    /**
+     * Returns an array of all the appointments present in the database between the two specified
+     * dates to be seen by the partner
+     * @param dateStart the date appointments should be gotten from
+     * @param dateEnd the date appointments should be gotten to
+     * @param partner the partner who should be seeing the appointments
+     * @return the appointments that match the request
+     */
     public static Appointment[] fetchBetweenDatesPartner(Date dateStart, Date dateEnd, Partner partner) {
         int size = getCountBetweenDatesPartner(dateStart, dateEnd, partner);
         if (size == 0) {            
@@ -405,6 +437,10 @@ public class Appointment extends SQLConnector {
         }
     }
     
+    /**
+     * Cancels an appointment, deleting its appointment information from the database
+     * @return if the cancellation was successful or not
+     */
     public boolean cancel() {
         PreparedStatement stmt = null;
         try {
@@ -426,6 +462,11 @@ public class Appointment extends SQLConnector {
         }
     }
     
+    /**
+     * Removes all the appointments from the database that are tied to a specific patient
+     * @param p the patientID of the patient whose appointments should be deleted
+     * @return if the deletion was successful or not
+     */
     public static boolean deleteByPatient(Patient p) {
         PreparedStatement stmt = null;
         try {

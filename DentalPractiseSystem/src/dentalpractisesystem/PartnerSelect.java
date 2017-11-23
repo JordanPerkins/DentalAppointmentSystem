@@ -10,10 +10,12 @@ package dentalpractisesystem;
  */
 public class PartnerSelect extends javax.swing.JPanel {
     
+    // Instance Variables
     private javax.swing.JFrame frame;
 
     /**
-     * Creates new form PartnerSelect
+     * Creates a new partner menu panel
+     * @param frame the frame the panel should be displayed on
      */
     public PartnerSelect(javax.swing.JFrame frame) {
         this.frame = frame;
@@ -193,15 +195,24 @@ public class PartnerSelect extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    /**
+     * Action listener that selections the current option in the combo box and creates the 
+     * relevant panel
+     * @param evt event that triggered the action listener
+     */
     private void selectViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectViewActionPerformed
         setVisible(false);
         Menu menu = new Menu(frame);
         frame.setContentPane(menu);
     }//GEN-LAST:event_selectViewActionPerformed
 
+    /**
+     * Action listener for updating the dropdown menu when a new option is selected
+     * @param evt event that triggered the action listener
+     */
     private void selectPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPartnerActionPerformed
         setVisible(false);
         CalendarDayPanel cal;
