@@ -10,10 +10,12 @@ package dentalpractisesystem;
  */
 public class SecretaryMenu extends javax.swing.JPanel {
     
+    // Instance Vriables
     private javax.swing.JFrame frame;
 
     /**
-     * Creates new form NewSecretaryMenu
+     * Crates a new frame that displays a secretary menu
+     * @param frame the frame the panel will be displayed on
      */
     public SecretaryMenu(javax.swing.JFrame frame) {
         this.frame = frame;
@@ -201,6 +203,10 @@ public class SecretaryMenu extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Action listener for the button that takes you to the calendar
+     * @param evt the event that triggered the action
+     */
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         setVisible(false);
         CalendarWeekPanel calendar = new CalendarWeekPanel(frame, 0, Partner.DENTIST);

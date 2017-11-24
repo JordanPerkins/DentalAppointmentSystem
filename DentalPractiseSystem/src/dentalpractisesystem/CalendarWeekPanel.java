@@ -16,10 +16,12 @@ import java.net.URL;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 /**
  * 
@@ -705,13 +707,14 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
             } else {
                 view.setBackground(Color.RED);
             }
+            view.setBorder(BorderFactory.createLineBorder(Color.BLACK, 0));
         } else {
             view.setText("Blank");
             view.setPreferredSize(new Dimension(1, 1));
             view.putClientProperty("appointment", a);
         }
         
-        // Adds the action listner to the buttton
+        //Adds the action listner to the buttton
         view.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewAppointmentActionPerformed(evt);
@@ -758,12 +761,14 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                         ((midnight.getTimeInMillis() + appointments[0].getStartTime().getTime() + (long) 3.6e+6) > now.getTimeInMillis()) && enter) {
                     JButton half1 = createBookButton(date, this.partner, DAY_START, nowTime, false);
                     layout.weighty = (100.0 / DAY_LENGTH) * after;
+                    System.out.println((100.0 / DAY_LENGTH) * after);
                     layout.gridy = gridValue;
                     gridValue++;
                     panel.add(half1, layout);
                     
                     JButton half2 = createBookButton(date, this.partner, nowTime, appointments[0].getStartTime(), false);
                     layout.weighty = (100.0 / DAY_LENGTH) * (length - after);
+                    System.out.println((100.0 / DAY_LENGTH) * (length - after));
                     layout.gridy = gridValue;
                     gridValue++;
                     panel.add(half2, layout);
@@ -771,6 +776,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                     int minutes = (int) ((appointments[0].getStartTime().getTime()) / 1000 / 60 - DAY_START.getTime() / 1000 / 60);
                     JButton book = createBookButton(date, partner, DAY_START, appointments[0].getStartTime(), false);
                     layout.weighty = (100.0 / DAY_LENGTH) * minutes;
+                    System.out.println((100.0 / DAY_LENGTH) * minutes);
                     layout.gridy = gridValue;
                     gridValue++;
                     panel.add(book, layout);
@@ -783,7 +789,11 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                 int minutesA = (int) ((appointments[i].getEndTime().getTime()) / 1000 / 60 - 
                         (appointments[i].getStartTime().getTime()) / 1000 / 60);
                 JButton view = createViewButton(appointments[i].getPatient(), appointments[i]);
-                layout.weighty = (100.0 / DAY_LENGTH) * minutesA;
+                if (i == appointments.length - 1)
+                    layout.weighty = ((100.0 / DAY_LENGTH) * minutesA)-0.00001;
+                else
+                    layout.weighty = ((100.0 / DAY_LENGTH) * minutesA);
+                System.out.println((100.0 / DAY_LENGTH) * minutesA);
                 layout.gridy = gridValue;
                 gridValue++;
                 panel.add(view, layout);
@@ -812,13 +822,15 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                                 (long) 3.6e+6) < now.getTimeInMillis()) && ((midnight.getTimeInMillis() + 
                                 DAY_END.getTime() + (long) 3.6e+6) > now.getTimeInMillis()) && enter) {
                             JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime, false);
-                            layout.weighty = (100.0 / DAY_LENGTH) * after;
+                            layout.weighty = ((100.0 / DAY_LENGTH) * after)-0.00001;
+                            System.out.println((100.0 / DAY_LENGTH) * after);
                             layout.gridy = gridValue;
                             gridValue++;
                             panel.add(half1, layout);
                             
                             JButton half2 = createBookButton(date, this.partner, nowTime, DAY_END, false);
-                            layout.weighty = (100.0 / DAY_LENGTH) * (length - after);
+                            layout.weighty = ((100.0 / DAY_LENGTH) * (length - after))-0.00001;
+                            System.out.println((100.0 / DAY_LENGTH) * (length - after));
                             layout.gridy = gridValue;
                             gridValue++;
                             panel.add(half2, layout);
@@ -826,7 +838,8 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                             int minutes = (int) (DAY_END.getTime() / 1000 / 60 - 
                                     (appointments[i].getEndTime().getTime()) / 1000 / 60);
                             JButton book = createBookButton(date, partner, appointments[i].getEndTime(), DAY_END, false);
-                            layout.weighty = (100.0 / DAY_LENGTH) * minutes;
+                            layout.weighty = ((100.0 / DAY_LENGTH) * minutes)-0.00001;
+                            System.out.println((100.0 / DAY_LENGTH) * minutes);
                             layout.gridy = gridValue;
                             gridValue++;
                             panel.add(book, layout);
@@ -854,12 +867,14 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                             (long) 3.6e+6) > now.getTimeInMillis()) && enter) {
                         JButton half1 = createBookButton(date, this.partner, appointments[i].getEndTime(), nowTime, false);
                         layout.weighty = (100.0 / DAY_LENGTH) * after;
+                        System.out.println((100.0 / DAY_LENGTH) * after);
                         layout.gridy = gridValue;
                         gridValue++;
                         panel.add(half1, layout);
                         
                         JButton half2 = createBookButton(date, this.partner, nowTime, appointments[i + 1].getStartTime(), false);
                         layout.weighty = (100.0 / DAY_LENGTH) * (length - after);
+                        System.out.println((100.0 / DAY_LENGTH) * (length - after));
                         layout.gridy = gridValue;
                         gridValue++;
                         panel.add(half2, layout);
@@ -867,6 +882,7 @@ public class CalendarWeekPanel extends javax.swing.JPanel {
                         int minutes = (int) ((appointments[i + 1].getStartTime().getTime()) / 1000 / 60 - (appointments[i].getEndTime().getTime()) / 1000 / 60);
                         JButton book = createBookButton(date, partner, appointments[i].getEndTime(), appointments[i + 1].getStartTime(), false);
                         layout.weighty = (100.0 / DAY_LENGTH) * minutes;
+                        System.out.println((100.0 / DAY_LENGTH) * minutes);
                         layout.gridy = gridValue;
                         gridValue++;
                         panel.add(book, layout);
