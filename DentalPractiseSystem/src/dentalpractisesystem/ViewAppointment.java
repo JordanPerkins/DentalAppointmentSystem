@@ -30,6 +30,7 @@ import javax.swing.JFrame;
  */
 public class ViewAppointment extends javax.swing.JPanel {
 
+    // Instance Variables
     private Appointment appointment;
     
     private JFrame frame;
@@ -38,15 +39,22 @@ public class ViewAppointment extends javax.swing.JPanel {
     private VisitTreatment[] treatments;
     
     /**
-     * Creates new form ViewAppointment
+     * Creates a new panel for viewing and interacting with a given appointment
+     * @param frame the frame the panel will be displayed on
+     * @param a the appointment's information the panel will display
+     * @param tO the time offset value of the calendar this is linked from
      */
     public ViewAppointment(javax.swing.JFrame frame, Appointment a, int tO) {
         appointment = a;
         this.frame = frame;
         timeOffset = tO;
+        
         initComponents();
+        
+        // Sets the panel correctly if the patient is null
         if (appointment.getPatient() != null) {
-            jLabel3.setText(appointment.getPatient().getFirstName() + " " + appointment.getPatient().getSurname());
+            jLabel3.setText(appointment.getPatient().getFirstName() + " " + 
+                    appointment.getPatient().getSurname());
             jLabel5.setText(appointment.getPatient().getDob().toString());
             jLabel7.setText(appointment.getPatient().getPhoneNumber());
             jLabel9.setText(appointment.getPatient().getAddress().toString());
@@ -54,6 +62,8 @@ public class ViewAppointment extends javax.swing.JPanel {
         } else {
             jPanel1.setVisible(false);
         }
+        
+        // Sets the required elements to visible based on the appointment status
         if (appointment.getStatus() == 0) {
             jPanel4.setVisible(false);
             complete.setEnabled(false);
@@ -63,6 +73,8 @@ public class ViewAppointment extends javax.swing.JPanel {
             complete.setEnabled(false);
         } else {
             cancel.setEnabled(false);
+            
+            // Sets patient information based on if they have a plan
             if (plan != null) {
                 planLabel.setText(plan.getPlan().toString());
                 plan.resetPlan();
@@ -73,6 +85,8 @@ public class ViewAppointment extends javax.swing.JPanel {
                 repairButton.setEnabled(false);
                 checkupButton.setEnabled(false);
             }
+            
+            // Sets the required elements based on the payment status
             if (appointment.getPaymentStatus() == 0) {
                 treatments = VisitTreatment.fetch(a);
             } else if (appointment.getPaymentStatus() == 1) {
@@ -81,14 +95,20 @@ public class ViewAppointment extends javax.swing.JPanel {
             } else if (appointment.getPaymentStatus() == 2) {
                 treatments = VisitTreatment.fetchTreatmentCourse(a);
             }
+            
             updateCostAndDropdown();
         }
     }
     
+    /**
+     * Updates the number of remaining plans shown on the display
+     */
     public void updateRemaining() {
         int visits = plan.getPlan().getVisits()-plan.getUsedVisits();
         int repairs = plan.getPlan().getRepairs()-plan.getUsedRepairs();
         int checkups = plan.getPlan().getCheckups()-plan.getUsedCheckups();
+        
+        // Disables the buttons if they cant be used
         if (visits == 0) {
             visitButton.setEnabled(false);   
         }
@@ -98,18 +118,26 @@ public class ViewAppointment extends javax.swing.JPanel {
         if (checkups == 0) {
             checkupButton.setEnabled(false);    
         }
+        
         visitRemaining.setText(visits + " Remaining");
         repairRemaining.setText(repairs + " Remaining");
         checkupRemaining.setText(checkups + " Remaining");
     }
     
+    /**
+     * Updates the treatments included dropdown and thus the total cost of treatments
+     * shown for the appointment
+     */
     public void updateCostAndDropdown() {
         treatmentsComboBox.removeAllItems();
         double cost = 0;
+        
         for (int i = 0; i<treatments.length; i++) {
             cost = cost + treatments[i].getTreatment().getCost();
             treatmentsComboBox.addItem(treatments[i].getTreatment().toString());
         }
+        
+        // Sets the cost, checking for the current status
         if (appointment.getStatus() == 2) {
             totalCost.setText("£0.00");
         } else {
@@ -117,10 +145,13 @@ public class ViewAppointment extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Sets the cost of the treatments in the appointment to 0
+     */
     public void setZeroCosts() {
-            for (int i = 0; i<treatments.length; i++) {
-                treatments[i].getTreatment().setCost(0.00);
-            }    
+        for (int i = 0; i<treatments.length; i++) {
+            treatments[i].getTreatment().setCost(0.00);
+        }    
     }
 
     /**
@@ -540,21 +571,31 @@ public class ViewAppointment extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Listener for the button to take you back to the calendar
+     * @param evt the event that triggered the action
+     */
     private void calendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calendarActionPerformed
         setVisible(false);
         CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, appointment.getPartner());
         frame.setContentPane(calendar);
     }//GEN-LAST:event_calendarActionPerformed
 
+    /**
+     * Action listener for the cancel button that opens the confirm dialog and goes back
+     * to the calendar
+     * @param evt the event that triggered the action listener
+     */
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
         ConfirmAppointCancel appoint = new ConfirmAppointCancel(frame, true, appointment, timeOffset);
         Point point = frame.getLocationOnScreen();
         double width = (point.getY()+(frame.getWidth()/2))-(appoint.getWidth()/2);
         double height = (point.getX()+(frame.getHeight()/2))-(appoint.getHeight()/2);
+        
         point.setLocation(width, height);
         appoint.setLocation(point);
         appoint.setVisible(true);
-        System.out.println(appoint.getReturnStatus());
+
         if (appoint.getReturnStatus() == 1) {
             setVisible(false);
             CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, appointment.getPartner());
@@ -562,36 +603,63 @@ public class ViewAppointment extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cancelActionPerformed
 
+    /**
+     * Action listener for the button to remove a treatment from the appointments drop
+     * down menu
+     * @param evt the event that has triggered the action
+     */
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         treatments[treatmentsComboBox.getSelectedIndex()].getTreatment().setCost(0.00);
         updateCostAndDropdown();
     }//GEN-LAST:event_removeButtonActionPerformed
 
+    /**
+     * Action listener for removing a visit from the patients plan allocation
+     * @param evt the event that triggered the action listener
+     */
     private void useVisitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useVisitActionPerformed
         plan.setUsedVisits(plan.getUsedVisits()+1);
         updateRemaining();
     }//GEN-LAST:event_useVisitActionPerformed
 
+    /**
+     * Action listener for removing a repair from the patients plan allocation
+     * @param evt the event that triggered the action listener
+     */
     private void useRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useRepairActionPerformed
         plan.setUsedRepairs(plan.getUsedRepairs()+1);
         updateRemaining();
     }//GEN-LAST:event_useRepairActionPerformed
 
+    /**
+     * Action listener for removing a checkup from the patients plan allocation
+     * @param evt the event that triggered the action listener
+     */
     private void useCheckupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useCheckupActionPerformed
         plan.setUsedCheckups(plan.getUsedCheckups()+1);
         updateRemaining();
     }//GEN-LAST:event_useCheckupActionPerformed
 
+    /**
+     * Action listener for completing an appointment and doing the relevant tasks
+     * @param evt event used to trigger the action listener
+     */
     private void completeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeActionPerformed
         try {
+            // Sets the appointment status
             appointment.setStatus(2);
+            
             if (appointment.getPaymentStatus() == 2) {
                 VisitTreatment.changeListStatus(treatments);
             }
+            
+            // Sets the calendar frame to go back to
             setVisible(false);
-            CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset, appointment.getPartner());
+            CalendarWeekPanel calendar = new CalendarWeekPanel(frame, timeOffset,
+                    appointment.getPartner());
             frame.setContentPane(calendar);
             
+            // Creates a new PDF recipt containing the information about the appointment paymentF
             Document doc = new Document();
             try {
                 PdfWriter.getInstance(doc, new FileOutputStream("Receipt.pdf"));
@@ -604,11 +672,11 @@ public class ViewAppointment extends javax.swing.JPanel {
             doc.add(printTitle);
             
             Paragraph printAddress = new Paragraph(
-                    "House " + Integer.toString(appointment.getPatient().getAddress().getHouseNumber()) + "\n" +
-                    appointment.getPatient().getAddress().getStreetName() + " Street" + "\n" +
-                    appointment.getPatient().getAddress().getDistrict() + "\n" +
-                    appointment.getPatient().getAddress().getCity() + "\n" +
-                    appointment.getPatient().getAddress().getPostCode()        
+                "House " + Integer.toString(appointment.getPatient().getAddress().getHouseNumber()) + "\n" +
+                appointment.getPatient().getAddress().getStreetName() + " Street" + "\n" +
+                appointment.getPatient().getAddress().getDistrict() + "\n" +
+                appointment.getPatient().getAddress().getCity() + "\n" +
+                appointment.getPatient().getAddress().getPostCode()        
             );
             printAddress.setAlignment(Element.ALIGN_RIGHT);
             doc.add(printAddress);
@@ -649,7 +717,6 @@ public class ViewAppointment extends javax.swing.JPanel {
                 doc.add(p);
             }
             
-
             doc.close();
             try {
                 Desktop.getDesktop().open(new File("Receipt.pdf"));

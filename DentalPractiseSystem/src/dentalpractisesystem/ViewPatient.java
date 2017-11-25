@@ -14,10 +14,12 @@ import javax.swing.JComboBox;
  */
 public class ViewPatient extends javax.swing.JPanel {
 
+    // Instance Variables
     private javax.swing.JFrame frame;
         
     /**
-     * Creates new form DeletePatient
+     * Creates a new panel used for viewing patient details
+     * @param frame the frame the panel will be displayed on
      */
     public ViewPatient(javax.swing.JFrame frame) {
         this.frame = frame;
@@ -26,7 +28,12 @@ public class ViewPatient extends javax.swing.JPanel {
 
     }
     
+    /**
+     * Sets the information about the selected patient to be  displayed on the panel
+     * @param patient the patient who's information should be displayed
+     */
     public void setInfo(Patient patient) {
+        // Sets patient info based on if there is a patient or not
         if (patient == null) {
             jLabel8.setText("");
             jLabel10.setText("");
@@ -292,27 +299,52 @@ public class ViewPatient extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Gets the list of patients shown on the panel
+     * @return the patient list
+     */
     public Patient[] getLis() {
         return lis;
     }
 
+    /**
+     * Sets the list of patients that are selectable on the panel
+     * @param lis the new list of patients that are to be displayed
+     */
     public void setLis(Patient[] lis) {
         this.lis = lis;
     }
 
+    /**
+     * Gets the combobox that is used to display the patient selection dropdown
+     * @return the combobox used
+     */
     public JComboBox<String> getjComboBox1() {
         return jComboBox1;
     }
 
+    /**
+     * Sets the combobox that is used to display the patient dropdown on the panel
+     * @param jComboBox1 the new combobox to be used
+     */
     public void setjComboBox1(JComboBox<String> jComboBox1) {
         this.jComboBox1 = jComboBox1;
     }
 
+    /**
+     * Action listener for changes to the dropdown list of patients
+     * @param evt the event that triggered the action listener
+     */
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         int index = jComboBox1.getSelectedIndex();
         if (index != -1) setInfo(lis[index]);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    /**
+     * Action listener for the button that deletes a specified patient from the database.
+     * Opens the confirm delete dialog before deleting the patient
+     * @param evt the event that triggered the listener
+     */
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         ConfirmDelete delete = new ConfirmDelete(frame, true, this);
         Point point = frame.getLocationOnScreen();
@@ -323,12 +355,21 @@ public class ViewPatient extends javax.swing.JPanel {
         delete.setVisible(true);
     }//GEN-LAST:event_deleteActionPerformed
 
+    /**
+     * Listener for the button that takes you back to the secretary menu
+     * @param evt the event that triggered the action listener
+     */
     private void menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuActionPerformed
         setVisible(false);
         SecretaryMenu menu = new SecretaryMenu(frame);
         frame.setContentPane(menu);
     }//GEN-LAST:event_menuActionPerformed
 
+    /**
+     * The action listener for the button that makes changes to the currently displayed
+     * patients plan. Opens confirm dialog before proceeding with change 
+     * @param evt 
+     */
     private void changePlanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePlanActionPerformed
         ConfirmChangePlan plan = new ConfirmChangePlan(frame, true, this);
         Point point = frame.getLocationOnScreen();
@@ -339,8 +380,12 @@ public class ViewPatient extends javax.swing.JPanel {
         plan.setVisible(true);
     }//GEN-LAST:event_changePlanActionPerformed
     
+    /**
+     * Updates the patient dropdown box, fetching all the patient data from the database
+     */
     public void updateDropdown() {
         jComboBox1.removeAllItems();
+        
         lis = Patient.fetchAll();
         if (lis.length != 0) {
             for (int i = 0; i<lis.length; i++) {

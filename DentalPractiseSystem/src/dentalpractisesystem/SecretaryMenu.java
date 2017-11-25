@@ -213,18 +213,30 @@ public class SecretaryMenu extends javax.swing.JPanel {
         frame.setContentPane(calendar);
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    /**
+     * Action listener for returning to the main program opening menu
+     * @param evt the event that triggered the action listener
+     */
     private void selectViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectViewActionPerformed
         setVisible(false);
         Menu menu = new Menu(frame);
         frame.setContentPane(menu);
     }//GEN-LAST:event_selectViewActionPerformed
 
+    /**
+     * The action listener taking you to the view patient panel
+     * @param evt the event that triggered the action
+     */
     private void viewPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewPatientActionPerformed
         setVisible(false);
         ViewPatient delete = new ViewPatient(frame);
         frame.setContentPane(delete);
     }//GEN-LAST:event_viewPatientActionPerformed
 
+    /**
+     * Listener for opening up the patient registration screen
+     * @param evt the event that triggered the action
+     */
     private void registerPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerPatientActionPerformed
         setVisible(false);
         RegisterPatient register = new RegisterPatient(frame);
