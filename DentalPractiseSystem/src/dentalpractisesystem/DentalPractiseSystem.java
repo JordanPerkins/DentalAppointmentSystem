@@ -2,6 +2,8 @@
  * COM2002 Human Centred Systems Design: Dental Practise System
  * This is the main program which creates the frame, initializes the tables
  * and then loads the main menu.
+ *
+ * NOTE: iTextPDF AND ConnectorJ required in the classpath of this code
  */
 package dentalpractisesystem;
 /**
