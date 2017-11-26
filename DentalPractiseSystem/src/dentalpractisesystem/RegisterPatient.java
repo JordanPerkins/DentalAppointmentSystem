@@ -577,7 +577,7 @@ public class RegisterPatient extends javax.swing.JPanel {
                             streetNameTextField.getText(),districtTextField.getText(), cityTextField.getText());
                     address.add();
                 }
-                Date date = new Date(year-1900, month, day);
+                Date date = new Date(year-1900, month-1, day);
                 Patient patient = new Patient(0, (String)jComboBox1.getSelectedItem(), foreNameTextField.getText(),
                 surNameTextField.getText(), date, phoneTextField.getText(), address, null);
                 boolean result = patient.add();
